@@ -2,8 +2,8 @@
 import { gameState, pokemonBaseStatsData, pokeballData, itemData, routes } from './state.js';
 import { getActivePokemon, formatNumberWithDots, addBattleLog } from './utils.js';
 import { POKEMON_SPRITE_BASE_URL, AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, STARTER_POKEMON_NAMES, SHINY_CHANCE } from './config.js'; // SHINY_CHANCE might not be directly used here but good to keep track of config imports
-import { Pokemon } from './pokemon.js';
-import { calculateAveragePartyLevel, attemptEvolution, setActivePokemon, removeFromParty, confirmReleasePokemon as confirmReleasePokemonLogic, addToParty as addToPartyLogic } from './gameLogic.js'; // Import logic functions
+import { Pokemon } from './pokemon.js'; // Import logic functions
+import { calculateMaxPartyLevel, attemptEvolution, setActivePokemon, removeFromParty, confirmReleasePokemon as confirmReleasePokemonLogic, addToParty as addToPartyLogic } from './gameLogic.js'; // Changed import
 
 // --- Utility functions for Pokémon data presentation ---
 export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicator', showBallIcon = false, checkCaughtStatus = false) {
@@ -127,13 +127,46 @@ function _updatePlayerStatsDisplay() {
         if (containerElement) {
             const countSpan = document.getElementById(countElementId);
             if (countSpan) {
-                countSpan.textContent = count;
+                countSpan.textContent = count; // This is the count for Pokeballs
             }
-
             if (alwaysShow || count > 0) {
                 containerElement.style.display = ''; // Reverts to CSS default (e.g., flex)
             } else {
                 containerElement.style.display = 'none';
+            }
+        } else { // This 'else' handles non-Pokeball items which are now buttons
+            const itemButton = document.getElementById(`item-display-${itemId}`); // Assumes button ID is item-display-itemId
+            if (itemButton) {
+                const countSpanInsideButton = itemButton.querySelector(`#item-count-${itemId}`);
+                if (countSpanInsideButton) {
+                    countSpanInsideButton.textContent = count;
+                }
+
+                if (alwaysShow || count > 0) {
+                    itemButton.style.display = ''; // Or 'flex', 'inline-flex' based on your CSS for .item-display
+                } else {
+                    itemButton.style.display = 'none';
+                }
+
+                // Logic to enable/disable the item button
+                const canUseItemGenerally = !gameState.battleInProgress;
+                let itemSpecificCondition = true;
+                const activePokemon = getActivePokemon();
+                const itemInfo = itemData[itemId];
+
+                if (itemInfo && activePokemon) {
+                    if (itemInfo.effectType === 'active_pokemon_percentage' || itemInfo.effectType === 'active_pokemon_full') {
+                        itemSpecificCondition = activePokemon.currentHp < activePokemon.maxHp && activePokemon.currentHp > 0; // Cannot use on fainted for these
+                        if (itemInfo.canRevive && activePokemon.currentHp <= 0) itemSpecificCondition = true; // Allow if item can revive
+                    } else if (itemInfo.effectType === 'evolution_item') {
+                        itemSpecificCondition = itemInfo.evolutionTargets?.some(target => target.pokemon === activePokemon.name);
+                    }
+                } else if (itemInfo && itemInfo.effectType === 'party_full') { // Moomoo Milk example
+                    itemSpecificCondition = gameState.party.some(p => p && p.currentHp < p.maxHp);
+                } else if (itemInfo && (itemInfo.effectType === 'active_pokemon_percentage' || itemInfo.effectType === 'active_pokemon_full' || itemInfo.effectType === 'evolution_item') && !activePokemon) {
+                    itemSpecificCondition = false; // Cannot use on active Pokemon if no active Pokemon
+                }
+                itemButton.disabled = !canUseItemGenerally || count <= 0 || !itemSpecificCondition;
             }
         }
     }
@@ -370,84 +403,12 @@ function _updateItemBarTooltips() {
     });
 }
 
-// Helper function to update potion use buttons
-function _updateItemUseButtons() { // Renamed from _updatePotionUseButtons
-    const usePotionBtn = document.getElementById('use-item-potion-btn'); // Renamed ID
-    const useHyperPotionBtn = document.getElementById('use-item-hyperpotion-btn'); // Renamed ID
-    const useMoomooMilkBtn = document.getElementById('use-item-moomoomilk-btn'); // Renamed ID
-    const useFireStoneBtn = document.getElementById('use-item-firestone-btn');
-    const useWaterStoneBtn = document.getElementById('use-item-waterstone-btn');
-    const useThunderStoneBtn = document.getElementById('use-item-thunderstone-btn');
-    const useMoonStoneBtn = document.getElementById('use-item-moonstone-btn');
-    const useLeafStoneBtn = document.getElementById('use-item-leafstone-btn');
-    const canUseItem = !gameState.battleInProgress;
-    const activePokemon = getActivePokemon();
-
-    if (usePotionBtn) {
-        const activePokemonNeedsPotion = activePokemon && activePokemon.currentHp < activePokemon.maxHp; // Can use if not full HP (includes fainted)
-        usePotionBtn.disabled = !canUseItem || !activePokemonNeedsPotion || gameState.items.potion <= 0; // Renamed gameState.potions
-        usePotionBtn.style.display = gameState.items.potion > 0 ? '' : 'none'; // Renamed gameState.potions
-        usePotionBtn.textContent = `Use Potion (${gameState.items.potion})`; // Renamed gameState.potions
-    }
-    if (useHyperPotionBtn) {
-        const activePokemonNeedsHyperPotion = activePokemon && activePokemon.currentHp < activePokemon.maxHp; // Can use if not full HP (includes fainted)
-        useHyperPotionBtn.disabled = !canUseItem || !activePokemonNeedsHyperPotion || gameState.items.hyperpotion <= 0; // Renamed gameState.potions
-        useHyperPotionBtn.style.display = gameState.items.hyperpotion > 0 ? '' : 'none'; // Renamed gameState.potions
-        useHyperPotionBtn.textContent = `Use Hyper Potion (${gameState.items.hyperpotion})`; // Renamed gameState.potions
-    }
-    if (useMoomooMilkBtn) {
-        const partyNeedsHealing = gameState.party.some(p => p && p.currentHp < p.maxHp); // Can use if any party member is not full HP (includes fainted)
-        useMoomooMilkBtn.disabled = !canUseItem || !partyNeedsHealing || gameState.items.moomoomilk <= 0; // Changed gameState.potions to gameState.items
-        useMoomooMilkBtn.style.display = gameState.items.moomoomilk > 0 ? '' : 'none'; // Changed gameState.potions to gameState.items
-        useMoomooMilkBtn.textContent = `Use Moomoo Milk (${gameState.items.moomoomilk})`; // Changed gameState.potions to gameState.items
-    }
-
-    // Evolution Stones
-    const evolutionStoneLogic = (btn, itemId) => {
-        if (!btn) return;
-        let canEvolvePokemon = false;
-        if (activePokemon && itemData[itemId] && itemData[itemId].evolutionTargets) {
-            canEvolvePokemon = itemData[itemId].evolutionTargets.some(target => target.pokemon === activePokemon.name);
-        }
-        const hasItem = (gameState.items[itemId] || 0) > 0;
-        btn.disabled = !canUseItem || !hasItem || !activePokemon || !canEvolvePokemon;
-        btn.style.display = hasItem ? '' : 'none';
-        btn.textContent = `Use ${itemData[itemId] ? itemData[itemId].name : 'Stone'} (${gameState.items[itemId] || 0})`;
-    };
-
-    if (useFireStoneBtn && itemData.firestone) {
-        evolutionStoneLogic(useFireStoneBtn, 'firestone');
-    } else if (useFireStoneBtn) { // Hide if itemData not loaded yet
-        useFireStoneBtn.style.display = 'none';
-    }
-    if (useWaterStoneBtn && itemData.waterstone) {
-        evolutionStoneLogic(useWaterStoneBtn, 'waterstone');
-    } else if (useWaterStoneBtn) {
-        useWaterStoneBtn.style.display = 'none';
-    }
-    if (useThunderStoneBtn && itemData.thunderstone) {
-        evolutionStoneLogic(useThunderStoneBtn, 'thunderstone');
-    } else if (useThunderStoneBtn) {
-        useThunderStoneBtn.style.display = 'none';
-    }
-    if (useMoonStoneBtn && itemData.moonstone) {
-        evolutionStoneLogic(useMoonStoneBtn, 'moonstone');
-    } else if (useMoonStoneBtn) {
-        useMoonStoneBtn.style.display = 'none';
-    }
-    if (useLeafStoneBtn && itemData.leafstone) {
-        evolutionStoneLogic(useLeafStoneBtn, 'leafstone');
-    } else if (useLeafStoneBtn) {
-        useLeafStoneBtn.style.display = 'none';
-    }
-}
-
 export function updateDisplay() {
     _updatePlayerStatsDisplay();
     _updateMainActionButtonsState();
     _updateShopInterface();
     _updateItemBarTooltips();
-    _updateItemUseButtons(); // Renamed from _updatePotionUseButtons
+    // _updateItemUseButtons(); // This function is now removed
 
     const playerElements = {
         nameEl: document.getElementById('player-name'),
@@ -817,7 +778,7 @@ export function populateRouteSelector() {
     const routeSelect = document.getElementById('route-select');
     if (!routeSelect) return;
 
-    const currentAvgLevel = calculateAveragePartyLevel();
+    const currentMaxLevel = calculateMaxPartyLevel(); // Changed from calculateAveragePartyLevel
     routeSelect.innerHTML = ''; 
 
     const defaultOption = document.createElement('option');
@@ -831,9 +792,11 @@ export function populateRouteSelector() {
         option.value = routeKey;
         let optionText = route.name;
 
-        if (currentAvgLevel < route.avgLevelRequirement) {
+        // Using route.avgLevelRequirement as the property name for the required level,
+        // but the logic now checks against max level.
+        if (currentMaxLevel < route.avgLevelRequirement) { // Changed from currentAvgLevel
             option.disabled = true;
-            optionText += ` (Avg Lv. ${route.avgLevelRequirement} req.)`;
+            optionText += ` (Max Lv. ${route.avgLevelRequirement} req.)`; // Changed text from "Avg Lv."
         }
         option.textContent = optionText;
         routeSelect.appendChild(option);

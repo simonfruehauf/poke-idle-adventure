@@ -102,71 +102,6 @@
                         Auto-Fight (LOCKED)
                     </button>
                 </div>
-                <div class="controls" style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
-                    <button class="btn secondary catch-ball-btn" id="catch-pokeball-btn"
-                        onclick="attemptCatch('pokeball')" disabled
-                        style="flex-grow: 1; background-color: #f1c40f; color: #333;">
-                        Catch (Poké Ball - 0)
-                    </button>
-                    <button class="btn secondary catch-ball-btn" id="catch-greatball-btn"
-                        onclick="attemptCatch('greatball')" disabled
-                        style="flex-grow: 1; background-color: #f1c40f; color: #333;">
-                        Catch (Great Ball - 0)
-                    </button>
-                    <button class="btn secondary catch-ball-btn" id="catch-ultraball-btn"
-                        onclick="attemptCatch('ultraball')" disabled
-                        style="flex-grow: 1; background-color: #f1c40f; color: #333;">
-                        Catch (Ultra Ball - 0)
-                    </button>
-                    <button id="catch-masterball-btn" class="btn catch-btn masterball"
-                        onclick="attemptCatch('masterball')">Catch (Master Ball - 0)</button>
-                </div>
-
-                <!-- Potion Use Controls -->
-                <div class="controls item-controls" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;">
-                    <button class="btn item-use-btn" id="use-item-potion-btn" onclick="useItem('potion')" disabled
-                        style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
-                        Use Potion (0)
-                    </button>
-                    <button class="btn item-use-btn" id="use-item-hyperpotion-btn" onclick="useItem('hyperpotion')"
-                        disabled style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
-                        Use Hyper Potion (0)
-                    </button>
-                    <button class="btn item-use-btn" id="use-item-moomoomilk-btn" onclick="useItem('moomoomilk')"
-                        disabled style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
-                        Use Moomoo Milk (0)
-                    </button>
-                </div>
-                <!-- Evolution Stone Use Controls -->
-                <div class="controls item-controls" style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-firestone-btn"
-                        onclick="useItem('firestone')" disabled
-                        style="flex-grow: 1; background-color: #e67e22; color: #ffffff;">
-                        Use Fire Stone (0)
-                    </button>
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-waterstone-btn"
-                        onclick="useItem('waterstone')" disabled
-                        style="flex-grow: 1; background-color: #3498db; color: #ffffff;">
-                        Use Water Stone (0)
-                    </button>
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-thunderstone-btn"
-                        onclick="useItem('thunderstone')" disabled
-                        style="flex-grow: 1; background-color: #f1c40f; color: #333333;">
-                        Use Thunder Stone (0)
-                    </button>
-                    <!-- Moon and Leaf Stone Use Controls -->
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-moonstone-btn"
-                        onclick="useItem('moonstone')" disabled
-                        style="flex-grow: 1; background-color: #95a5a6; color: #ffffff;">
-                        Use Moon Stone (0)
-                    </button>
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-leafstone-btn"
-                        onclick="useItem('leafstone')" disabled
-                        style="flex-grow: 1; background-color: #2ecc71; color: #ffffff;">
-                        Use Leaf Stone (0)
-                    </button>
-                </div>
-
 
                 <div class="battle-log" id="battle-log">
                     <div class="log-entry">Welcome to Pokemon Idle Adventure!</div>
@@ -302,70 +237,70 @@
             </div>
             <div class="items-bar">
                 <!-- Poké Balls -->
-                <div class="item-display" title="Poké Balls">
-                    <img src="sprites/items/poke-ball.png" alt="Poké Ball" class="item-icon">
-                    <span class="item-count" id="pokeballs-standard">10</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-pokeball"></div>
-                </div>
-                <div class="item-display" title="Great Balls">
-                    <img src="sprites/items/great-ball.png" alt="Great Ball" class="item-icon">
-                    <span class="item-count" id="pokeballs-great">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-greatball"></div>
-                </div>
-                <div class="item-display" title="Ultra Balls">
-                    <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="item-icon">
-                    <span class="item-count" id="pokeballs-ultra">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-ultraball"></div>
-                </div>
-                <div class="item-display tooltip-container" id="itembar-display-masterball">
-                    <img src="sprites/items/master-ball.png" alt="Master Ball">
-                    <span id="itembar-masterball-count">0</span>
-                    <span class="tooltip-text" id="tooltip-itembar-masterball"></span>
-                </div>
+                <button class="item-display item-button" id="item-display-pokeball" onclick="window.attemptCatch('pokeball')" title="Poké Ball" style="display: none;" data-item-id="pokeball">
+                    <img src="sprites/items/poke-ball.png" alt="Poké Ball" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-pokeball">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-pokeball">A device for catching wild Pokémon.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-greatball" onclick="window.attemptCatch('greatball')" title="Great Ball" style="display: none;" data-item-id="greatball">
+                    <img src="sprites/items/great-ball.png" alt="Great Ball" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-greatball">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-greatball">A good, high-performance Ball that provides a higher catch rate than a Poké Ball.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-ultraball" onclick="window.attemptCatch('ultraball')" title="Ultra Ball" style="display: none;" data-item-id="ultraball">
+                    <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-ultraball">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-ultraball">An ultra-high-performance Ball that provides a higher catch rate than a Great Ball.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-masterball" onclick="window.attemptCatch('masterball')" title="Master Ball" style="display: none;" data-item-id="masterball">
+                    <img src="sprites/items/master-ball.png" alt="Master Ball" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-masterball">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-masterball">The best Ball with the ultimate performance. It will catch any wild Pokémon without fail.</div>
+                </button>
 
                 <!-- Healing Items -->
-                <div class="item-display" title="Potion">
-                    <img src="sprites/items/potion.png" alt="Potion" class="item-icon">
-                    <span class="item-count" id="item-count-potion">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-potion"></div>
-                </div>
-                <div class="item-display" title="Hyper Potion">
-                    <img src="sprites/items/hyper-potion.png" alt="Hyper Potion" class="item-icon">
-                    <span class="item-count" id="item-count-hyperpotion">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-hyperpotion"></div>
-                </div>
-                <div class="item-display" title="Moomoo Milk">
-                    <img src="sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="item-icon">
-                    <span class="item-count" id="item-count-moomoomilk">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-moomoomilk"></div>
-                </div>
+                <button class="item-display item-button" id="item-display-potion" onclick="window.useItem('potion')" title="Potion" style="display: none;" data-item-id="potion">
+                    <img src="./sprites/items/potion.png" alt="Potion" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-potion">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-potion">Restores 20 HP to the active Pokémon.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-hyperpotion" onclick="window.useItem('hyperpotion')" title="Hyper Potion" style="display: none;" data-item-id="hyperpotion">
+                    <img src="./sprites/items/hyper-potion.png" alt="Hyper Potion" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-hyperpotion">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-hyperpotion">Restores 150 HP to the active Pokémon.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-moomoomilk" onclick="window.useItem('moomoomilk')" title="Moomoo Milk" style="display: none;" data-item-id="moomoomilk">
+                    <img src="./sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-moomoomilk">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-moomoomilk">Fully heals all Pokémon in the party.</div>
+                </button>
+
                 <!-- Evolution Stones -->
-                <div class="item-display" title="Fire Stone">
-                    <img src="sprites/items/fire-stone.png" alt="Fire Stone" class="item-icon">
-                    <span class="item-count" id="item-count-firestone">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-firestone"></div>
-                </div>
-                <div class="item-display" title="Water Stone">
-                    <img src="sprites/items/water-stone.png" alt="Water Stone" class="item-icon">
-                    <span class="item-count" id="item-count-waterstone">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-waterstone"></div>
-                </div>
-                <div class="item-display" title="Thunder Stone">
-                    <img src="sprites/items/thunder-stone.png" alt="Thunder Stone" class="item-icon">
-                    <span class="item-count" id="item-count-thunderstone">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-thunderstone"></div>
-                </div>
-                <!-- Moon and Leaf Stones -->
-                <div class="item-display" title="Moon Stone">
-                    <img src="sprites/items/moon-stone.png" alt="Moon Stone" class="item-icon">
-                    <span class="item-count" id="item-count-moonstone">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-moonstone"></div>
-                </div>
-                <div class="item-display" title="Leaf Stone">
-                    <img src="sprites/items/leaf-stone.png" alt="Leaf Stone" class="item-icon">
-                    <span class="item-count" id="item-count-leafstone">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-leafstone"></div>
-                </div>
+                <button class="item-display item-button" id="item-display-firestone" onclick="window.useItem('firestone')" title="Fire Stone" style="display: none;" data-item-id="firestone">
+                    <img src="./sprites/items/fire-stone.png" alt="Fire Stone" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-firestone">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-firestone">Evolves certain species of Pokémon.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-waterstone" onclick="window.useItem('waterstone')" title="Water Stone" style="display: none;" data-item-id="waterstone">
+                    <img src="./sprites/items/water-stone.png" alt="Water Stone" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-waterstone">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-waterstone">Evolves certain species of Pokémon.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-thunderstone" onclick="window.useItem('thunderstone')" title="Thunder Stone" style="display: none;" data-item-id="thunderstone">
+                    <img src="./sprites/items/thunder-stone.png" alt="Thunder Stone" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-thunderstone">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-thunderstone">Evolves certain species of Pokémon.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-moonstone" onclick="window.useItem('moonstone')" title="Moon Stone" style="display: none;" data-item-id="moonstone">
+                    <img src="./sprites/items/moon-stone.png" alt="Moon Stone" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-moonstone">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-moonstone">Evolves certain species of Pokémon.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-leafstone" onclick="window.useItem('leafstone')" title="Leaf Stone" style="display: none;" data-item-id="leafstone">
+                    <img src="./sprites/items/leaf-stone.png" alt="Leaf Stone" class="item-bar-icon">
+                    (<span class="item-bar-count-text" id="item-count-leafstone">0</span>)
+                    <div class="custom-tooltip" id="tooltip-itembar-leafstone">Evolves certain species of Pokémon.</div>
+                </button>
             </div>
 
         </div>

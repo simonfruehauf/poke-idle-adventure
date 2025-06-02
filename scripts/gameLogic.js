@@ -103,6 +103,13 @@ export function calculateAveragePartyLevel() {
     return Math.floor(totalLevel / activeParty.length);
 }
 
+export function calculateMaxPartyLevel() {
+    const activeParty = gameState.party.filter(p => p !== null);
+    if (activeParty.length === 0) return 0;
+    const maxLevel = activeParty.reduce((max, p) => Math.max(max, p.level), 0);
+    return maxLevel;
+}
+
 export function spawnWildPokemon() {
     const route = routes[gameState.currentRoute];
     if (!route) {
@@ -469,6 +476,7 @@ export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
         addBattleLog(`No ${itemInfo ? itemInfo.name : 'items'} left or invalid type!`); return;
     }
     let healedSomething = false; const activePokemon = getActivePokemon();
+    let logged = false;
     if (itemInfo.effectType === 'active_pokemon_percentage' && activePokemon) {
         if (activePokemon.currentHp < activePokemon.maxHp) { // Allow healing/reviving if not full HP
             activePokemon.healPartial(itemInfo.effectValue); healedSomething = true;
@@ -501,13 +509,15 @@ export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
             addBattleLog(`Your ${originalPokemonNameForLog} used the ${itemInfo.name} and evolved into ${activePokemon.name}!`);
             healedSomething = true; // To consume the item
             populateRouteSelector(); // Evolution might change average level if it was a party member
-        } else {
+        } 
+        else {
             addBattleLog(`${itemInfo.name} had no effect on ${activePokemon.name}.`);
+            logged = true
         }
     }
     if (healedSomething) {
         gameState.items[itemId]--; addBattleLog(`Used ${itemInfo.name}!`); // Renamed from gameState.potions
-    } else { addBattleLog(`${itemInfo.name} had no effect.`); }
+    } else if (!logged) { addBattleLog(`${itemInfo.name} had no effect.`); }
     updateDisplay();
 }
 
