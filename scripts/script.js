@@ -9,10 +9,10 @@ const SHINY_CHANCE = 1 / 100; // Chance for a Pokemon to be shiny (e.g., 1 in 10
 let autoFightIntervalId = null; // For managing the auto-fight loop
 
 const XP_SHARE_CONFIG = [
-    { cost: 1000, percentage: 0.05, name: "EXP Share (5%)" }, // To get to level 1
-    { cost: 2500, percentage: 0.10, name: "EXP Share (10%)" }, // To get to level 2
-    { cost: 5000, percentage: 0.15, name: "EXP Share (15%)" }, // To get to level 3
-    { cost: 10000, percentage: 0.25, name: "EXP Share (25%)" }, // To get to level 3
+    { cost: 10000, percentage: 0.05, name: "EXP Share (5%)" }, // To get to level 1
+    { cost: 25000, percentage: 0.10, name: "EXP Share (10%)" }, // To get to level 2
+    { cost: 50000, percentage: 0.15, name: "EXP Share (15%)" }, // To get to level 3
+    { cost: 99999, percentage: 0.25, name: "EXP Share (25%)" }, // To get to level 3
 ];
 
 let pokemonBaseStatsData = {}; // Will be loaded from statmap.json
@@ -587,7 +587,10 @@ function getActivePokemon() {
 function findNextHealthyPokemon() {
     return gameState.party.find(p => p && p.currentHp > 0);
 }
-
+// Helper function to format numbers with dots as thousands separators
+function formatNumberWithDots(number) {
+    return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
 // Helper function to handle fainting logic
 async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlayerPokemon, currentRouteData) {
     addBattleLog(`${faintedPokemon.name} fainted!`);
@@ -618,7 +621,7 @@ async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlayerPokemo
         if (!gameState.autoFightUnlocked && gameState.battleWins >= AUTO_FIGHT_UNLOCK_WINS) {
             gameState.autoFightUnlocked = true; addBattleLog("Auto-Fight Unlocked!");
         }
-        addBattleLog(`Gained ${expGained} EXP and ${moneyGained} money!`);
+        addBattleLog(`Gained ${expGained} EXP and ${formatNumberWithDots(moneyGained)}₽!`);
 
         // XP Share distribution
         if (gameState.xpShareLevel > 0 && gameState.xpShareLevel <= XP_SHARE_CONFIG.length) {
@@ -857,9 +860,9 @@ function buyBall(ballId, amount = 1) {
         gameState.money -= cost;
         gameState.pokeballs[ballId] = (gameState.pokeballs[ballId] || 0) + amount;
         updateDisplay();
-        addBattleLog(`Bought ${amount} ${ballType.name}${amount > 1 ? 's' : ''}!`);
+        addBattleLog(`Bought ${amount} ${ballType.name}${amount > 1 ? 's' : ''} for ${formatNumberWithDots(cost)}₽!`);
     } else {
-        addBattleLog(`Not enough money for ${amount} ${ballType.name}${amount > 1 ? 's' : ''}. Needs ${cost}G.`);
+        addBattleLog(`Not enough money for ${amount} ${ballType.name}${amount > 1 ? 's' : ''}. Needs ${formatNumberWithDots(cost)}₽.`);
     }
 }
 
@@ -876,11 +879,11 @@ function buyXpShareUpgrade() {
     if (gameState.money >= upgradeCost) {
         gameState.money -= upgradeCost;
         gameState.xpShareLevel++;
-        addBattleLog(`Successfully purchased ${upgradeName}!`);
+        addBattleLog(`Successfully purchased ${upgradeName} for ${formatNumberWithDots(upgradeCost)}₽!`);
         updateDisplay();
         saveGame();
     } else {
-        addBattleLog(`Not enough money to buy ${upgradeName}. Needs ${upgradeCost}G.`);
+        addBattleLog(`Not enough money to buy ${upgradeName}. Needs ${formatNumberWithDots(upgradeCost)}₽.`);
     }
 }
 
@@ -897,9 +900,9 @@ function buyPotion(potionId, quantity = 1) {
         gameState.money -= cost;
         gameState.potions[potionId] = (gameState.potions[potionId] || 0) + quantity;
         updateDisplay();
-        addBattleLog(`Bought ${quantity} ${potionInfo.name}${quantity > 1 ? 's' : ''}!`);
+        addBattleLog(`Bought ${quantity} ${potionInfo.name}${quantity > 1 ? 's' : ''} for ${formatNumberWithDots(cost)}₽!`);
     } else {
-        addBattleLog(`Not enough money for ${quantity} ${potionInfo.name}${quantity > 1 ? 's' : ''}. Needs ${cost}G.`);
+        addBattleLog(`Not enough money for ${quantity} ${potionInfo.name}${quantity > 1 ? 's' : ''}. Needs ${formatNumberWithDots(cost)}₽.`);
     }
 }
 
@@ -1016,7 +1019,7 @@ function getPokemonExpBarHTML(pokemon) {
 
 function updateDisplay() {
     // Update stats
-    document.getElementById('money').textContent = gameState.money;
+    document.getElementById('money').textContent = formatNumberWithDots(gameState.money) + "₽";
     document.getElementById('pokeballs-standard').textContent = gameState.pokeballs.pokeball;
     document.getElementById('pokeballs-great').textContent = gameState.pokeballs.greatball;
     document.getElementById('pokeballs-ultra').textContent = gameState.pokeballs.ultraball;
@@ -1112,7 +1115,7 @@ function updateDisplay() {
         } else {
             const nextLevelConfig = XP_SHARE_CONFIG[gameState.xpShareLevel];
             if (xpShareButton) {
-                xpShareButton.textContent = `Buy ${nextLevelConfig.name} - ${nextLevelConfig.cost}G`;
+                xpShareButton.textContent = `Buy ${nextLevelConfig.name} - ${formatNumberWithDots(nextLevelConfig.cost)}₽`;
                 xpShareButton.disabled = false;
             }
             xpShareTooltipEl.textContent = `${nextLevelConfig.name}: Increases EXP gained by benched Pokémon by ${nextLevelConfig.percentage * 100}%.`;
@@ -1134,24 +1137,13 @@ function updateDisplay() {
             // Update buy button text with price (e.g., "Buy - 10G")
             const buyButton = shopItemEl.querySelector(`button[onclick="buyBall('${ballId}', 1)"]`);
             if (buyButton && typeof ballInfo.cost === 'number') {
-                buyButton.textContent = `Buy - ${ballInfo.cost}G`;
+                buyButton.textContent = `Buy - ${formatNumberWithDots(ballInfo.cost)}₽`;
             }
 
             // Update tooltip
             const tooltipEl = document.getElementById(`tooltip-shop-item-${ballId}`);
             if (tooltipEl) {
                 tooltipEl.textContent = ballInfo.description || ballInfo.name;
-            }
-            
-            // Handle "Buy 10" button if it exists
-            const buy10ButtonEl = document.getElementById(`buy-10-shop-${ballId}`);
-            if (buy10ButtonEl) {
-                if (typeof ballInfo.cost10 !== 'undefined') {
-                    buy10ButtonEl.textContent = `Buy 10 (${ballInfo.cost10}G)`;
-                    buy10ButtonEl.style.display = ''; // Ensure it's visible
-                } else {
-                    buy10ButtonEl.style.display = 'none'; // Hide if no "Buy 10" deal
-                }
             }
         }
     }
@@ -1169,7 +1161,7 @@ function updateDisplay() {
             // Update buy button text with price (e.g., "Buy - 20G")
             const buyButton = shopItemEl.querySelector(`button[onclick="buyPotion('${potionId}', 1)"]`);
             if (buyButton && typeof potionInfo.cost === 'number') {
-                buyButton.textContent = `Buy - ${potionInfo.cost}G`;
+                buyButton.textContent = `Buy - ${formatNumberWithDots(potionInfo.cost)}₽`;
             }
 
             // Update tooltip
