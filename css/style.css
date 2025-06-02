@@ -1,0 +1,484 @@
+/* CSS Variables */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --text-color: white;
+    --text-color-light: #eee;
+    --text-color-lighter: #ccc;
+    --accent-color: #ffd700; /* Gold */
+
+    --panel-bg: rgba(0, 0, 0, 0.4);
+    --panel-bg-light: rgba(0, 0, 0, 0.3);
+    --panel-bg-lighter: rgba(0, 0, 0, 0.2);
+    --panel-bg-lightest: rgba(0,0,0,0.1);
+
+    --button-primary-gradient: linear-gradient(45deg, #ff6b6b, #ee5a52);
+    --button-secondary-gradient: linear-gradient(45deg, #4ecdc4, #44a08d);
+    --button-active-gradient: linear-gradient(45deg, #4ecdc4, #44a08d); /* Same as secondary for now */
+
+    --hp-bar-bg: #333;
+    --hp-fill-gradient: linear-gradient(90deg, #4caf50, #8bc34a);
+    --exp-bar-bg: #333;
+    --exp-fill-gradient: linear-gradient(90deg, #2196f3, #03a9f4);
+
+    --success-color: #4caf50;
+    --success-bg-light: rgba(76, 175, 80, 0.3);
+    --success-bg-lighter: rgba(76, 175, 80, 0.2);
+    --success-bg-dark: rgba(76, 175, 80, 0.9);
+
+    --modal-bg: #3a3a3a;
+    --modal-overlay-bg: rgba(0, 0, 0, 0.75);
+    --modal-border-color: rgba(255,255,255,0.1);
+    --interactive-bg: rgba(255, 255, 255, 0.1);
+    --interactive-bg-hover: rgba(255, 255, 255, 0.2);
+    --interactive-border: rgba(255, 255, 255, 0.3);
+    --interactive-starter-bg: rgba(255, 255, 255, 0.08);
+    --interactive-starter-bg-hover: rgba(255, 255, 255, 0.15);
+    --interactive-starter-border: rgba(255,255,255,0.2);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: var(--primary-gradient);
+    color: var(--text-color);
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+.stat-horizontal {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; /* Centers the group of items within the .stat div */
+}
+.stats-bar {
+    display: flex;
+    justify-content: space-around;
+    background: var(--panel-bg-light);
+    padding: 15px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+}
+
+.stat {
+    text-align: center;
+}
+
+.stat-value {
+    font-size: 18px;
+    font-weight: bold;
+    color: var(--accent-color);
+}
+
+.game-area {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Changed from 3 columns to 2 */
+    grid-template-rows: auto auto;    /* Added for 2x2 grid */
+    gap: 20px;
+}
+
+.panel {
+    background: var(--panel-bg);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+}
+
+/* Specific styling for panels in the new grid */
+.battle-area { grid-area: 1 / 1 / 2 / 2; }
+.party-area { grid-area: 1 / 2 / 2 / 3; }
+.shop-panel { grid-area: 2 / 1 / 3 / 2; } /* New shop panel */
+.team-area { grid-area: 2 / 2 / 3 / 3; }
+
+.inline-ball-icon {
+    width: 1em; height: 1em; vertical-align: -0.15em; margin-right: 0.25em; image-rendering: pixelated;
+}
+.battle-field {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Pushes wild to top, player to bottom */
+    align-items: stretch; /* Make children take full width for alignment */
+    min-height: 280px; /* Adjust as needed to create space */
+    background: var(--panel-bg-lightest); /* Optional: to visualize the field */
+    border-radius: 10px;
+    padding: 10px;
+    margin-bottom: 15px;
+}
+
+.pokemon-battle {
+    display: flex;
+    
+    align-items: center; /* Vertically align sprite and info box */
+    /* margin: 15px 0; */ /* Handled by battle-field */
+    padding: 10px;
+    background: var(--interactive-starter-bg); /* Using a similar very light bg */
+    border-radius: 8px;
+    /* width: fit-content; */ /* Removed */
+    width: 100%; /* Make each battle box take up almost half the battle-field width */
+}
+
+.pokemon-battle.wild {
+    align-self: flex-end; /* Pushes wild Pokemon to the right */
+}
+.pokemon-battle.player {
+    align-self: flex-start; /* Pushes player Pokemon to the left */
+    flex-direction: row; /* Sprite on left, Info on right, matching HTML order */
+
+}
+
+.pokemon-sprite {
+    width: 96px; /* Standard sprite size */
+    height: 96px;
+    margin: -16px auto; /* Reduced top/bottom margin */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    image-rendering: pixelated; /* For crisp pixel art */
+    color: var(--text-color);
+    text-shadow: 2px 2px 4px var(--panel-bg); /* Using panel-bg for shadow consistency */
+    flex-shrink: 0; /* Prevent sprite from shrinking */
+}
+
+.pokemon-battle.player .pokemon-sprite {
+    margin-right: 10px; /* This provides space between the sprite and the info box */
+}
+.pokemon-battle.wild .pokemon-sprite {
+    order: 2; /* Sprite second */
+    margin-left: 10px;
+}
+
+.pokemon-info {
+    flex-grow: 1; /* Allow info box to take remaining space */
+}
+
+.pokemon-battle.player .pokemon-info {
+    text-align: left; 
+}
+.pokemon-battle.wild .pokemon-info {
+    text-align: right;
+}
+
+.hp-text {
+    font-size: 16px;
+    font-weight: bold;
+    margin-top: 3px; /* Space between HP bar and HP text */
+    margin-bottom: 10px; /* Space between HP text and other stats */
+    color: var(--text-color-light);
+}
+
+.pokemon-stats {
+    font-size: 12px;
+    /* margin: 3px 0; */ /* Margin handled by hp-text now or can be adjusted here */
+    color: var(--text-color-lighter); /* Lighter color for ATK/DEF stats */
+}
+
+.hp-bar {
+    background: var(--hp-bar-bg);
+    height: 15px;
+    border-radius: 8px;
+    margin: 5px 0px;
+    overflow: hidden;
+}
+
+.hp-fill {
+    height: 100%;
+    background: var(--hp-fill-gradient);
+    transition: width 0.3s ease;
+}
+
+.route-selector {
+    margin-bottom: 15px;
+}
+
+.route-btn {
+    background: var(--interactive-bg-hover);
+    border: 1px solid var(--interactive-border);
+    color: var(--text-color);
+    padding: 8px 15px;
+    margin: 5px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.route-btn:hover {
+    background: var(--interactive-border); /* Using border color for hover for slight difference */
+}
+
+.route-btn.active {
+    background: var(--button-active-gradient);
+    border-color: var(--button-secondary-gradient); /* Assuming active uses secondary theme */
+}
+
+.team-area { /* Party area will no longer have a fixed max-height or scrollbar */
+    max-height: 500px;
+    overflow-y: auto;
+}
+/* .party-area styling is now separate if specific rules are needed beyond panel defaults */
+
+.pokemon-card {
+    background: var(--interactive-bg);
+    border-radius: 10px;
+    padding: 12px;
+    margin: 8px 0;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.pokemon-card:hover {
+    background: var(--interactive-bg-hover);
+    transform: translateY(-2px);
+}
+
+.pokemon-card.in-party {
+    background: var(--success-bg-light);
+    border: 2px solid var(--success-color);
+}
+
+.pokemon-name {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 5px;
+}
+
+.pokemon-level {
+    color: var(--accent-color);
+    font-size: 12px;
+}
+
+.pokemon-detailed-stats {
+    font-size: 11px;
+    color: var(--text-color-lighter);
+    margin: 3px 0;
+}
+
+.pokemon-exp {
+    background: var(--exp-bar-bg);
+    height: 6px;
+    border-radius: 3px;
+    margin-top: 5px;
+    overflow: hidden;
+}
+
+.exp-fill {
+    height: 100%;
+    background: var(--exp-fill-gradient);
+    transition: width 0.3s ease;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.btn {
+    background: var(--button-primary-gradient);
+    border: none;
+    color: var(--text-color);
+    padding: 10px 20px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: transform 0.2s, box-shadow 0.2s;
+    font-size: 12px;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px var(--panel-bg-light);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn.secondary {
+    background: var(--button-secondary-gradient);
+}
+
+.btn.small {
+    padding: 6px 12px;
+    font-size: 11px;
+}
+.btn.medium {
+    font-size: 15px;
+}
+
+.leave-route {
+    padding-top: 21px; 
+    padding-bottom: 20px; /* Adjusted padding for height */
+}
+.shop {
+    background: var(--panel-bg-light);
+    border-radius: 10px;
+    padding: 15px;
+    margin-top: 15px;
+}
+
+.shop-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    padding: 8px;
+    background: var(--interactive-bg);
+    border-radius: 8px;
+}
+
+.battle-log {
+    background: var(--panel-bg-light);
+    border-radius: 10px;
+    padding: 12px;
+    margin-top: 15px;
+    height: 80px;
+    overflow-y: auto;
+    font-size: 11px;
+}
+
+.log-entry {
+    margin: 1px 0;
+    opacity: 0.8;
+}
+
+.party-slots {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.party-slot {
+    background: var(--interactive-bg);
+    border: 2px dashed var(--interactive-border);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    min-height: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.party-slot.filled {
+    border: 2px solid var(--success-color);
+    background: var(--success-bg-lighter);
+}
+
+.auto-battle-indicator {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: var(--success-bg-dark);
+    color: var(--text-color);
+    padding: 10px 15px;
+    border-radius: 20px;
+    font-weight: bold;
+    font-size: 14px;
+    z-index: 1000;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.7;
+    }
+}
+
+.route-info {
+    background: var(--panel-bg-lighter);
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    font-size: 12px;
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--modal-overlay-bg); /* Darker overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000; /* Ensure it's on top */
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background: var(--modal-bg); /* Modal background */
+    padding: 30px 40px;
+    border-radius: 15px;
+    text-align: center;
+    color: var(--text-color);
+    box-shadow: 0 8px 30px var(--panel-bg); /* Using panel-bg for consistency */
+    border: 1px solid var(--modal-border-color);
+}
+
+.modal-content h2 {
+    margin-bottom: 25px;
+    color: var(--accent-color); /* Gold color for heading */
+    font-size: 24px;
+}
+
+.starter-options {
+    display: flex;
+    justify-content: space-around;
+    gap: 25px;
+}
+
+.starter-option {
+    background: var(--interactive-starter-bg);
+    padding: 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 130px;
+    border: 1px solid var(--interactive-starter-border);
+}
+
+.starter-option:hover {
+    background: var(--interactive-starter-bg-hover);
+    transform: translateY(-5px);
+}
+
+.starter-option img { /* Styles for images within starter options, if you add them */
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
+    image-rendering: pixelated;
+}
+
+.starter-option .pokemon-name { /* If you display names */
+    font-weight: bold;
+    font-size: 16px;
+}

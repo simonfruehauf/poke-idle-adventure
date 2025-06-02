@@ -1,0 +1,74 @@
+{
+    "1": {
+        "name": "Kanto Route 1",
+        "description": "Kanto Route 1 - A grassy path between Pallet Town and Viridian City (Lv.2-5)",
+        "pokemon": [
+            { "name": "Pidgey",  "chance": 50, "levelRange": [2, 5] },
+            { "name": "Rattata", "chance": 50, "levelRange": [2, 4] }
+        ],
+        "moneyMultiplier": 1,
+        "avgLevelRequirement": 0
+    },
+    "2": {
+        "name": "Kanto Route 22",
+        "description": "Kanto Route 22 - West of Viridian, path to Victory Road (Lv.2-5)",
+        "pokemon": [
+            { "name": "Rattata",   "chance": 30, "levelRange": [2, 5] },
+            { "name": "Nidoran♀",  "chance": 30, "levelRange": [2, 4] },
+            { "name": "Nidoran♂",  "chance": 30, "levelRange": [2, 4] },
+            { "name": "Spearow",   "chance": 10, "levelRange": [3, 5] }
+        ],
+        "moneyMultiplier": 1.1,
+        "avgLevelRequirement": 3
+    },
+    "3": {
+        "name": "Kanto Route 2",
+        "description": "Kanto Route 2 - South of Pewter, near Viridian Forest entrance (Lv.3-5)",
+        "pokemon": [
+            { "name": "Pidgey",   "chance": 25, "levelRange": [3, 5] },
+            { "name": "Rattata",  "chance": 25, "levelRange": [3, 5] },
+            { "name": "Caterpie", "chance": 25, "levelRange": [3, 5] },
+            { "name": "Weedle",   "chance": 25, "levelRange": [3, 5] }
+        ],
+        "moneyMultiplier": 1.2,
+        "avgLevelRequirement": 5
+    },
+    "4": {
+        "name": "Viridian Forest",
+        "description": "Viridian Forest - A maze of trees teeming with Bug Pokémon (Lv.3-6)",
+        "pokemon": [
+            { "name": "Caterpie", "chance": 30, "levelRange": [3, 6] },
+            { "name": "Metapod",  "chance": 20, "levelRange": [4, 6] },
+            { "name": "Weedle",   "chance": 30, "levelRange": [3, 6] },
+            { "name": "Kakuna",   "chance": 15, "levelRange": [4, 6] },
+            { "name": "Pikachu",  "chance": 5,  "levelRange": [3, 5], "notes": "Rare" }
+        ],
+        "moneyMultiplier": 1.3,
+        "avgLevelRequirement": 7
+    },
+    "5": {
+        "name": "Kanto Route 3",
+        "description": "Kanto Route 3 - East of Pewter, leading to Mt. Moon (Lv.3-8)",
+        "pokemon": [
+            { "name": "Pidgey",    "chance": 25, "levelRange": [5, 8] },
+            { "name": "Spearow",   "chance": 25, "levelRange": [3, 8] },
+            { "name": "Jigglypuff","chance": 20, "levelRange": [3, 7] },
+            { "name": "Nidoran♀",  "chance": 15, "levelRange": [6, 7] },
+            { "name": "Nidoran♂",  "chance": 15, "levelRange": [6, 7] }
+        ],
+        "moneyMultiplier": 1.4,
+        "avgLevelRequirement": 10
+    },
+    "6": {
+        "name": "Kanto Route 4 (West)",
+        "description": "Kanto Route 4 - Before Mt. Moon, near the Pokémon Center (Lv.5-10)",
+        "pokemon": [
+            { "name": "Rattata",   "chance": 30, "levelRange": [5, 10] },
+            { "name": "Spearow",   "chance": 30, "levelRange": [5, 10] },
+            { "name": "Ekans",     "chance": 20, "levelRange": [6, 10], "notes": "More common in some versions" },
+            { "name": "Sandshrew", "chance": 20, "levelRange": [6, 10], "notes": "More common in some versions" }
+        ],
+        "moneyMultiplier": 1.5,
+        "avgLevelRequirement": 12
+    }
+}

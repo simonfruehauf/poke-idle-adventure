@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokemon Idle Game</title>
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Pokemon Idle Adventure</h1>
+            <p>Auto-battle, catch, and train Pokemon across different routes!</p>
+            <div style="margin-top: 10px;">
+                <button class="btn small" onclick="manualSaveGame()" style="background: #2ecc71; margin-right: 5px;">
+                    Save Game
+                </button>
+                <button class="btn small" onclick="confirmClearSave()" style="background: #e74c3c;">
+                    Clear Save Data
+                </button>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat">
+                <div class="stat-value" id="money">100</div>
+                <div>Money</div>
+            </div>
+            <div class="stat stat-horizontal" title="Poké Balls" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                <img src="sprites/items/poke-ball.png" alt="Poké Ball" style="width:24px; height:24px; margin-right: 3px; margin-bottom: 0;">
+                <span class="stat-value" style="margin-right: 5px;">x</span>
+                <div class="stat-value" id="pokeballs-standard">10</div>
+            </div>
+            <div class="stat stat-horizontal" title="Great Balls" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                <img src="sprites/items/great-ball.png" alt="Great Ball" style="width:24px; height:24px; margin-right: 3px; margin-bottom: 0;">
+                <span class="stat-value" style="margin-right: 5px;">x</span>
+                <div class="stat-value" id="pokeballs-great">0</div>
+            </div>
+            <div class="stat stat-horizontal" title="Ultra Balls" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" style="width:24px; height:24px; margin-right: 3px; margin-bottom: 0;">
+                <span class="stat-value" style="margin-right: 5px;">x</span>
+                <div class="stat-value" id="pokeballs-ultra">0</div>
+            </div>
+            <div class="stat stat-horizontal" title="Dusk Balls" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
+                <img class="inline-ball-icon" src="sprites/items/dusk-ball.png" alt="Dusk Ball" >
+                <span class="stat-value" style="margin-right: 5px;">x</span>
+                <div class="stat-value" id="pokeballs-dusk">0</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="caught">0</div>
+                <div>Caught</div>
+            </div>
+            <div class="stat">
+                <div class="stat-value" id="battle-wins">0</div>
+                <div>Wins</div>
+            </div>
+        </div>
+
+        <div class="game-area">
+            <div class="panel battle-area">
+                <!-- Wrapper to manage consistent height and bottom margin for route controls -->
+                <div id="route-controls-wrapper" style="margin-bottom: 10px;">
+                    <!-- Container for just the label and select dropdown -->
+                    <div id="route-select-container" class="route-selector-group">
+                        <label for="route-select" style="margin-bottom: 5px; font-weight: bold; display: block;">Select Route:</label>
+                        <select id="route-select" onchange="handleRouteChange(this.value)" 
+                                style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #555; background-color: #333; color: white; box-sizing: border-box;"></select>
+                    </div>
+                    <!-- Leave Route Button, now separate and initially hidden -->
+                    <button id="leave-route-btn" class="leave-route btn medium secondary " onclick="leaveCurrentRoute()" 
+                            style="background-color: #f39c12; display: none; 
+                                   width: 100%; 
+                                   box-sizing: border-box;">
+                        Leave Current Route
+                    </button>
+                </div>
+
+                <div class="route-info" id="route-info">
+                    Route 1 - Beginner Area (Lv.1-10)
+                </div>
+
+                <div class="battle-field">
+                    <div id="wild-pokemon" class="pokemon-battle wild">
+                        <div class="pokemon-info">
+                            <div id="wild-name" class="pokemon-battle-name">Wild Pokemon</div>
+                            <div id="wild-level" class="pokemon-battle-level">Lv.0</div>
+                            <div class="hp-bar">
+                                <div class="hp-fill" id="wild-hp" style="width: 100%"></div>
+                            </div>
+                            <div class="hp-text" id="wild-hp-text">HP: 0/0</div>
+                            <div class="pokemon-stats" id="wild-stats">ATK: 0 | DEF: 0</div>
+                        </div>
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Wild Pokemon" class="pokemon-sprite" id="wild-sprite">
+                    </div>
+
+                    <div id="player-pokemon" class="pokemon-battle player">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Player Pokemon" class="pokemon-sprite" id="player-sprite">
+                        <div class="pokemon-info">
+                            <div id="player-name" class="pokemon-battle-name">No Pokemon</div>
+                            <div id="player-level" class="pokemon-battle-level">Lv.0</div>
+                            <div class="hp-bar">
+                                <div class="hp-fill" id="player-hp" style="width: 0%"></div>
+                            </div>
+                            <div class="hp-text" id="player-hp-text">HP: 0/0</div>
+                            <div class="pokemon-stats" id="player-stats">ATK: 0 | DEF: 0</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button class="btn" id="fight-btn" onclick="manualBattle()">
+                        Fight!
+                    </button>
+                    <button class="btn" id="auto-fight-btn" onclick="toggleAutoFight()" style="background-color: #4CAF50; margin-left: 5px;" disabled>
+                        Auto-Fight (LOCKED)
+                    </button>
+                </div>
+                <div class="controls" style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
+                    <button class="btn secondary catch-ball-btn" id="catch-pokeball-btn" onclick="attemptCatch('pokeball')" disabled style="flex-grow: 1;">
+                        Catch (Poké Ball - 0)
+                    </button>
+                    <button class="btn secondary catch-ball-btn" id="catch-greatball-btn" onclick="attemptCatch('greatball')" disabled style="flex-grow: 1; background-color: #3498db;">
+                        Catch (Great Ball - 0)
+                    </button>
+                    <button class="btn secondary catch-ball-btn" id="catch-ultraball-btn" onclick="attemptCatch('ultraball')" disabled style="flex-grow: 1; background-color: #f1c40f; color: #333;">
+                        Catch (Ultra Ball - 0)
+                    </button>
+                    <button class="btn secondary catch-ball-btn" id="catch-duskball-btn" onclick="attemptCatch('duskball')" disabled style="flex-grow: 1; background-color: #5D3FD3;">
+                        Catch (Dusk Ball - 0)
+                    </button>
+                    <!-- Add more catch buttons here if new balls are added -->
+                </div>
+
+                <div class="battle-log" id="battle-log">
+                    <div class="log-entry">Welcome to Pokemon Idle Adventure!</div>
+                </div>
+            </div>
+
+            <div class="panel party-area">
+                <div class="party-slots" id="party-slots">
+                    <div class="party-slot" id="party-0">
+                        <div style="color: #ccc;">Empty Slot</div>
+                    </div>
+                    <div class="party-slot" id="party-1">
+                        <div style="color: #ccc;">Empty Slot</div>
+                    </div>
+                    <div class="party-slot" id="party-2">
+                        <div style="color: #ccc;">Empty Slot</div>
+                    </div>
+                    <div class="party-slot" id="party-3">
+                        <div style="color: #ccc;">Empty Slot</div>
+                    </div>
+                    <div class="party-slot" id="party-4">
+                        <div style="color: #ccc;">Empty Slot</div>
+                    </div>
+                    <div class="party-slot" id="party-5">
+                        <div style="color: #ccc;">Empty Slot</div>
+                    </div>
+                </div>
+
+                <div class="controls">
+                    <button id="party-heal-btn" class="btn small secondary" onclick="healAllParty()">Heal All (50G)</button>
+                </div>
+            </div>
+
+            <div class="panel shop-panel"> <!-- New Shop Panel -->
+                <h2>Poké Mart</h2>
+                <div class="shop-item">
+                    <img src="sprites/items/poke-ball.png" alt="Pokeball" class="shop-item-icon">
+                    <span>Pokeball (x1)</span>
+                    <button class="btn small" onclick="buyBall('pokeball', 1)">Buy - 10G</button>
+                </div>
+                <div class="shop-item">
+                    <img src="sprites/items/great-ball.png" alt="Great Ball" class="shop-item-icon">
+                    <span>Great Ball (x1)</span>
+                    <button class="btn small" onclick="buyBall('greatball', 1)">Buy - 30G</button>
+                </div>
+                <div class="shop-item">
+                    <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="shop-item-icon">
+                    <span>Ultra Ball (x1)</span>
+                    <button class="btn small" onclick="buyBall('ultraball', 1)">Buy - 60G</button>
+                </div>
+                <div class="shop-item">
+                    <img src="sprites/items/dusk-ball.png" alt="Dusk Ball" class="shop-item-icon">
+                    <span>Dusk Ball (x1)</span>
+                    <button class="btn small" onclick="buyBall('duskball', 1)">Buy - 100G</button>
+                </div>
+                <!-- Add shop items for bulk purchase of new balls if desired -->
+
+
+                <div class="shop-item" id="exp-share-shop-item">
+                    <img src="sprites/items/exp-share.png" alt="XP Share" class="shop-item-icon">
+                    <span>XP Share</span>
+                    <button id="exp-share-buy-btn" class="btn small" onclick="buyXpShareUpgrade()">
+                        <!-- Dynamically updated by JS -->
+                    </button>
+                </div>
+            </div>
+            <div class="panel team-area">
+                <h2>PC</h2>
+                <div id="team-list">
+                    <div style="text-align: center; color: #ccc; margin-top: 50px;">
+                        No Pokemon caught yet!<br>
+                        Battle and catch Pokemon to fill your collection.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Starter Selection Modal -->
+    <div id="starter-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Choose your Starter Pokémon!</h2>
+            <div class="starter-options">
+                <!-- Starter options will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script src="scripts/script.js"></script>
+</body>
+
+</html>
