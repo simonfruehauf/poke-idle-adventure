@@ -12,6 +12,7 @@ export class Pokemon {
         this.isShiny = isShinyOverride !== null ? isShinyOverride : (Math.random() < SHINY_CHANCE);
         const statsData = this.getStatsData(name);
         this.pokedexId = statsData.pokedexId;
+        this.types = statsData.types;
         this.evolutionTargetName = statsData.evolution;
         this.evolveLevel = statsData.evolveLevel;
         this.baseStats = { ...statsData.base };
@@ -38,9 +39,10 @@ export class Pokemon {
             const hasAllBase = requiredBaseStats.every(stat => typeof speciesData.base[stat] === 'number');
             const hasAllGrowth = requiredGrowthStats.every(stat => typeof speciesData.growth[stat] === 'number');
 
-            if (hasAllBase && hasAllGrowth ) {
+            if (hasAllBase && hasAllGrowth) {
                 return {
                     pokedexId: speciesData.pokedexId,
+                    types: Array.isArray(speciesData.type) && speciesData.type.length > 0 ? speciesData.type : ["Normal"], // Default to Normal if no type
                     evolution: speciesData.evolution,
                     evolveLevel: speciesData.evolveLevel,
                     base: { ...speciesData.base },
@@ -49,9 +51,11 @@ export class Pokemon {
             }
         }
 
-        console.warn(`Stat data (pokedexId, base, or growth) for ${name} is missing or incomplete in statmap.json. Using default values.`);
+        console.warn(`Stat data (pokedexId, type, base, or growth) for ${name} is missing or incomplete in pokemon.json. Using default values.`);
         return {
-            pokedexId: 0, evolution: null, evolveLevel: null,
+            pokedexId: 0, 
+            types: ["Normal"], 
+            evolution: null, evolveLevel: null,
             base: { hp: 50, attack: 50, defense: 50, speed: 50 },
             growth: { hp: 1.5, attack: 1.0, defense: 1.0, speed: 1.0 }
         };
@@ -69,6 +73,10 @@ export class Pokemon {
     }
     get speed() {
         return Math.floor(this.baseStats.speed + (this.level - 1) * this.growthRates.speed);
+    }
+
+    get primaryType() {
+        return this.types[0];
     }
 
     getExpToNext() {

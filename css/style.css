@@ -222,6 +222,19 @@ body {
     /* Default to grayscale */
     transition: filter 0.3s ease;
 }
+.type-icon {
+    height: 14px; /* Adjust size as needed */
+    width: 32px;
+    vertical-align: middle;
+    margin-right: 4px;
+    image-rendering: pixelated; /* For crisp pixel art if your icons are small */
+}
+
+/* In pokemon name displays, ensure icons don't cause too much jump */
+.pokemon-name .type-icon {
+    margin-left: 3px;
+}
+
 
 .caught-indicator-icon.is-caught {
     filter: none;

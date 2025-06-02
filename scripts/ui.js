@@ -1,14 +1,26 @@
 // ui.js
 import { gameState, pokemonBaseStatsData, pokeballData, itemData, routes } from './state.js';
 import { getActivePokemon, formatNumberWithDots, addBattleLog } from './utils.js';
-import { POKEMON_SPRITE_BASE_URL, AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, STARTER_POKEMON_NAMES, SHINY_CHANCE } from './config.js'; // SHINY_CHANCE might not be directly used here but good to keep track of config imports
+import { POKEMON_SPRITE_BASE_URL, AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, STARTER_POKEMON_NAMES, SHINY_CHANCE, TYPE_ICON_BASE_URL, TYPE_NAMES } from './config.js'; // SHINY_CHANCE might not be directly used here but good to keep track of config imports
 import { Pokemon } from './pokemon.js'; // Import logic functions
 import { calculateMaxPartyLevel, attemptEvolution, setActivePokemon, removeFromParty, confirmReleasePokemon as confirmReleasePokemonLogic, addToParty as addToPartyLogic } from './gameLogic.js'; // Changed import
 
 // --- Utility functions for Pokémon data presentation ---
+function getTypeIconsHTML(pokemon) {
+    if (!pokemon || !pokemon.types || pokemon.types.length === 0) return '';
+    let iconsHTML = '';
+    pokemon.types.forEach(type => {
+        if (type && TYPE_NAMES.includes(type)) { // Ensure type is valid and exists
+            iconsHTML += `<img src="${TYPE_ICON_BASE_URL}${type}.png" alt="${type}" title="${type}" class="type-icon">`;
+        }
+    });
+    return iconsHTML;
+}
+
 export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicator', showBallIcon = false, checkCaughtStatus = false) {
     if (!pokemon) return '';
     let ballIconHTML = '';
+
     if (showBallIcon) {
         const ballId = pokemon.caughtWithBall || 'pokeball';
         const ballInfo = pokeballData[ballId] || pokeballData.pokeball; // Use pokeballData
@@ -45,7 +57,7 @@ export function getPokemonSpritePath(pokemon, spriteType = 'front', baseSpriteUr
 
 export function getPokemonLevelText(pokemon) { // Used for player/wild display (e.g., :L5)
     if (!pokemon || typeof pokemon.level === 'undefined') return '';
-    return `:L${pokemon.level}`;
+    return `Lv.${pokemon.level}`;
 }
 
 export function getPokemonFullLevelText(pokemon) { // Used for party/storage display (e.g., Lv.5)
@@ -429,7 +441,10 @@ export function displayPokemonData(pokemon, elements, spriteType = 'front') {
     if (pokemon) {
         const isWildForCaughtCheck = pokemon === gameState.currentWildPokemon;
         elements.nameEl.innerHTML = getPokemonNameHTML(pokemon, elements.shinyIndicatorClass || 'shiny-indicator', false, isWildForCaughtCheck);
-        if (elements.levelEl) elements.levelEl.textContent = getPokemonLevelText(pokemon);
+        if (elements.levelEl) {
+            const typeIconsHTMLString = getTypeIconsHTML(pokemon);
+            elements.levelEl.innerHTML = `${getPokemonLevelText(pokemon)}${typeIconsHTMLString ? ' ' + typeIconsHTMLString : ''}`;
+        }
         elements.spriteEl.src = getPokemonSpritePath(pokemon, spriteType);
         elements.spriteEl.classList.add('zoomable-sprite'); // Add zoomable class
         elements.spriteEl.alt = pokemon.name;
@@ -541,7 +556,10 @@ export function generatePokemonListItemHTML(pokemon, index, locationType) {
     const cardContent = `
         <img class="pokemon-sprite zoomable-sprite ${shinyClass}" src="${spritePath}" alt="${pokemon.name}" style="${imgStyle}" onclick="${spriteOnclick}">
         <div class="pokemon-name">${getPokemonNameHTML(pokemon, 'shiny-indicator', locationType === 'party')}</div>
-        <div class="pokemon-level">${getPokemonFullLevelText(pokemon)}</div>
+        <div class="pokemon-level-type-container">
+            <span class="pokemon-level-text">${getPokemonFullLevelText(pokemon)}</span>
+            ${getTypeIconsHTML(pokemon)}
+        </div>
         ${getPokemonDetailedStatsHTML(pokemon)}
         ${getPokemonExpBarHTML(pokemon)}
         ${controlsHtml}

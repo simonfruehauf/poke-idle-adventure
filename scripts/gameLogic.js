@@ -2,8 +2,8 @@
 import { gameState, routes, pokeballData, itemData, pokemonBaseStatsData, eventDefinitions } from './state.js';
 import { Pokemon } from './pokemon.js';
 import { addBattleLog, getActivePokemon, findNextHealthyPokemon, formatNumberWithDots } from './utils.js'; // XP_LEVEL_DIFF_FACTOR, XP_MULTIPLIER_MIN, XP_MULTIPLIER_MAX
-import { updateDisplay, updateWildPokemonDisplay, populateRouteSelector, showEventModal, closeEventModal } from './ui.js';
-import { AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, XP_LEVEL_DIFF_FACTOR, XP_MULTIPLIER_MIN, XP_MULTIPLIER_MAX } from './config.js';
+import { updateDisplay, updateWildPokemonDisplay, populateRouteSelector, showEventModal, closeEventModal, displayPokemonData } from './ui.js';
+import { AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, XP_LEVEL_DIFF_FACTOR, XP_MULTIPLIER_MIN, XP_MULTIPLIER_MAX, getTypeEffectiveness } from './config.js';
 
 let autoFightIntervalId = null;
 
@@ -177,11 +177,24 @@ export async function battle() {
 
     const damageByFirst = calculateDamage(firstAttacker, secondAttacker);
     const secondAttackerFainted = secondAttacker.takeDamage(damageByFirst);
-    addBattleLog(`${firstAttacker.name} deals ${damageByFirst} damage to ${secondAttacker.name}!`);
+    let effectivenessMessageFirst = getEffectivenessMessage(firstAttacker.primaryType, secondAttacker.primaryType);
+    addBattleLog(`${firstAttacker.name} deals ${damageByFirst} damage to ${secondAttacker.name}! ${effectivenessMessageFirst}`);
     updateDisplay();
 
     if (secondAttackerFainted) {
         await handleFaint(secondAttacker, firstAttacker, !firstIsPlayer, currentRouteData);
+        // Check if the battle should continue (e.g. wild fainted, player still has Pokemon)
+        // or if the player's Pokemon fainted and they have another one.
+        if (gameState.currentWildPokemon === null && findNextHealthyPokemon()) {
+            // Wild Pokemon fainted, player can continue.
+            // Potentially spawn next wild Pokemon if auto-battle is on, or wait for player.
+        } else if (firstIsPlayer && secondAttackerFainted && !findNextHealthyPokemon()) {
+            // Player's Pokemon fainted the wild, but player has no more Pokemon (should not happen if logic is correct)
+            // This case is mostly covered by handleFaint.
+        } else if (!firstIsPlayer && secondAttackerFainted && !findNextHealthyPokemon()) {
+            // Wild Pokemon fainted player's last Pokemon.
+            // This is handled by handleFaint.
+        }
         gameState.battleInProgress = false;
         // If all player Pokemon fainted, handleFaint would call leaveCurrentRoute.
         // updateDisplay is called by handleFaint or leaveCurrentRoute, but an extra one here ensures UI is current.
@@ -193,8 +206,9 @@ export async function battle() {
         addBattleLog(`${secondAttacker.name} attacks!`);
         await new Promise(resolve => setTimeout(resolve, 300));
         const damageBySecond = calculateDamage(secondAttacker, firstAttacker);
+        let effectivenessMessageSecond = getEffectivenessMessage(secondAttacker.primaryType, firstAttacker.primaryType);
         const firstAttackerFainted = firstAttacker.takeDamage(damageBySecond);
-        addBattleLog(`${secondAttacker.name} deals ${damageBySecond} damage to ${firstAttacker.name}!`);
+        addBattleLog(`${secondAttacker.name} deals ${damageBySecond} damage to ${firstAttacker.name}! ${effectivenessMessageSecond}`);
         updateDisplay();
 
         if (firstAttackerFainted) {
@@ -206,11 +220,29 @@ export async function battle() {
     updateDisplay();
 }
 
-export function calculateDamage(attacker, _defender) {
+function getEffectivenessMessage(attackerType, defenderType) {
+    const effectiveness = getTypeEffectiveness(attackerType, defenderType);
+    if (effectiveness > 1) return "It's super effective!";
+    if (effectiveness < 1 && effectiveness > 0) return "It's not very effective...";
+    if (effectiveness === 0) return `It had no effect on ${defenderType} type!`;
+    return "";
+}
+
+export function calculateDamage(attacker, defender) {
+    if (!attacker || !defender) return 0;
+
     let baseMultiplier = (getActivePokemon() && attacker.id === getActivePokemon().id) ? 0.3 : 0.2;
     let randomMultiplier = (getActivePokemon() && attacker.id === getActivePokemon().id) ? 0.5 : 0.4;
-    return Math.floor(Math.random() * attacker.attack * randomMultiplier) + Math.floor(attacker.attack * baseMultiplier);
+    
+    let damage = Math.floor(Math.random() * attacker.attack * randomMultiplier) + Math.floor(attacker.attack * baseMultiplier);
+
+    // Apply type effectiveness
+    const effectiveness = getTypeEffectiveness(attacker.primaryType, defender.primaryType);
+    damage = Math.floor(damage * effectiveness);
+
+    return Math.max(1, damage); // Ensure at least 1 damage
 }
+
 
 export async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlayerPokemon, currentRouteData) {
     addBattleLog(`${faintedPokemon.name} fainted!`);
