@@ -138,16 +138,15 @@
                 </div>
                 <div class="controls" style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
                     <button class="btn secondary catch-ball-btn" id="catch-pokeball-btn"
-                        onclick="attemptCatch('pokeball')" disabled style="flex-grow: 1;">
+                        onclick="attemptCatch('pokeball')" disabled style="flex-grow: 1; background-color: #f1c40f; color: #333;">
                         Catch (Poké Ball - 0)
                     </button>
                     <button class="btn secondary catch-ball-btn" id="catch-greatball-btn"
-                        onclick="attemptCatch('greatball')" disabled style="flex-grow: 1; background-color: #3498db;">
+                        onclick="attemptCatch('greatball')" disabled style="flex-grow: 1; background-color: #f1c40f; color: #333;">
                         Catch (Great Ball - 0)
                     </button>
                     <button class="btn secondary catch-ball-btn" id="catch-ultraball-btn"
-                        onclick="attemptCatch('ultraball')" disabled
-                        style="flex-grow: 1; background-color: #f1c40f; color: #333;">
+                        onclick="attemptCatch('ultraball')" disabled style="flex-grow: 1; background-color: #f1c40f; color: #333;">
                         Catch (Ultra Ball - 0)
                     </button>
                     <!-- Add more catch buttons here if new balls are added -->
@@ -155,16 +154,16 @@
 
                 <!-- Potion Use Controls -->
                 <div class="controls item-controls" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;">
-                    <button class="btn item-use-btn" id="use-potion-btn" onclick="usePotion('potion')" disabled
-                        style="flex-grow: 1; background-color: #90ee90; color: #333;">
+                    <button class="btn item-use-btn" id="use-potion-btn" onclick="usePotion('potion')" 
+                        disabled style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
                         Use Potion (0)
                     </button>
                     <button class="btn item-use-btn" id="use-hyperpotion-btn" onclick="usePotion('hyperpotion')"
-                        disabled style="flex-grow: 1; background-color: #add8e6; color: #333;">
+                        disabled style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
                         Use Hyper Potion (0)
                     </button>
-                    <button class="btn item-use-btn" id="use-moomoomilk-btn" onclick="usePotion('moomoomilk')" disabled
-                        style="flex-grow: 1; background-color: #fffacd; color: #333;">
+                    <button class="btn item-use-btn" id="use-moomoomilk-btn" onclick="usePotion('moomoomilk')" 
+                        disabled style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
                         Use Moomoo Milk (0)
                     </button>
                 </div>
@@ -197,7 +196,11 @@
                     </div>
                 </div>
 
-                <!-- Heal All button removed -->
+                <!-- Free Full Heal Button Moved Here -->
+                <button class="btn" id="free-heal-btn" onclick="freeFullHeal()"
+                    style="background-color: #27ae60; margin-top: 10px; width: 100%; box-sizing: border-box; display: none;">
+                    Free Full Heal
+                </button>
             </div>
 
             <div class="panel shop-panel"> <!-- New Shop Panel -->
@@ -277,7 +280,22 @@
         </div>
     </div>
 
-    <script src="scripts/script.js"></script>
+    <script type="module" src="scripts/config.js"></script>
+    <script type="module" src="scripts/state.js"></script>
+    <script type="module" src="scripts/utils.js"></script>
+    <script type="module" src="scripts/pokemon.js"></script>
+    <script type="module" src="scripts/dataService.js"></script>
+    <!-- gameLogic needs to be before ui if ui imports from it, but ui also has populateRouteSelector which gameLogic calls -->
+    <!-- Let's try gameLogic first, then ui, then saveLoad, then main -->
+    <!-- The window.function assignments in main.js will make functions globally available for onclicks -->
+    <!-- The populateRouteSelector in ui.js needs calculateAveragePartyLevel from gameLogic.js -->
+    <!-- The main.js initGame also calls populateRouteSelector -->
+
+    <!-- Order: config, state, utils, pokemon, dataService, gameLogic, ui, saveLoad, main -->
+    <script type="module" src="scripts/gameLogic.js"></script>
+    <script type="module" src="scripts/ui.js"></script>
+    <script type="module" src="scripts/saveLoad.js"></script>
+    <script type="module" src="scripts/main.js"></script>
 </body>
 
 </html>

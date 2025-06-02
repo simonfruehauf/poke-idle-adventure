@@ -70,5 +70,160 @@
         ],
         "moneyMultiplier": 1.5,
         "avgLevelRequirement": 12
+    },
+    "7": {
+        "name": "Mt. Moon B1F",
+        "description": "Mt. Moon B1F - A dark cave system between Pewter and Cerulean. (Lv.6-12)",
+        "pokemon": [
+            { "name": "Zubat",    "chance": 40, "levelRange": [6, 10] },
+            { "name": "Geodude",  "chance": 30, "levelRange": [7, 11] },
+            { "name": "Paras",    "chance": 20, "levelRange": [8, 10] },
+            { "name": "Clefairy", "chance": 10, "levelRange": [8, 12], "notes": "Rare" }
+        ],
+        "moneyMultiplier": 1.6,
+        "avgLevelRequirement": 14
+    },
+    "8": {
+        "name": "Kanto Route 24 (Nugget Bridge)",
+        "description": "Kanto Route 24 - North of Cerulean, famous Nugget Bridge. (Lv.7-12)",
+        "pokemon": [
+            { "name": "Caterpie",   "chance": 15, "levelRange": [7, 10] },
+            { "name": "Metapod",    "chance": 10, "levelRange": [8, 11] },
+            { "name": "Weedle",     "chance": 15, "levelRange": [7, 10] },
+            { "name": "Kakuna",     "chance": 10, "levelRange": [8, 11] },
+            { "name": "Pidgey",     "chance": 15, "levelRange": [9, 12] },
+            { "name": "Abra",       "chance": 10, "levelRange": [7, 9], "notes": "Teleports!" },
+            { "name": "Oddish",     "chance": 12.5, "levelRange": [10, 12] },
+            { "name": "Bellsprout", "chance": 12.5, "levelRange": [10, 12] }
+        ],
+        "moneyMultiplier": 1.7,
+        "avgLevelRequirement": 16
+    },
+    "9": {
+        "name": "Kanto Route 25 (Bill's Cape)",
+        "description": "Kanto Route 25 - East of Nugget Bridge, leading to Bill's house. (Lv.8-13)",
+        "pokemon": [
+            { "name": "Caterpie",   "chance": 10, "levelRange": [8, 11] },
+            { "name": "Weedle",     "chance": 10, "levelRange": [8, 11] },
+            { "name": "Pidgey",     "chance": 20, "levelRange": [10, 13] },
+            { "name": "Abra",       "chance": 10, "levelRange": [8, 10], "notes": "Teleports!" },
+            { "name": "Oddish",     "chance": 25, "levelRange": [10, 13] },
+            { "name": "Bellsprout", "chance": 25, "levelRange": [10, 13] }
+        ],
+        "moneyMultiplier": 1.8,
+        "avgLevelRequirement": 18
+    },
+    "10": {
+        "name": "Diglett's Cave",
+        "description": "Diglett's Cave - A long tunnel dug by Diglett and Dugtrio. (Lv.15-22)",
+        "pokemon": [
+            { "name": "Diglett", "chance": 95, "levelRange": [15, 22] },
+            { "name": "Dugtrio", "chance": 5,  "levelRange": [20, 22], "notes": "Rare" }
+        ],
+        "moneyMultiplier": 2.0,
+        "avgLevelRequirement": 25
+    },
+    "11": {
+        "name": "Rock Tunnel 1F",
+        "description": "Rock Tunnel 1F - A pitch-black tunnel connecting Route 10 to Lavender Town. (Lv.15-20)",
+        "pokemon": [
+            { "name": "Zubat",   "chance": 30, "levelRange": [15, 18] },
+            { "name": "Geodude", "chance": 30, "levelRange": [16, 19] },
+            { "name": "Machop",  "chance": 20, "levelRange": [17, 20] },
+            { "name": "Onix",    "chance": 20, "levelRange": [16, 20] }
+        ],
+        "moneyMultiplier": 2.2,
+        "avgLevelRequirement": 28
+    },
+    "12": {
+        "name": "Pokémon Tower 3F",
+        "description": "Pokémon Tower 3F - A resting place for departed Pokémon, haunted by ghosts. (Lv.18-25)",
+        "pokemon": [
+            { "name": "Gastly",  "chance": 70, "levelRange": [18, 25] },
+            { "name": "Haunter", "chance": 25, "levelRange": [20, 25] },
+            { "name": "Cubone",  "chance": 5,  "levelRange": [18, 22], "notes": "Not a ghost, but found here" }
+        ],
+        "moneyMultiplier": 2.5,
+        "avgLevelRequirement": 30
+    },
+    "13": {
+        "name": "Safari Zone - Area 1",
+        "description": "Safari Zone - Area 1 - Catch rare Pokémon with Safari Balls! (Lv.20-30)",
+        "pokemon": [
+            { "name": "Nidoran♀", "chance": 20, "levelRange": [22, 28] },
+            { "name": "Nidorina", "chance": 10, "levelRange": [25, 30] },
+            { "name": "Nidoran♂", "chance": 20, "levelRange": [22, 28] },
+            { "name": "Nidorino", "chance": 10, "levelRange": [25, 30] },
+            { "name": "Exeggcute","chance": 15, "levelRange": [20, 25] },
+            { "name": "Parasect", "chance": 10, "levelRange": [24, 28] },
+            { "name": "Rhyhorn",  "chance": 10, "levelRange": [25, 30] },
+            { "name": "Chansey",  "chance": 5,  "levelRange": [23, 28], "notes": "Very Rare" }
+        ],
+        "moneyMultiplier": 3.0,
+        "avgLevelRequirement": 35
+    },
+    "14": {
+        "name": "Seafoam Islands B4F",
+        "description": "Seafoam Islands B4F - The deepest, frozen chamber where Articuno resides. (Lv.45-55)",
+        "pokemon": [
+            { "name": "Seel",     "chance": 30, "levelRange": [45, 50] },
+            { "name": "Dewgong",  "chance": 25, "levelRange": [48, 52] },
+            { "name": "Slowpoke", "chance": 20, "levelRange": [45, 50] },
+            { "name": "Slowbro",  "chance": 15, "levelRange": [48, 52] },
+            { "name": "Jynx",     "chance": 9,  "levelRange": [50, 55] },
+            { "name": "Articuno", "chance": 1,  "levelRange": [50, 50], "notes": "Legendary Bird of Ice!" }
+        ],
+        "moneyMultiplier": 5.0,
+        "avgLevelRequirement": 50
+    },
+    "15": {
+        "name": "Power Plant",
+        "description": "Power Plant - An abandoned Kanto Power Plant, home to Electric-type Pokémon. (Lv.45-55)",
+        "pokemon": [
+            { "name": "Pikachu",   "chance": 20, "levelRange": [45, 50] },
+            { "name": "Raichu",    "chance": 15, "levelRange": [48, 52] },
+            { "name": "Voltorb",   "chance": 25, "levelRange": [45, 50] },
+            { "name": "Electrode", "chance": 20, "levelRange": [48, 52] },
+            { "name": "Magnemite", "chance": 10, "levelRange": [45, 50] },
+            { "name": "Magneton",  "chance": 9,  "levelRange": [50, 55] },
+            { "name": "Zapdos",    "chance": 1,  "levelRange": [50, 50], "notes": "Legendary Bird of Lightning!" }
+        ],
+        "moneyMultiplier": 5.0,
+        "avgLevelRequirement": 50
+    },
+    "16": {
+        "name": "Victory Road - 2F",
+        "description": "Victory Road - 2F - A treacherous cave, the final challenge before the Pokémon League. (Lv.50-60)",
+        "pokemon": [
+            { "name": "Geodude", "chance": 15, "levelRange": [50, 55] },
+            { "name": "Graveler","chance": 20, "levelRange": [52, 58] },
+            { "name": "Zubat",   "chance": 10, "levelRange": [50, 55] },
+            { "name": "Golbat",  "chance": 15, "levelRange": [52, 58] },
+            { "name": "Machop",  "chance": 10, "levelRange": [50, 55] },
+            { "name": "Machoke", "chance": 15, "levelRange": [52, 58] },
+            { "name": "Onix",    "chance": 14, "levelRange": [55, 60] },
+            { "name": "Moltres", "chance": 1,  "levelRange": [50, 50], "notes": "Legendary Bird of Fire!" }
+        ],
+        "moneyMultiplier": 6.0,
+        "avgLevelRequirement": 55
+    },
+    "17": {
+        "name": "Cerulean Cave 1F",
+        "description": "Cerulean Cave 1F - A mysterious cave for strong trainers, home to powerful Pokémon. (Lv.55-70)",
+        "pokemon": [
+            { "name": "Golbat",   "chance": 15,    "levelRange": [55, 60] },
+            { "name": "Machoke",  "chance": 15,    "levelRange": [55, 60] },
+            { "name": "Graveler", "chance": 15,    "levelRange": [55, 60] },
+            { "name": "Kadabra",  "chance": 10,    "levelRange": [55, 62] },
+            { "name": "Rhydon",   "chance": 10,    "levelRange": [58, 65] },
+            { "name": "Chansey",  "chance": 10,    "levelRange": [55, 60], "notes": "High HP" },
+            { "name": "Ditto",    "chance": 10,    "levelRange": [55, 60] },
+            { "name": "Parasect", "chance": 9.9,   "levelRange": [55, 60] },
+            { "name": "Electrode","chance": 4,     "levelRange": [60, 65] },
+            { "name": "Mewtwo",   "chance": 1,     "levelRange": [70, 70], "notes": "The Strongest Pokémon!" },
+            { "name": "Mew",      "chance": 0.1,   "levelRange": [30, 30], "notes": "Mythical Pokémon?!" }
+        ],
+        "moneyMultiplier": 7.0,
+        "avgLevelRequirement": 65
     }
 }
