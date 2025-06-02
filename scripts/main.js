@@ -3,7 +3,7 @@ import { gameState, routes } from './state.js'; // routes might be needed if ini
 import { loadGameData } from './dataService.js';
 import { loadGame, saveGame, manualSaveGame, confirmClearSave, exportSaveData, importSaveData, handlePastedImportData } from './saveLoad.js';
 import { showStarterSelectionModal, updateDisplay, populateRouteSelector, addToPartyDialog, confirmReleasePokemon as confirmReleasePokemonUI, showExportModal, closeExportModal, copyExportDataToClipboard, showImportModal, closeImportModal, processImportDataFromModal, handlePokemonSpriteClick, closePokemonImageModal } from './ui.js'; // Removed unused confirmReleasePokemonUI
-import { manualBattle, attemptCatch, toggleAutoFight, buyBall, buyXpShareUpgrade, buyPotion, usePotion, handleRouteChange, leaveCurrentRoute, setActivePokemon, removeFromParty, attemptEvolution, freeFullHeal } from './gameLogic.js';
+import { manualBattle, attemptCatch, toggleAutoFight, buyBall, buyXpShareUpgrade, buyItem, useItem, handleRouteChange, leaveCurrentRoute, setActivePokemon, removeFromParty, attemptEvolution, freeFullHeal } from './gameLogic.js'; // Renamed buyPotion, usePotion
 import { addBattleLog } from './utils.js';
 
 async function initGame() {
@@ -83,8 +83,8 @@ window.attemptCatch = attemptCatch;
 window.toggleAutoFight = toggleAutoFight;
 window.buyBall = buyBall;
 window.buyXpShareUpgrade = buyXpShareUpgrade;
-window.buyPotion = buyPotion;
-window.usePotion = usePotion;
+window.buyItem = buyItem; // Renamed from buyPotion
+window.useItem = useItem; // Renamed from usePotion
 window.handleRouteChange = handleRouteChange;
 window.leaveCurrentRoute = leaveCurrentRoute;
 window.setActivePokemon = setActivePokemon;

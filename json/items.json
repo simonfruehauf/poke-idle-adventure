@@ -1,27 +1,25 @@
 {
     "potion": {
-        "id": "potion",
         "name": "Potion",
         "cost": 100,
+        "description": "Restores a small amount of HP to one Pokémon.",
         "effectType": "active_pokemon_percentage",
-        "effectValue": 0.5,
-        "description": "Heals the active Pokémon by 50% of its max HP.",
+        "effectValue": 0.25,
         "image": "sprites/items/potion.png"
     },
     "hyperpotion": {
-        "id": "hyperpotion",
         "name": "Hyper Potion",
-        "cost": 600,
-        "effectType": "active_pokemon_full",
-        "description": "Heals the active Pokémon to full HP.",
+        "cost": 500,
+        "description": "Restores a moderate amount of HP to one Pokémon.",
+        "effectType": "active_pokemon_percentage",
+        "effectValue": 0.50,
         "image": "sprites/items/hyper-potion.png"
     },
     "moomoomilk": {
-        "id": "moomoomilk",
         "name": "Moomoo Milk",
-        "cost": 1400,
+        "cost": 1200,
+        "description": "Fully heals all Pokémon in the active party.",
         "effectType": "party_full",
-        "description": "Heals all Pokémon in the party to full HP.",
         "image": "sprites/items/moomoo-milk.png"
     }
 }

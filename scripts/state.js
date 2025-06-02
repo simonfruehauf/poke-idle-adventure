@@ -3,12 +3,12 @@
 export let gameState = {
     money: 100,
     pokeballs: {
-        pokeball: 5,
-        greatball: 0,
-        ultraball: 0,
-        masterball: 0
+        pokeball: 5, // Standard ball
+        greatball: 0, // Better chance
+        ultraball: 0, // Even better chance
+        masterball: 0 // Guaranteed catch
     },
-    potions: {
+    items: { // Renamed from potions
         potion: 0,
         hyperpotion: 0,
         moomoomilk: 0
@@ -30,6 +30,6 @@ export let routes = {};
 
 export let pokemonBaseStatsData = {};
 
-export let pokeballData = {};
+export let pokeballData = {}; // Data for different types of Pokeballs
 
-export let potionData = {};
+export let itemData = {}; // Renamed from potionData, holds data for usable items like potions

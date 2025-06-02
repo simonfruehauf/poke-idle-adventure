@@ -125,15 +125,15 @@
 
                 <!-- Potion Use Controls -->
                 <div class="controls item-controls" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;">
-                    <button class="btn item-use-btn" id="use-potion-btn" onclick="usePotion('potion')" disabled
+                    <button class="btn item-use-btn" id="use-item-potion-btn" onclick="useItem('potion')" disabled
                         style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
                         Use Potion (0)
                     </button>
-                    <button class="btn item-use-btn" id="use-hyperpotion-btn" onclick="usePotion('hyperpotion')"
+                    <button class="btn item-use-btn" id="use-item-hyperpotion-btn" onclick="useItem('hyperpotion')"
                         disabled style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
                         Use Hyper Potion (0)
                     </button>
-                    <button class="btn item-use-btn" id="use-moomoomilk-btn" onclick="usePotion('moomoomilk')" disabled
+                    <button class="btn item-use-btn" id="use-item-moomoomilk-btn" onclick="useItem('moomoomilk')" disabled
                         style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
                         Use Moomoo Milk (0)
                     </button>
@@ -203,25 +203,25 @@
                         <div class="shop-item" id="shop-item-potion">
                             <img src="sprites/items/potion.png" alt="Potion" class="shop-item-icon">
                             <span>Potion (x1)</span>
-                            <button class="btn small" onclick="buyPotion('potion', 1)">Buy - 20₽</button>
+                            <button class="btn small" onclick="buyItem('potion', 1)">Buy - 20₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-potion"></div>
                         </div>
                         <div class="shop-item" id="shop-item-hyperpotion">
                             <img src="sprites/items/hyper-potion.png" alt="Hyper Potion" class="shop-item-icon">
                             <span>Hyper Potion (x1)</span>
-                            <button class="btn small" onclick="buyPotion('hyperpotion', 1)">Buy - 50₽</button>
+                            <button class="btn small" onclick="buyItem('hyperpotion', 1)">Buy - 50₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-hyperpotion"></div>
                         </div>
                         <div class="shop-item" id="shop-item-moomoomilk">
                             <img src="sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="shop-item-icon">
                             <span>Moomoo Milk (x1)</span>
-                            <button class="btn small" onclick="buyPotion('moomoomilk', 1)">Buy - 80₽</button>
+                            <button class="btn small" onclick="buyItem('moomoomilk', 1)">Buy - 80₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-moomoomilk"></div>
                         </div>
                         <div class="shop-item" id="exp-share-shop-item">
                             <img src="sprites/items/exp-share.png" alt="XP Share" class="shop-item-icon">
                             <span>XP Share</span>
-                            <button id="exp-share-buy-btn" class="btn small" onclick="buyXpShareUpgrade()">
+                            <button id="exp-share-buy-btn" class="btn small" onclick="window.buyXpShareUpgrade()">
                                 <!-- Dynamically updated by JS -->
                             </button>
                             <div class="custom-tooltip" id="tooltip-exp-share-shop-item"></div>
@@ -261,20 +261,20 @@
                     <span class="tooltip-text" id="tooltip-itembar-masterball"></span>
                 </div>
 
-                <!-- Potions -->
-                <div class="item-display" title="Potions">
+                <!-- Healing Items -->
+                <div class="item-display" title="Potion">
                     <img src="sprites/items/potion.png" alt="Potion" class="item-icon">
-                    <span class="item-count" id="potions-potion">0</span>
+                    <span class="item-count" id="item-count-potion">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-potion"></div>
                 </div>
-                <div class="item-display" title="Hyper Potions">
+                <div class="item-display" title="Hyper Potion">
                     <img src="sprites/items/hyper-potion.png" alt="Hyper Potion" class="item-icon">
-                    <span class="item-count" id="potions-hyperpotion">0</span>
+                    <span class="item-count" id="item-count-hyperpotion">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-hyperpotion"></div>
                 </div>
-                <div class="item-display" title="Moomoo Milks">
+                <div class="item-display" title="Moomoo Milk">
                     <img src="sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="item-icon">
-                    <span class="item-count" id="potions-moomoomilk">0</span>
+                    <span class="item-count" id="item-count-moomoomilk">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-moomoomilk"></div>
                 </div>
             </div>

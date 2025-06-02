@@ -1,5 +1,5 @@
 // ui.js
-import { gameState, pokemonBaseStatsData, pokeballData, potionData, routes } from './state.js';
+import { gameState, pokemonBaseStatsData, pokeballData, itemData, routes } from './state.js';
 import { getActivePokemon, formatNumberWithDots, addBattleLog } from './utils.js';
 import { POKEMON_SPRITE_BASE_URL, AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, STARTER_POKEMON_NAMES, SHINY_CHANCE } from './config.js'; // SHINY_CHANCE might not be directly used here but good to keep track of config imports
 import { Pokemon } from './pokemon.js';
@@ -129,9 +129,9 @@ function _updatePlayerStatsDisplay() {
         }
     }
 
-    if (document.getElementById('potions-potion')) document.getElementById('potions-potion').textContent = gameState.potions.potion;
-    if (document.getElementById('potions-hyperpotion')) document.getElementById('potions-hyperpotion').textContent = gameState.potions.hyperpotion;
-    if (document.getElementById('potions-moomoomilk')) document.getElementById('potions-moomoomilk').textContent = gameState.potions.moomoomilk;
+    if (document.getElementById('item-count-potion')) document.getElementById('item-count-potion').textContent = gameState.items.potion; 
+    if (document.getElementById('item-count-hyperpotion')) document.getElementById('item-count-hyperpotion').textContent = gameState.items.hyperpotion; // Renamed ID and gameState.potions
+    if (document.getElementById('item-count-moomoomilk')) document.getElementById('item-count-moomoomilk').textContent = gameState.items.moomoomilk; // Renamed ID and gameState.potions
 }
 
 // Helper function to update main action buttons (Fight, Catch, Auto-Fight, Route)
@@ -222,8 +222,8 @@ function _updateMainActionButtonsState() {
     }
     // Free Heal Button
     if (freeHealBtn) {
-        const hasNoMoomooMilk = (gameState.potions.moomoomilk || 0) === 0;
-        const hasNoHyperPotion = (gameState.potions.hyperpotion || 0) === 0;
+        const hasNoMoomooMilk = (gameState.items.moomoomilk || 0) === 0; // Renamed from gameState.potions
+        const hasNoHyperPotion = (gameState.items.hyperpotion || 0) === 0; // Renamed from gameState.potions
         const canShowFreeHeal = gameState.money < 800 && (hasNoMoomooMilk && hasNoHyperPotion) && !gameState.battleInProgress && gameState.currentRoute === null; 
         freeHealBtn.disabled = !canShowFreeHeal;
 
@@ -267,16 +267,16 @@ function _updateShopInterface() {
             if (tooltipEl) tooltipEl.textContent = ballInfo.description || ballInfo.name;
         }
     }
-    for (const potionId in potionData) {
-        const potionInfo = potionData[potionId];
-        const shopItemEl = document.getElementById(`shop-item-${potionId}`);
-        if (shopItemEl && potionInfo) {
+    for (const itemId in itemData) { // Renamed from potionId, potionData
+        const itemInfo = itemData[itemId]; // Renamed from potionInfo
+        const shopItemEl = document.getElementById(`shop-item-${itemId}`);
+        if (shopItemEl && itemInfo) {
             const nameSpan = shopItemEl.querySelector('span');
-            if (nameSpan) nameSpan.textContent = `${potionInfo.name} (x1)`;
-            const buyButton = shopItemEl.querySelector(`button[onclick="buyPotion('${potionId}', 1)"]`);
-            if (buyButton && typeof potionInfo.cost === 'number') buyButton.textContent = `Buy - ${formatNumberWithDots(potionInfo.cost)}₽`;
-            const tooltipEl = document.getElementById(`tooltip-shop-item-${potionId}`);
-            if (tooltipEl) tooltipEl.textContent = potionInfo.description || potionInfo.name;
+            if (nameSpan) nameSpan.textContent = `${itemInfo.name} (x1)`;
+            const buyButton = shopItemEl.querySelector(`button[onclick="buyItem('${itemId}', 1)"]`); // Renamed buyPotion to buyItem
+            if (buyButton && typeof itemInfo.cost === 'number') buyButton.textContent = `Buy - ${formatNumberWithDots(itemInfo.cost)}₽`;
+            const tooltipEl = document.getElementById(`tooltip-shop-item-${itemId}`);
+            if (tooltipEl) tooltipEl.textContent = itemInfo.description || itemInfo.name;
         }
     }
 }
@@ -299,45 +299,45 @@ function _updateItemBarTooltips() {
         } else if (itemEl.querySelector('#pokeballs-master')) {
             tooltipEl = document.getElementById('tooltip-itembar-masterball');
             if (pokeballData.masterball) description = pokeballData.masterball.description || pokeballData.masterball.name;
-        } else if (itemEl.querySelector('#potions-potion')) {
-            tooltipEl = document.getElementById('tooltip-itembar-potion');
-            if (potionData.potion) description = potionData.potion.description || potionData.potion.name;
-        } else if (itemEl.querySelector('#potions-hyperpotion')) {
+        } else if (itemEl.querySelector('#item-count-potion')) { // Renamed ID
+            tooltipEl = document.getElementById('tooltip-itembar-potion'); // Assuming tooltip ID remains based on item ID
+            if (itemData.potion) description = itemData.potion.description || itemData.potion.name; // Renamed potionData
+        } else if (itemEl.querySelector('#item-count-hyperpotion')) { // Renamed ID
             tooltipEl = document.getElementById('tooltip-itembar-hyperpotion');
-            if (potionData.hyperpotion) description = potionData.hyperpotion.description || potionData.hyperpotion.name;
-        } else if (itemEl.querySelector('#potions-moomoomilk')) {
+            if (itemData.hyperpotion) description = itemData.hyperpotion.description || itemData.hyperpotion.name; // Renamed potionData
+        } else if (itemEl.querySelector('#item-count-moomoomilk')) { // Renamed ID
             tooltipEl = document.getElementById('tooltip-itembar-moomoomilk');
-            if (potionData.moomoomilk) description = potionData.moomoomilk.description || potionData.moomoomilk.name;
+            if (itemData.moomoomilk) description = itemData.moomoomilk.description || itemData.moomoomilk.name; // Renamed potionData
         }
         if (tooltipEl && description) tooltipEl.textContent = description;
     });
 }
 
 // Helper function to update potion use buttons
-function _updatePotionUseButtons() {
-    const usePotionBtn = document.getElementById('use-potion-btn');
-    const useHyperPotionBtn = document.getElementById('use-hyperpotion-btn');
-    const useMoomooMilkBtn = document.getElementById('use-moomoomilk-btn');
+function _updateItemUseButtons() { // Renamed from _updatePotionUseButtons
+    const usePotionBtn = document.getElementById('use-item-potion-btn'); // Renamed ID
+    const useHyperPotionBtn = document.getElementById('use-item-hyperpotion-btn'); // Renamed ID
+    const useMoomooMilkBtn = document.getElementById('use-item-moomoomilk-btn'); // Renamed ID
     const canUseItem = !gameState.battleInProgress;
     const activePokemon = getActivePokemon();
 
     if (usePotionBtn) {
         const activePokemonNeedsPotion = activePokemon && activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp;
-        usePotionBtn.disabled = !canUseItem || !activePokemonNeedsPotion || gameState.potions.potion <= 0;
-        usePotionBtn.style.display = gameState.potions.potion > 0 ? '' : 'none';
-        usePotionBtn.textContent = `Use Potion (${gameState.potions.potion})`;
+        usePotionBtn.disabled = !canUseItem || !activePokemonNeedsPotion || gameState.items.potion <= 0; // Renamed gameState.potions
+        usePotionBtn.style.display = gameState.items.potion > 0 ? '' : 'none'; // Renamed gameState.potions
+        usePotionBtn.textContent = `Use Potion (${gameState.items.potion})`; // Renamed gameState.potions
     }
     if (useHyperPotionBtn) {
         const activePokemonNeedsHyperPotion = activePokemon && activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp;
-        useHyperPotionBtn.disabled = !canUseItem || !activePokemonNeedsHyperPotion || gameState.potions.hyperpotion <= 0;
-        useHyperPotionBtn.style.display = gameState.potions.hyperpotion > 0 ? '' : 'none';
-        useHyperPotionBtn.textContent = `Use Hyper Potion (${gameState.potions.hyperpotion})`;
+        useHyperPotionBtn.disabled = !canUseItem || !activePokemonNeedsHyperPotion || gameState.items.hyperpotion <= 0; // Renamed gameState.potions
+        useHyperPotionBtn.style.display = gameState.items.hyperpotion > 0 ? '' : 'none'; // Renamed gameState.potions
+        useHyperPotionBtn.textContent = `Use Hyper Potion (${gameState.items.hyperpotion})`; // Renamed gameState.potions
     }
     if (useMoomooMilkBtn) {
         const partyNeedsHealing = gameState.party.some(p => p && p.currentHp > 0 && p.currentHp < p.maxHp);
-        useMoomooMilkBtn.disabled = !canUseItem || !partyNeedsHealing || gameState.potions.moomoomilk <= 0;
-        useMoomooMilkBtn.style.display = gameState.potions.moomoomilk > 0 ? '' : 'none';
-        useMoomooMilkBtn.textContent = `Use Moomoo Milk (${gameState.potions.moomoomilk})`;
+        useMoomooMilkBtn.disabled = !canUseItem || !partyNeedsHealing || gameState.items.moomoomilk <= 0; // Changed gameState.potions to gameState.items
+        useMoomooMilkBtn.style.display = gameState.items.moomoomilk > 0 ? '' : 'none'; // Changed gameState.potions to gameState.items
+        useMoomooMilkBtn.textContent = `Use Moomoo Milk (${gameState.items.moomoomilk})`; // Changed gameState.potions to gameState.items
     }
 }
 
@@ -346,7 +346,7 @@ export function updateDisplay() {
     _updateMainActionButtonsState();
     _updateShopInterface();
     _updateItemBarTooltips();
-    _updatePotionUseButtons();
+    _updateItemUseButtons(); // Renamed from _updatePotionUseButtons
 
     const playerElements = {
         nameEl: document.getElementById('player-name'),

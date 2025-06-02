@@ -33,7 +33,7 @@ export function saveGame() {
     const saveData = {
         money: gameState.money,
         pokeballs: gameState.pokeballs,
-        potions: gameState.potions,
+        items: gameState.items, // Renamed from potions
         party: gameState.party.map(p => serializePokemon(p)),
         allPokemon: gameState.allPokemon.map(p => serializePokemon(p)),
         currentWildPokemon: serializePokemon(gameState.currentWildPokemon),
@@ -63,7 +63,8 @@ export function loadGame() {
             ultraball: (data.pokeballs && data.pokeballs.ultraball) || 0,
             masterball: (data.pokeballs && data.pokeballs.masterball) || 0,
         };
-        gameState.potions = data.potions || { potion: 0, hyperpotion: 0, moomoomilk: 0 };
+        // Handle loading old saves with 'potions' key, then migrate to 'items'
+        gameState.items = data.items || data.potions || { potion: 0, hyperpotion: 0, moomoomilk: 0 };
         gameState.battleWins = data.battleWins || 0;
         gameState.currentRoute = data.currentRoute !== undefined ? data.currentRoute : 1; // Default to route 1 if not set
         gameState.autoFightUnlocked = data.autoFightUnlocked || false;

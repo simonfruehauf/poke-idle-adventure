@@ -1,5 +1,5 @@
 // gameLogic.js
-import { gameState, routes, pokeballData, potionData, pokemonBaseStatsData } from './state.js';
+import { gameState, routes, pokeballData, itemData, pokemonBaseStatsData } from './state.js';
 import { Pokemon } from './pokemon.js';
 import { addBattleLog, getActivePokemon, findNextHealthyPokemon, formatNumberWithDots } from './utils.js';
 import { updateDisplay, updateWildPokemonDisplay, populateRouteSelector } from './ui.js';
@@ -453,42 +453,42 @@ export function buyXpShareUpgrade() {
     } else { addBattleLog(`Not enough money. Needs ${formatNumberWithDots(nextLevelConfig.cost)}₽.`); }
 }
 
-export function buyPotion(potionId, quantity = 1) {
-    const potionInfo = potionData[potionId];
-    if (!potionInfo) { addBattleLog("Invalid item."); return; }
-    const cost = potionInfo.cost * quantity;
+export function buyItem(itemId, quantity = 1) { // Renamed from buyPotion, potionId to itemId
+    const itemInfo = itemData[itemId]; // Renamed from potionData, potionInfo to itemInfo
+    if (!itemInfo) { addBattleLog("Invalid item."); return; }
+    const cost = itemInfo.cost * quantity;
     if (gameState.money >= cost) {
-        gameState.money -= cost; gameState.potions[potionId] = (gameState.potions[potionId] || 0) + quantity;
-        updateDisplay(); addBattleLog(`Bought ${quantity} ${potionInfo.name}${quantity > 1 ? 's' : ''} for ${formatNumberWithDots(cost)}₽!`);
+        gameState.money -= cost; gameState.items[itemId] = (gameState.items[itemId] || 0) + quantity; // Renamed from gameState.potions
+        updateDisplay(); addBattleLog(`Bought ${quantity} ${itemInfo.name}${quantity > 1 ? 's' : ''} for ${formatNumberWithDots(cost)}₽!`);
     } else { addBattleLog(`Not enough money. Needs ${formatNumberWithDots(cost)}₽.`); }
 }
 
-export function usePotion(potionId) {
-    const potionInfo = potionData[potionId];
-    if (!potionInfo || !gameState.potions[potionId] || gameState.potions[potionId] <= 0) {
-        addBattleLog(`No ${potionInfo ? potionInfo.name : 'potions'} left or invalid type!`); return;
+export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
+    const itemInfo = itemData[itemId]; // Renamed from potionData, potionInfo to itemInfo
+    if (!itemInfo || !gameState.items[itemId] || gameState.items[itemId] <= 0) { // Renamed from gameState.potions
+        addBattleLog(`No ${itemInfo ? itemInfo.name : 'items'} left or invalid type!`); return;
     }
     let healedSomething = false; const activePokemon = getActivePokemon();
-    if (potionInfo.effectType === 'active_pokemon_percentage' && activePokemon) {
+    if (itemInfo.effectType === 'active_pokemon_percentage' && activePokemon) {
         if (activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp) {
-            activePokemon.healPartial(potionInfo.effectValue); healedSomething = true;
+            activePokemon.healPartial(itemInfo.effectValue); healedSomething = true;
         }
-    } else if (potionInfo.effectType === 'active_pokemon_full' && activePokemon) {
+    } else if (itemInfo.effectType === 'active_pokemon_full' && activePokemon) {
         if (activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp) {
             activePokemon.heal(); healedSomething = true;
         }
-    } else if (potionInfo.effectType === 'party_full') {
+    } else if (itemInfo.effectType === 'party_full') {
         gameState.party.forEach(p => { if (p && p.currentHp > 0 && p.currentHp < p.maxHp) { p.heal(); healedSomething = true; }});
     }
     if (healedSomething) {
-        gameState.potions[potionId]--; addBattleLog(`Used ${potionInfo.name}!`);
-    } else { addBattleLog(`${potionInfo.name} had no effect.`); }
+        gameState.items[itemId]--; addBattleLog(`Used ${itemInfo.name}!`); // Renamed from gameState.potions
+    } else { addBattleLog(`${itemInfo.name} had no effect.`); }
     updateDisplay();
 }
 
 export function freeFullHeal() {
-    const hasNoMoomooMilk = (gameState.potions.moomoomilk || 0) === 0;
-    const hasNoHyperPotion = (gameState.potions.hyperpotion || 0) === 0;
+    const hasNoMoomooMilk = (gameState.items.moomoomilk || 0) === 0; // Renamed from gameState.potions
+    const hasNoHyperPotion = (gameState.items.hyperpotion || 0) === 0; // Renamed from gameState.potions
 
     if (gameState.money < 800 && (hasNoMoomooMilk || hasNoHyperPotion)) {
         let healedCount = 0;
