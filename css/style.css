@@ -105,6 +105,7 @@ body {
 .team-area { grid-area: 2 / 2 / 3 / 3; }
 .items-bar {
     display: flex;
+
     justify-content: space-around; /* Or space-evenly, center */
     align-items: center;
     padding: 8px;
@@ -114,7 +115,18 @@ body {
     flex-wrap: wrap; /* Allow items to wrap on smaller screens */
     gap: 10px; /* Spacing between items */
 }
+#game-version {
+    font-size: 0.7em;
+    text-align: right;
+    padding: 10px 10px;
+    color: #afafaf; /* A muted color */
+}
 
+footer {
+    width: 100%;
+    position: fixed;
+    bottom: 0;
+}
 .item-display {
     display: flex;
     position: relative; /* Ensure this is set for custom tooltip positioning */
