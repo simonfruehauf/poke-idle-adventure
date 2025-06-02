@@ -157,7 +157,7 @@
             { "name": "Exeggcute","chance": 15, "levelRange": [20, 25] },
             { "name": "Parasect", "chance": 10, "levelRange": [24, 28] },
             { "name": "Rhyhorn",  "chance": 10, "levelRange": [25, 30] },
-            { "name": "Chansey",  "chance": 5,  "levelRange": [23, 28], "notes": "Very Rare" }
+            { "name": "Chansey",  "chance": 5,  "levelRange": [23, 28] }
         ],
         "moneyMultiplier": 3.0,
         "avgLevelRequirement": 35
@@ -225,5 +225,70 @@
         ],
         "moneyMultiplier": 7.0,
         "avgLevelRequirement": 65
+    },
+    "18": {
+        "name": "Dragon's Den Peak",
+        "description": "A treacherous peak, rumored to be a nesting ground for powerful Dragon-type Pokémon and their kin. (Lv.70-85)",
+        "pokemon": [
+            { "name": "Dragonair",  "chance": 30, "levelRange": [70, 80] },
+            { "name": "Gyarados",   "chance": 20, "levelRange": [75, 85] },
+            { "name": "Aerodactyl", "chance": 20, "levelRange": [75, 85] },
+            { "name": "Golbat",     "chance": 15, "levelRange": [70, 78] },
+            { "name": "Seadra",     "chance": 10, "levelRange": [70, 78] },
+            { "name": "Dragonite",  "chance": 5,  "levelRange": [80, 85], "notes": "Apex Predator" }
+        ],
+        "moneyMultiplier": 8.0,
+        "avgLevelRequirement": 75
+    },
+    "19": {
+        "name": "Cinnabar Volcano Summit",
+        "description": "The searing summit of Cinnabar's volcano, reformed after its eruption, now home to resilient Fire and Rock Pokémon. (Lv.75-90)",
+        "pokemon": [
+            { "name": "Magmar",    "chance": 25, "levelRange": [75, 88] },
+            { "name": "Arcanine",  "chance": 25, "levelRange": [75, 88] },
+            { "name": "Rapidash",  "chance": 20, "levelRange": [75, 85] },
+            { "name": "Golem",     "chance": 15, "levelRange": [80, 90] },
+            { "name": "Rhydon",    "chance": 10, "levelRange": [80, 90] },
+            { "name": "Onix",      "chance": 5,  "levelRange": [75, 85], "notes": "Ancient Guardian" }
+        ],
+        "moneyMultiplier": 9.0,
+        "avgLevelRequirement": 80
+    },
+    "20": {
+        "name": "Unknown Dungeon Depths",
+        "description": "Deeper than Cerulean Cave, these lightless passages host Kanto's most formidable non-legendary Pokémon. (Lv.80-95)",
+        "pokemon": [
+            { "name": "Rhydon",    "chance": 20, "levelRange": [80, 92] },
+            { "name": "Golem",     "chance": 20, "levelRange": [80, 92] },
+            { "name": "Machamp",   "chance": 20, "levelRange": [80, 92] },
+            { "name": "Alakazam",  "chance": 10, "levelRange": [85, 95] },
+            { "name": "Gengar",    "chance": 10, "levelRange": [85, 95] },
+            { "name": "Chansey",   "chance": 5,  "levelRange": [80, 90], "notes": "High Endurance" },
+            { "name": "Snorlax",   "chance": 5,  "levelRange": [85, 95], "notes": "Immovable Force" },
+            { "name": "Electrode", "chance": 5,  "levelRange": [82, 92] },
+            { "name": "Magneton",  "chance": 5,  "levelRange": [82, 92] }
+        ],
+        "moneyMultiplier": 10.0,
+        "avgLevelRequirement": 85
+    },
+    "21": {
+        "name": "Champion's Path",
+        "description": "The ultimate training gauntlet, where only the strongest Pokémon of Kanto roam, pushing trainers to their limits. (Lv.90-99)",
+        "pokemon": [
+            { "name": "Dragonite",  "chance": 15, "levelRange": [90, 99] },
+            { "name": "Snorlax",    "chance": 15, "levelRange": [90, 99] },
+            { "name": "Alakazam",   "chance": 10, "levelRange": [90, 99] },
+            { "name": "Gengar",     "chance": 10, "levelRange": [90, 99] },
+            { "name": "Gyarados",   "chance": 10, "levelRange": [90, 99] },
+            { "name": "Arcanine",   "chance": 10, "levelRange": [90, 99] },
+            { "name": "Lapras",     "chance": 8,  "levelRange": [92, 99] },
+            { "name": "Machamp",    "chance": 7,  "levelRange": [92, 99] },
+            { "name": "Golem",      "chance": 5,  "levelRange": [92, 99] },
+            { "name": "Venusaur",   "chance": 3,  "levelRange": [95, 99], "notes": "Kanto Starter" },
+            { "name": "Charizard",  "chance": 3,  "levelRange": [95, 99], "notes": "Kanto Starter" },
+            { "name": "Blastoise",  "chance": 4,  "levelRange": [95, 99], "notes": "Kanto Starter" }
+        ],
+        "moneyMultiplier": 11.0,
+        "avgLevelRequirement": 90
     }
 }
