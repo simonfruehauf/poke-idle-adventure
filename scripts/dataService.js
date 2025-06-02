@@ -6,7 +6,7 @@ export async function loadGameData() {
         const routesResponse = await fetch('json/routes.json');
         Object.assign(routes, await routesResponse.json());
 
-        const statsResponse = await fetch('json/statmap.json');
+        const statsResponse = await fetch('json/pokemon.json');
         Object.assign(pokemonBaseStatsData, await statsResponse.json());
 
         const pokeballsResponse = await fetch('json/pokeballs.json');
@@ -20,7 +20,7 @@ export async function loadGameData() {
         console.error("Failed to load game data:", error);
         document.body.innerHTML = `<div style="color: red; text-align: center; padding: 20px; font-family: sans-serif;">
                                     <h1>Error Initializing Game</h1>
-                                    <p>Could not load essential game data (routes.json, statmap.json, pokeballs.json, or potions.json). 
+                                    <p>Could not load essential game data (routes.json, pokemon.json, pokeballs.json, or potions.json). 
                                        Please check the console for details and ensure the files are in the correct 'stats/' or 'items/' directory, 
                                        then try refreshing the page.</p>
                                     </div>`;
