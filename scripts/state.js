@@ -17,7 +17,12 @@ export let gameState = {
         thunderstone: 0,
         moonstone: 0,
         leafstone: 0,
-        rarecandy: 0
+        rarecandy: 0,
+        sunstone: 0,
+        kingsrock: 0,
+        metalcoat: 0,
+        dragonscale: 0,
+        upgrade: 0
     },
     party: [null, null, null, null, null, null],
     allPokemon: [],

@@ -220,6 +220,36 @@
                             <button class="btn small" onclick="buyItem('leafstone', 1)">Buy - 2.100₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-leafstone"></div>
                         </div>
+                        <div class="shop-item" id="shop-item-sunstone">
+                            <img src="sprites/items/sun-stone.png" alt="Sun Stone" class="shop-item-icon">
+                            <span>Sun Stone (x1)</span>
+                            <button class="btn small" onclick="buyItem('sunstone', 1)">Buy - 3.000₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-sunstone"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-kingsrock">
+                            <img src="sprites/items/kings-rock.png" alt="King's Rock" class="shop-item-icon">
+                            <span>King's Rock (x1)</span>
+                            <button class="btn small" onclick="buyItem('kingsrock', 1)">Buy - 5.000₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-kingsrock"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-metalcoat">
+                            <img src="sprites/items/metal-coat.png" alt="Metal Coat" class="shop-item-icon">
+                            <span>Metal Coat (x1)</span>
+                            <button class="btn small" onclick="buyItem('metalcoat', 1)">Buy - 5.000₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-metalcoat"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-dragonscale">
+                            <img src="sprites/items/dragon-scale.png" alt="Dragon Scale" class="shop-item-icon">
+                            <span>Dragon Scale (x1)</span>
+                            <button class="btn small" onclick="buyItem('dragonscale', 1)">Buy - 5.000₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-dragonscale"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-upgrade">
+                            <img src="sprites/items/up-grade.png" alt="Up-Grade" class="shop-item-icon">
+                            <span>Up-Grade (x1)</span>
+                            <button class="btn small" onclick="buyItem('upgrade', 1)">Buy - 5.000₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-upgrade"></div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -301,6 +331,37 @@
                     <span class="item-bar-count-text" id="item-count-leafstone">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-leafstone">Evolves certain species of Pokémon.</div>
                 </button>
+                <button class="item-display item-button" id="item-display-sunstone" onclick="window.useItem('sunstone')" title="Sun Stone" style="display: none;" data-item-id="sunstone">
+                    <img src="./sprites/items/sun-stone.png" alt="Sun Stone" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-sunstone">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-sunstone">A peculiar stone that makes certain species of Pokémon evolve. It glows like the sun.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-kingsrock" onclick="window.useItem('kingsrock')" title="King's Rock" style="display: none;" data-item-id="kingsrock">
+                    <img src="./sprites/items/kings-rock.png" alt="King's Rock" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-kingsrock">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-kingsrock">A crown-like rock that makes certain species of Pokémon evolve. It's fit for a king.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-metalcoat" onclick="window.useItem('metalcoat')" title="Metal Coat" style="display: none;" data-item-id="metalcoat">
+                    <img src="./sprites/items/metal-coat.png" alt="Metal Coat" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-metalcoat">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-metalcoat">A special metallic film that makes certain species of Pokémon evolve. It's very hard.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-dragonscale" onclick="window.useItem('dragonscale')" title="Dragon Scale" style="display: none;" data-item-id="dragonscale">
+                    <img src="./sprites/items/dragon-scale.png" alt="Dragon Scale" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-dragonscale">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-dragonscale">A tough, beautiful scale that makes certain species of Pokémon evolve. It is imbued with dragon power.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-upgrade" onclick="window.useItem('upgrade')" title="Up-Grade" style="display: none;" data-item-id="upgrade">
+                    <img src="./sprites/items/up-grade.png" alt="Up-Grade" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-upgrade">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-upgrade">A transparent device filled with all sorts of data. It makes a certain species of Pokémon evolve.</div>
+                </button>
+
+
+
+
+
+
                 <!-- Rare Candy -->
                 <button class="item-display item-button" id="item-display-rarecandy" onclick="window.useItem('rarecandy')" title="Rare Candy" style="display: none;" data-item-id="rarecandy">
                     <img src="./sprites/items/rare-candy.png" alt="Rare Candy" class="item-bar-icon">

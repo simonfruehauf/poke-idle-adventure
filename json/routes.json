@@ -1,10 +1,11 @@
 {
     "1": {
         "name": "Kanto Route 1",
-        "description": "Kanto Route 1 - A grassy path between Pallet Town and Viridian City (Lv.2-5)",
+        "description": "A grassy path between Pallet Town and Viridian City. (Lv.2-5)",
         "pokemon": [
             { "name": "Pidgey",  "chance": 50, "levelRange": [2, 5] },
-            { "name": "Rattata", "chance": 50, "levelRange": [2, 4] }
+            { "name": "Rattata", "chance": 40, "levelRange": [2, 4] },
+            { "name": "Sentret", "chance": 10, "levelRange": [2, 3] }
         ],
         "moneyMultiplier": 1,
         "avgLevelRequirement": 0
@@ -12,11 +13,11 @@
     "2": {
         "name": "Kanto Route 22",
         "description": "Kanto Route 22 - West of Viridian, path to Victory Road (Lv.2-5)",
-        "pokemon": [
-            { "name": "Rattata",   "chance": 30, "levelRange": [2, 5] },
-            { "name": "Nidoran♀",  "chance": 30, "levelRange": [2, 4] },
-            { "name": "Nidoran♂",  "chance": 30, "levelRange": [2, 4] },
-            { "name": "Spearow",   "chance": 10, "levelRange": [3, 5] }
+        "pokemon": [ 
+            { "name": "Rattata",   "chance": 31, "levelRange": [2, 5] },
+            { "name": "Nidoran♀",  "chance": 31, "levelRange": [2, 4] },
+            { "name": "Nidoran♂",  "chance": 31, "levelRange": [2, 4] },
+            { "name": "Hoothoot",  "chance": 7, "levelRange": [2, 4], "notes": "Nocturnal" }
         ],
         "moneyMultiplier": 1.1,
         "avgLevelRequirement": 3
@@ -27,7 +28,8 @@
         "pokemon": [
             { "name": "Pidgey",   "chance": 25, "levelRange": [3, 5] },
             { "name": "Rattata",  "chance": 25, "levelRange": [3, 5] },
-            { "name": "Caterpie", "chance": 25, "levelRange": [3, 5] },
+            { "name": "Caterpie", "chance": 20, "levelRange": [3, 5] },
+            { "name": "Ledyba",   "chance": 5,  "levelRange": [3, 4], "notes": "Morning" },
             { "name": "Weedle",   "chance": 25, "levelRange": [3, 5] }
         ],
         "moneyMultiplier": 1.2,
@@ -41,7 +43,8 @@
             { "name": "Metapod",  "chance": 20, "levelRange": [4, 6] },
             { "name": "Weedle",   "chance": 30, "levelRange": [3, 6] },
             { "name": "Kakuna",   "chance": 15, "levelRange": [4, 6] },
-            { "name": "Pikachu",  "chance": 5,  "levelRange": [3, 5], "notes": "Rare" }
+            { "name": "Pikachu",  "chance": 4,  "levelRange": [3, 5], "notes": "Rare" },
+            { "name": "Spinarak", "chance": 1,  "levelRange": [3, 5], "notes": "Rare, night" }
         ],
         "moneyMultiplier": 1.3,
         "avgLevelRequirement": 7
@@ -219,7 +222,7 @@
             { "name": "Chansey",  "chance": 10,    "levelRange": [55, 60], "notes": "High HP" },
             { "name": "Ditto",    "chance": 10,    "levelRange": [55, 60] },
             { "name": "Parasect", "chance": 9.9,   "levelRange": [55, 60] },
-            { "name": "Electrode","chance": 4,     "levelRange": [60, 65] },
+            { "name": "Wobbuffet","chance": 4,     "levelRange": [60, 65], "notes": "Powerful if provoked" },
             { "name": "Mewtwo",   "chance": 1,     "levelRange": [70, 70], "notes": "The Strongest Pokémon!" },
             { "name": "Mew",      "chance": 0.1,   "levelRange": [30, 30], "notes": "Mythical Pokémon?!" }
         ],
@@ -233,7 +236,8 @@
             { "name": "Dragonair",  "chance": 30, "levelRange": [70, 80] },
             { "name": "Gyarados",   "chance": 20, "levelRange": [75, 85] },
             { "name": "Aerodactyl", "chance": 20, "levelRange": [75, 85] },
-            { "name": "Golbat",     "chance": 15, "levelRange": [70, 78] },
+            { "name": "Crobat",     "chance": 10, "levelRange": [72, 82], "notes": "Evolved Golbat" },
+            { "name": "Skarmory",   "chance": 5,  "levelRange": [70, 80], "notes": "Steel bird" },
             { "name": "Seadra",     "chance": 10, "levelRange": [70, 78] },
             { "name": "Dragonite",  "chance": 5,  "levelRange": [80, 85], "notes": "Apex Predator" }
         ],
@@ -248,7 +252,8 @@
             { "name": "Arcanine",  "chance": 25, "levelRange": [75, 88] },
             { "name": "Rapidash",  "chance": 20, "levelRange": [75, 85] },
             { "name": "Golem",     "chance": 15, "levelRange": [80, 90] },
-            { "name": "Rhydon",    "chance": 10, "levelRange": [80, 90] },
+            { "name": "Rhydon",    "chance": 5, "levelRange": [80, 90] },
+            { "name": "Magcargo",  "chance": 10, "levelRange": [78, 88], "notes": "Molten snail" },
             { "name": "Onix",      "chance": 5,  "levelRange": [75, 85], "notes": "Ancient Guardian" }
         ],
         "moneyMultiplier": 9.0,
@@ -259,13 +264,13 @@
         "description": "Deeper than Cerulean Cave, these lightless passages host Kanto's most formidable non-legendary Pokémon. (Lv.80-95)",
         "pokemon": [
             { "name": "Rhydon",    "chance": 20, "levelRange": [80, 92] },
-            { "name": "Golem",     "chance": 20, "levelRange": [80, 92] },
+            { "name": "Steelix",   "chance": 10, "levelRange": [85, 95], "notes": "Evolved Onix" },
             { "name": "Machamp",   "chance": 20, "levelRange": [80, 92] },
             { "name": "Alakazam",  "chance": 10, "levelRange": [85, 95] },
             { "name": "Gengar",    "chance": 10, "levelRange": [85, 95] },
-            { "name": "Chansey",   "chance": 5,  "levelRange": [80, 90], "notes": "High Endurance" },
+            { "name": "Blissey",   "chance": 5,  "levelRange": [85, 95], "notes": "Ultimate Healer" },
             { "name": "Snorlax",   "chance": 5,  "levelRange": [85, 95], "notes": "Immovable Force" },
-            { "name": "Electrode", "chance": 5,  "levelRange": [82, 92] },
+            { "name": "Forretress","chance": 5,  "levelRange": [82, 92], "notes": "Armored Bug" },
             { "name": "Magneton",  "chance": 5,  "levelRange": [82, 92] }
         ],
         "moneyMultiplier": 10.0,
@@ -276,17 +281,109 @@
         "description": "The ultimate training gauntlet, where only the strongest Pokémon of Kanto roam, pushing trainers to their limits. (Lv.90-99)",
         "pokemon": [
             { "name": "Dragonite",  "chance": 15, "levelRange": [90, 99] },
-            { "name": "Snorlax",    "chance": 15, "levelRange": [90, 99] },
+            { "name": "Tyranitar",  "chance": 10, "levelRange": [92, 99], "notes": "Pseudo-Legendary" },
             { "name": "Alakazam",   "chance": 10, "levelRange": [90, 99] },
             { "name": "Gengar",     "chance": 10, "levelRange": [90, 99] },
             { "name": "Gyarados",   "chance": 10, "levelRange": [90, 99] },
             { "name": "Arcanine",   "chance": 10, "levelRange": [90, 99] },
-            { "name": "Lapras",     "chance": 8,  "levelRange": [92, 99] },
-            { "name": "Machamp",    "chance": 7,  "levelRange": [92, 99] },
-            { "name": "Golem",      "chance": 5,  "levelRange": [92, 99] },
+            { "name": "Snorlax",    "chance": 8,  "levelRange": [90, 99] },
+            { "name": "Kingdra",    "chance": 7,  "levelRange": [92, 99], "notes": "Water Dragon" },
+            { "name": "Scizor",     "chance": 5,  "levelRange": [92, 99], "notes": "Steel Bug" },
             { "name": "Venusaur",   "chance": 3,  "levelRange": [95, 99], "notes": "Kanto Starter" },
             { "name": "Charizard",  "chance": 3,  "levelRange": [95, 99], "notes": "Kanto Starter" },
-            { "name": "Blastoise",  "chance": 4,  "levelRange": [95, 99], "notes": "Kanto Starter" }
+            { "name": "Blastoise",  "chance": 4,  "levelRange": [95, 99], "notes": "Kanto Starter" },
+            { "name": "Lugia",      "chance": 0.5,   "levelRange": [99, 99], "notes": "Guardian of the Seas!" },
+            { "name": "Ho-Oh",      "chance": 0.5,   "levelRange": [99, 99], "notes": "Guardian of the Skies!" }
+        ],
+        "moneyMultiplier": 11.0,
+        "avgLevelRequirement": 90
+    },
+    "22": {
+        "name": "Johto Route 29",
+        "description": "A grassy path connecting New Bark Town to Cherrygrove City. (Lv.2-5)",
+        "pokemon": [
+            { "name": "Sentret",  "chance": 40, "levelRange": [2, 4] },
+            { "name": "Hoothoot", "chance": 40, "levelRange": [2, 5], "notes": "More common at night" },
+            { "name": "Pidgey",   "chance": 10, "levelRange": [2, 3] },
+            { "name": "Rattata",  "chance": 10, "levelRange": [2, 3] }
+        ],
+        "moneyMultiplier": 1.0,
+        "avgLevelRequirement": 0
+    },
+    "23": {
+        "name": "Sprout Tower (Johto)",
+        "description": "A tall, swaying tower in Violet City, training ground for monks and their Bellsprout. (Lv.3-7)",
+        "pokemon": [
+            { "name": "Rattata",    "chance": 50, "levelRange": [3, 6] },
+            { "name": "Bellsprout", "chance": 40, "levelRange": [3, 7], "notes": "Tower's main inhabitant" },
+            { "name": "Gastly",     "chance": 10, "levelRange": [5, 7], "notes": "Appears at night" }
+        ],
+        "moneyMultiplier": 1.2,
+        "avgLevelRequirement": 5
+    },
+    "24": {
+        "name": "Ilex Forest (Johto)",
+        "description": "A dark and mysterious forest that houses the shrine of the Forest's protector. (Lv.5-10)",
+        "pokemon": [
+            { "name": "Caterpie", "chance": 20, "levelRange": [5, 8] },
+            { "name": "Weedle",   "chance": 20, "levelRange": [5, 8] },
+            { "name": "Metapod",  "chance": 10, "levelRange": [6, 9] },
+            { "name": "Kakuna",   "chance": 10, "levelRange": [6, 9] },
+            { "name": "Paras",    "chance": 20, "levelRange": [5, 10] },
+            { "name": "Oddish",   "chance": 15, "levelRange": [6, 9] },
+            { "name": "Hoothoot", "chance": 4,  "levelRange": [7, 10], "notes": "Nocturnal" },
+            { "name": "Celebi",   "chance": 1,  "levelRange": [10, 10], "notes": "Mythical Guardian?!" }
+        ],
+        "moneyMultiplier": 1.8,
+        "avgLevelRequirement": 12
+    },
+    "25": {
+        "name": "Mt. Mortar - Inner Caves (Johto)",
+        "description": "A vast cave system with multiple entrances and complex tunnels. Strong Pokémon dwell deep within. (Lv.25-40)",
+        "pokemon": [
+            { "name": "Geodude",  "chance": 20, "levelRange": [25, 30] },
+            { "name": "Zubat",    "chance": 20, "levelRange": [25, 30] },
+            { "name": "Machop",   "chance": 15, "levelRange": [28, 35] },
+            { "name": "Golbat",   "chance": 15, "levelRange": [30, 38] },
+            { "name": "Graveler", "chance": 10, "levelRange": [30, 38] },
+            { "name": "Marill",   "chance": 10, "levelRange": [25, 32] },
+            { "name": "Tyrogue",  "chance": 5,  "levelRange": [30, 35], "notes": "Rare Fighting type" },
+            { "name": "Ursaring", "chance": 5,  "levelRange": [35, 40], "notes": "Powerful Bear" }
+        ],
+        "moneyMultiplier": 3.5,
+        "avgLevelRequirement": 35
+    },
+    "26": {
+        "name": "Whirl Islands - Depths (Johto)",
+        "description": "A set of four islands between Olivine and Cianwood. Deep within its caves, a legendary Pokémon is said to reside. (Lv.40-55)",
+        "pokemon": [
+            { "name": "Seel",     "chance": 25, "levelRange": [40, 48] },
+            { "name": "Krabby",   "chance": 20, "levelRange": [40, 48] },
+            { "name": "Horsea",   "chance": 20, "levelRange": [42, 50] },
+            { "name": "Tentacruel","chance":15, "levelRange": [45, 52] },
+            { "name": "Kingler",  "chance": 10, "levelRange": [45, 52] },
+            { "name": "Seadra",   "chance": 9,  "levelRange": [48, 55] },
+            { "name": "Lugia",    "chance": 1,  "levelRange": [55, 55], "notes": "Guardian of the Whirl Islands!" }
+        ],
+        "moneyMultiplier": 6.5,
+        "avgLevelRequirement": 50
+    },
+    "27": {
+        "name": "Mt. Silver Peak (Johto/Kanto Border)",
+        "description": "The highest point of Mt. Silver, accessible only to those who have conquered the Indigo League. Extremely powerful Pokémon live here. (Lv.70-90)",
+        "pokemon": [
+            { "name": "Donphan",   "chance": 20, "levelRange": [70, 80] },
+            { "name": "Ursaring",  "chance": 15, "levelRange": [70, 80] },
+            { "name": "Magcargo",  "chance": 15, "levelRange": [72, 82] },
+            { "name": "Misdreavus","chance": 10, "levelRange": [75, 85] },
+            { "name": "Houndoom",  "chance": 10, "levelRange": [75, 85] },
+            { "name": "Sneasel",   "chance": 10, "levelRange": [78, 88] },
+            { "name": "Pupitar",   "chance": 5,  "levelRange": [70, 75], "notes": "Evolves into Tyranitar" },
+            { "name": "Larvitar",  "chance": 5,  "levelRange": [65, 70], "notes": "Rare find" },
+            { "name": "Raikou",    "chance": 1,  "levelRange": [80, 80], "notes": "Legendary Beast!" },
+            { "name": "Entei",     "chance": 1,  "levelRange": [80, 80], "notes": "Legendary Beast!" },
+            { "name": "Suicune",   "chance": 1,  "levelRange": [80, 80], "notes": "Legendary Beast!" },
+            { "name": "Tyranitar", "chance": 2,  "levelRange": [85, 90], "notes": "Apex Predator" }
         ],
         "moneyMultiplier": 11.0,
         "avgLevelRequirement": 90

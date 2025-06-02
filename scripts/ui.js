@@ -183,7 +183,6 @@ function _updatePlayerStatsDisplay() {
             }
         }
     }
-
     const uniqueShinySpecies = new Set();
     const allPlayerPokemon = [...gameState.party.filter(p => p), ...gameState.allPokemon.filter(p => p)];
 
@@ -204,20 +203,20 @@ function _updatePlayerStatsDisplay() {
     document.getElementById('money').textContent = formatNumberWithDots(gameState.money) + "₽";
 
     // Update item bar displays using the helper
-    setItemBarDisplay('pokeball', gameState.pokeballs.pokeball, true); // Always show Poké Balls
-    setItemBarDisplay('greatball', gameState.pokeballs.greatball);
-    setItemBarDisplay('ultraball', gameState.pokeballs.ultraball);
-    setItemBarDisplay('masterball', gameState.pokeballs.masterball);
-
-    setItemBarDisplay('potion', gameState.items.potion || 0);
-    setItemBarDisplay('hyperpotion', gameState.items.hyperpotion || 0);
-    setItemBarDisplay('moomoomilk', gameState.items.moomoomilk || 0);
-    setItemBarDisplay('firestone', gameState.items.firestone || 0);
-    setItemBarDisplay('waterstone', gameState.items.waterstone || 0);
-    setItemBarDisplay('thunderstone', gameState.items.thunderstone || 0);
-    setItemBarDisplay('moonstone', gameState.items.moonstone || 0);
-    setItemBarDisplay('leafstone', gameState.items.leafstone || 0);
-    setItemBarDisplay('rarecandy', gameState.items.rarecandy || 0);
+    // Pokéballs
+    for (const ballId in gameState.pokeballs) {
+        if (Object.hasOwnProperty.call(gameState.pokeballs, ballId)) {
+            const count = gameState.pokeballs[ballId];
+            const alwaysShow = (ballId === 'pokeball'); // Poké Balls are always shown
+            setItemBarDisplay(ballId, count, alwaysShow);
+        }
+    }
+    // Other items
+    for (const itemId in gameState.items) {
+        if (Object.hasOwnProperty.call(gameState.items, itemId)) {
+            setItemBarDisplay(itemId, gameState.items[itemId] || 0);
+        }
+    }
 }
 
 // Helper function to update main action buttons (Fight, Catch, Auto-Fight, Route)
@@ -365,8 +364,8 @@ function _updateShopInterface() {
             if (tooltipEl) tooltipEl.textContent = ballInfo.description || ballInfo.name;
         }
     }
-    for (const itemId in itemData) { // Renamed from potionId, potionData
-        const itemInfo = itemData[itemId]; // Renamed from potionInfo
+    for (const itemId in itemData) { 
+        const itemInfo = itemData[itemId]; 
         const shopItemEl = document.getElementById(`shop-item-${itemId}`);
         if (shopItemEl && itemInfo) {
             const nameSpan = shopItemEl.querySelector('span');
@@ -382,50 +381,22 @@ function _updateShopInterface() {
 // Helper function to update item bar tooltips
 function _updateItemBarTooltips() {
     const itemDisplayElements = document.querySelectorAll('.items-bar .item-display');
+
     itemDisplayElements.forEach(itemEl => {
-        let description = '';
-        let tooltipEl = null;
-        if (itemEl.querySelector('#pokeballs-standard')) {
-            tooltipEl = document.getElementById('tooltip-itembar-pokeball');
-            if (pokeballData.pokeball) description = pokeballData.pokeball.description || pokeballData.pokeball.name;
-        } else if (itemEl.querySelector('#pokeballs-great')) {
-            tooltipEl = document.getElementById('tooltip-itembar-greatball');
-            if (pokeballData.greatball) description = pokeballData.greatball.description || pokeballData.greatball.name;
-        } else if (itemEl.querySelector('#pokeballs-ultra')) {
-            tooltipEl = document.getElementById('tooltip-itembar-ultraball');
-            if (pokeballData.ultraball) description = pokeballData.ultraball.description || pokeballData.ultraball.name;
-        } else if (itemEl.querySelector('#pokeballs-master')) {
-            tooltipEl = document.getElementById('tooltip-itembar-masterball');
-            if (pokeballData.masterball) description = pokeballData.masterball.description || pokeballData.masterball.name;
-        } else if (itemEl.querySelector('#item-count-potion')) { // Renamed ID
-            tooltipEl = document.getElementById('tooltip-itembar-potion'); // Assuming tooltip ID remains based on item ID
-            if (itemData.potion) description = itemData.potion.description || itemData.potion.name; // Renamed potionData
-        } else if (itemEl.querySelector('#item-count-hyperpotion')) { // Renamed ID
-            tooltipEl = document.getElementById('tooltip-itembar-hyperpotion');
-            if (itemData.hyperpotion) description = itemData.hyperpotion.description || itemData.hyperpotion.name; // Renamed potionData
-        } else if (itemEl.querySelector('#item-count-moomoomilk')) { // Renamed ID
-            tooltipEl = document.getElementById('tooltip-itembar-moomoomilk');
-            if (itemData.moomoomilk) description = itemData.moomoomilk.description || itemData.moomoomilk.name; // Renamed potionData
-        } else if (itemEl.querySelector('#item-count-firestone')) {
-            tooltipEl = document.getElementById('tooltip-itembar-firestone');
-            if (itemData.firestone) description = itemData.firestone.description || itemData.firestone.name;
-        } else if (itemEl.querySelector('#item-count-waterstone')) {
-            tooltipEl = document.getElementById('tooltip-itembar-waterstone');
-            if (itemData.waterstone) description = itemData.waterstone.description || itemData.waterstone.name;
-        } else if (itemEl.querySelector('#item-count-thunderstone')) {
-            tooltipEl = document.getElementById('tooltip-itembar-thunderstone');
-            if (itemData.thunderstone) description = itemData.thunderstone.description || itemData.thunderstone.name;
-        } else if (itemEl.querySelector('#item-count-moonstone')) {
-            tooltipEl = document.getElementById('tooltip-itembar-moonstone');
-            if (itemData.moonstone) description = itemData.moonstone.description || itemData.moonstone.name;
-        } else if (itemEl.querySelector('#item-count-leafstone')) {
-            tooltipEl = document.getElementById('tooltip-itembar-leafstone');
-            if (itemData.leafstone) description = itemData.leafstone.description || itemData.leafstone.name;
-        } else if (itemEl.querySelector('#item-count-rarecandy')) {
-            tooltipEl = document.getElementById('tooltip-itembar-rarecandy');
-            if (itemData.rarecandy) description = itemData.rarecandy.description || itemData.rarecandy.name;
+        const itemId = itemEl.dataset.itemId; // Get itemId from data-item-id attribute
+        if (!itemId) return; // Skip if no itemId found on the element
+
+        const tooltipEl = document.getElementById(`tooltip-itembar-${itemId}`);
+        if (!tooltipEl) return; // Skip if the corresponding tooltip element doesn't exist
+
+        const itemInfo = itemData[itemId] || pokeballData[itemId]; // Check both itemData and pokeballData
+        let description = 'Item information not available.'; // Default description
+
+        if (itemInfo) {
+            description = itemInfo.description || itemInfo.name || description; // Use description, fallback to name, then to default
         }
-        if (tooltipEl && description) tooltipEl.textContent = description;
+
+        tooltipEl.textContent = description;
     });
 }
 

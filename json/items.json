@@ -108,7 +108,50 @@
                 "evolvesTo": "Wigglytuff"
             }
         ],
-        "image": "sprites/items/moon-stone.png"
+        "image": "sprites/items/moon-stone.png",
+        "evolutionTargets": [
+            {
+                "pokemon": "Nidorina",
+                "evolvesTo": "Nidoqueen"
+            },
+            {
+                "pokemon": "Nidorino",
+                "evolvesTo": "Nidoking"
+            },
+            {
+                "pokemon": "Clefairy",
+                "evolvesTo": "Clefable"
+            },
+            {
+                "pokemon": "Jigglypuff",
+                "evolvesTo": "Wigglytuff"
+            },
+            {
+                "pokemon": "Eevee",
+                "evolvesTo": "Umbreon"
+            }
+        ]
+    },
+    "sunstone": {
+        "name": "Sun Stone",
+        "cost": 3000,
+        "description": "A peculiar stone that makes certain species of Pokémon evolve. It glows like the sun.",
+        "effectType": "evolution_item",
+        "evolutionTargets": [
+            {
+                "pokemon": "Gloom",
+                "evolvesTo": "Bellossom"
+            },
+            {
+                "pokemon": "Sunkern",
+                "evolvesTo": "Sunflora"
+            },
+            {
+                "pokemon": "Eevee",
+                "evolvesTo": "Espeon"
+            }
+        ],
+        "image": "sprites/items/sun-stone.png"
     },
     "leafstone": {
         "name": "Leaf Stone",
@@ -133,9 +176,70 @@
     },
     "rarecandy": {
         "name": "Rare Candy",
+        "cost": 4800,
         "description": "A candy that raises the level of a Pokémon by one.",
         "effectType": "level_up",
         "effectValue": 1,
         "image": "sprites/items/rare-candy.png"
+    },
+    "kingsrock": {
+        "name": "King's Rock",
+        "cost": 5000,
+        "description": "A crown-like rock that makes certain species of Pokémon evolve. It's fit for a king.",
+        "effectType": "evolution_item",
+        "evolutionTargets": [
+            {
+                "pokemon": "Poliwhirl",
+                "evolvesTo": "Politoed"
+            },
+            {
+                "pokemon": "Slowpoke",
+                "evolvesTo": "Slowking"
+            }
+        ],
+        "image": "sprites/items/kings-rock.png"
+    },
+    "metalcoat": {
+        "name": "Metal Coat",
+        "cost": 5000,
+        "description": "A special metallic film that makes certain species of Pokémon evolve. It's very hard.",
+        "effectType": "evolution_item",
+        "evolutionTargets": [
+            {
+                "pokemon": "Onix",
+                "evolvesTo": "Steelix"
+            },
+            {
+                "pokemon": "Scyther",
+                "evolvesTo": "Scizor"
+            }
+        ],
+        "image": "sprites/items/metal-coat.png"
+    },
+    "dragonscale": {
+        "name": "Dragon Scale",
+        "cost": 5000,
+        "description": "A tough, beautiful scale that makes certain species of Pokémon evolve. It is imbued with dragon power.",
+        "effectType": "evolution_item",
+        "evolutionTargets": [
+            {
+                "pokemon": "Seadra",
+                "evolvesTo": "Kingdra"
+            }
+        ],
+        "image": "sprites/items/dragon-scale.png"
+    },
+    "upgrade": {
+        "name": "Up-Grade",
+        "cost": 5000,
+        "description": "A transparent device filled with all sorts of data. It makes a certain species of Pokémon evolve.",
+        "effectType": "evolution_item",
+        "evolutionTargets": [
+            {
+                "pokemon": "Porygon",
+                "evolvesTo": "Porygon2"
+            }
+        ],
+        "image": "sprites/items/up-grade.png"
     }
 }
