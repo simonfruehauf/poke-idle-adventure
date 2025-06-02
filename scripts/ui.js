@@ -384,19 +384,19 @@ function _updateItemUseButtons() { // Renamed from _updatePotionUseButtons
     const activePokemon = getActivePokemon();
 
     if (usePotionBtn) {
-        const activePokemonNeedsPotion = activePokemon && activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp;
+        const activePokemonNeedsPotion = activePokemon && activePokemon.currentHp < activePokemon.maxHp; // Can use if not full HP (includes fainted)
         usePotionBtn.disabled = !canUseItem || !activePokemonNeedsPotion || gameState.items.potion <= 0; // Renamed gameState.potions
         usePotionBtn.style.display = gameState.items.potion > 0 ? '' : 'none'; // Renamed gameState.potions
         usePotionBtn.textContent = `Use Potion (${gameState.items.potion})`; // Renamed gameState.potions
     }
     if (useHyperPotionBtn) {
-        const activePokemonNeedsHyperPotion = activePokemon && activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp;
+        const activePokemonNeedsHyperPotion = activePokemon && activePokemon.currentHp < activePokemon.maxHp; // Can use if not full HP (includes fainted)
         useHyperPotionBtn.disabled = !canUseItem || !activePokemonNeedsHyperPotion || gameState.items.hyperpotion <= 0; // Renamed gameState.potions
         useHyperPotionBtn.style.display = gameState.items.hyperpotion > 0 ? '' : 'none'; // Renamed gameState.potions
         useHyperPotionBtn.textContent = `Use Hyper Potion (${gameState.items.hyperpotion})`; // Renamed gameState.potions
     }
     if (useMoomooMilkBtn) {
-        const partyNeedsHealing = gameState.party.some(p => p && p.currentHp > 0 && p.currentHp < p.maxHp);
+        const partyNeedsHealing = gameState.party.some(p => p && p.currentHp < p.maxHp); // Can use if any party member is not full HP (includes fainted)
         useMoomooMilkBtn.disabled = !canUseItem || !partyNeedsHealing || gameState.items.moomoomilk <= 0; // Changed gameState.potions to gameState.items
         useMoomooMilkBtn.style.display = gameState.items.moomoomilk > 0 ? '' : 'none'; // Changed gameState.potions to gameState.items
         useMoomooMilkBtn.textContent = `Use Moomoo Milk (${gameState.items.moomoomilk})`; // Changed gameState.potions to gameState.items

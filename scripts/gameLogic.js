@@ -470,15 +470,15 @@ export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
     }
     let healedSomething = false; const activePokemon = getActivePokemon();
     if (itemInfo.effectType === 'active_pokemon_percentage' && activePokemon) {
-        if (activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp) {
+        if (activePokemon.currentHp < activePokemon.maxHp) { // Allow healing/reviving if not full HP
             activePokemon.healPartial(itemInfo.effectValue); healedSomething = true;
         }
     } else if (itemInfo.effectType === 'active_pokemon_full' && activePokemon) {
-        if (activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp) {
+        if (activePokemon.currentHp < activePokemon.maxHp) { // Allow healing/reviving if not full HP
             activePokemon.heal(); healedSomething = true;
         }
     } else if (itemInfo.effectType === 'party_full') {
-        gameState.party.forEach(p => { if (p && p.currentHp > 0 && p.currentHp < p.maxHp) { p.heal(); healedSomething = true; }});
+        gameState.party.forEach(p => { if (p && p.currentHp < p.maxHp) { p.heal(); healedSomething = true; }}); // Allow healing/reviving if not full HP
     }
     // Handle Evolution Items
     else if (itemInfo.effectType === 'evolution_item' && activePokemon) {

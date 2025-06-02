@@ -28,9 +28,18 @@
         "description": "A peculiar stone that makes certain species of Pokémon evolve. It has a fiery orange heart.",
         "effectType": "evolution_item",
         "evolutionTargets": [
-            { "pokemon": "Eevee", "evolvesTo": "Flareon" },
-            { "pokemon": "Vulpix", "evolvesTo": "Ninetales" },
-            { "pokemon": "Growlithe", "evolvesTo": "Arcanine" }
+            {
+                "pokemon": "Eevee",
+                "evolvesTo": "Flareon"
+            },
+            {
+                "pokemon": "Vulpix",
+                "evolvesTo": "Ninetales"
+            },
+            {
+                "pokemon": "Growlithe",
+                "evolvesTo": "Arcanine"
+            }
         ],
         "image": "sprites/items/fire-stone.png"
     },
@@ -40,10 +49,22 @@
         "description": "A peculiar stone that makes certain species of Pokémon evolve. It is a clear, light blue.",
         "effectType": "evolution_item",
         "evolutionTargets": [
-            { "pokemon": "Eevee", "evolvesTo": "Vaporeon" },
-            { "pokemon": "Poliwhirl", "evolvesTo": "Poliwrath" },
-            { "pokemon": "Shellder", "evolvesTo": "Cloyster" },
-            { "pokemon": "Staryu", "evolvesTo": "Starmie" }
+            {
+                "pokemon": "Eevee",
+                "evolvesTo": "Vaporeon"
+            },
+            {
+                "pokemon": "Poliwhirl",
+                "evolvesTo": "Poliwrath"
+            },
+            {
+                "pokemon": "Shellder",
+                "evolvesTo": "Cloyster"
+            },
+            {
+                "pokemon": "Staryu",
+                "evolvesTo": "Starmie"
+            }
         ],
         "image": "sprites/items/water-stone.png"
     },
@@ -52,20 +73,40 @@
         "cost": 2100,
         "description": "A peculiar stone that makes certain species of Pokémon evolve. It has a thunderbolt pattern.",
         "effectType": "evolution_item",
-        "evolutionTargets": [ { "pokemon": "Eevee", "evolvesTo": "Jolteon" }, { "pokemon": "Pikachu", "evolvesTo": "Raichu" } ],
+        "evolutionTargets": [
+            {
+                "pokemon": "Eevee",
+                "evolvesTo": "Jolteon"
+            },
+            {
+                "pokemon": "Pikachu",
+                "evolvesTo": "Raichu"
+            }
+        ],
         "image": "sprites/items/thunder-stone.png"
-    }
-,
+    },
     "moonstone": {
         "name": "Moon Stone",
         "cost": 3000,
         "description": "A peculiar stone that makes certain species of Pokémon evolve. It is as black as the night sky.",
         "effectType": "evolution_item",
         "evolutionTargets": [
-            { "pokemon": "Nidorina", "evolvesTo": "Nidoqueen" },
-            { "pokemon": "Nidorino", "evolvesTo": "Nidoking" },
-            { "pokemon": "Clefairy", "evolvesTo": "Clefable" },
-            { "pokemon": "Jigglypuff", "evolvesTo": "Wigglytuff" }
+            {
+                "pokemon": "Nidorina",
+                "evolvesTo": "Nidoqueen"
+            },
+            {
+                "pokemon": "Nidorino",
+                "evolvesTo": "Nidoking"
+            },
+            {
+                "pokemon": "Clefairy",
+                "evolvesTo": "Clefable"
+            },
+            {
+                "pokemon": "Jigglypuff",
+                "evolvesTo": "Wigglytuff"
+            }
         ],
         "image": "sprites/items/moon-stone.png"
     },
@@ -75,10 +116,27 @@
         "description": "A peculiar stone that makes certain species of Pokémon evolve. It has an engraving of a leaf.",
         "effectType": "evolution_item",
         "evolutionTargets": [
-            { "pokemon": "Gloom", "evolvesTo": "Vileplume" },
-            { "pokemon": "Weepinbell", "evolvesTo": "Victreebel" },
-            { "pokemon": "Exeggcute", "evolvesTo": "Exeggutor" }
+            {
+                "pokemon": "Gloom",
+                "evolvesTo": "Vileplume"
+            },
+            {
+                "pokemon": "Weepinbell",
+                "evolvesTo": "Victreebel"
+            },
+            {
+                "pokemon": "Exeggcute",
+                "evolvesTo": "Exeggutor"
+            }
         ],
         "image": "sprites/items/leaf-stone.png"
+    },
+    "rarecandy": {
+        "name": "Rare Candy",
+        "cost": 5000,
+        "description": "A candy that raises the level of a Pokémon by one.",
+        "effectType": "level_up_active_pokemon",
+        "effectValue": 1,
+        "shopVisible": false
     }
 }
