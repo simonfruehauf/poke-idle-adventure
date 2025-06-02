@@ -176,10 +176,9 @@ export async function battle() {
     if (secondAttackerFainted) {
         await handleFaint(secondAttacker, firstAttacker, !firstIsPlayer, currentRouteData);
         gameState.battleInProgress = false;
-        if (!firstIsPlayer && (!getActivePokemon() || getActivePokemon().currentHp <= 0)) { // Player's Pokemon fainted and no healthy ones left
-            if (gameState.currentRoute !== null) leaveCurrentRoute();
-        }
-        updateDisplay();
+        // If all player Pokemon fainted, handleFaint would call leaveCurrentRoute.
+        // updateDisplay is called by handleFaint or leaveCurrentRoute, but an extra one here ensures UI is current.
+        updateDisplay(); 
         return;
     }
 
@@ -193,9 +192,7 @@ export async function battle() {
 
         if (firstAttackerFainted) {
             await handleFaint(firstAttacker, secondAttacker, firstIsPlayer, currentRouteData);
-            if (firstIsPlayer && (!getActivePokemon() || getActivePokemon().currentHp <= 0)) { // Player's Pokemon fainted and no healthy ones left
-                if (gameState.currentRoute !== null) leaveCurrentRoute();
-            }
+            // If all player Pokemon fainted, handleFaint would call leaveCurrentRoute.
         }
     }
     gameState.battleInProgress = false;
@@ -220,7 +217,17 @@ export async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlaye
             addBattleLog(`Go, ${nextPokemon.name}!`);
         } else {
             addBattleLog("All your Pokemon fainted!");
-            if (gameState.autoBattleActive) toggleAutoFight();
+            gameState.battleInProgress = false; // Crucial: The battle ends for the player here.
+            if (gameState.autoBattleActive) {
+                toggleAutoFight(); // Stop auto-fight
+            }
+            // If on a route and all Pokemon fainted, leave the route.
+            if (gameState.currentRoute !== null) {
+                leaveCurrentRoute();
+            } else {
+                // If not on a route (e.g. fainted during a non-route tutorial battle), still update UI.
+                updateDisplay();
+            }
         }
     } else {
         const baseExp = faintedPokemon.level * 20;
@@ -297,10 +304,9 @@ export function attemptCatch(ballId = 'pokeball') {
                 const playerDefeated = playerPokemon.takeDamage(wildDamage);
                 addBattleLog(`${wildPokemon.name} deals ${wildDamage} damage to ${playerPokemon.name}!`);
                 if (playerDefeated) {
-                    updateDisplay(); await new Promise(resolve => setTimeout(resolve, 1200));
-                    addBattleLog(`${playerPokemon.name} fainted!`);
-                    const nextPokemon = findNextHealthyPokemon();
-                    if (nextPokemon) { gameState.activePokemonIndex = gameState.party.indexOf(nextPokemon); addBattleLog(`Go, ${nextPokemon.name}!`); }
+                    // Call handleFaint to manage the player's Pokemon fainting.
+                    // This will also handle the "all Pokemon fainted" scenario, including leaving the route.
+                    await handleFaint(playerPokemon, wildPokemon, true, routes[gameState.currentRoute]);
                 }
             }
         }
