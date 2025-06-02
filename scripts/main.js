@@ -1,8 +1,8 @@
 // main.js
 import { gameState, routes } from './state.js'; // routes might be needed if initGame directly manipulates it
 import { loadGameData } from './dataService.js';
-import { loadGame, saveGame, manualSaveGame, confirmClearSave, exportSaveData, importSaveData, handlePastedImportData } from './saveLoad.js';
-import { showStarterSelectionModal, updateDisplay, populateRouteSelector, addToPartyDialog, confirmReleasePokemon as confirmReleasePokemonUI, showExportModal, closeExportModal, copyExportDataToClipboard, showImportModal, closeImportModal, processImportDataFromModal, handlePokemonSpriteClick, closePokemonImageModal } from './ui.js'; // Removed unused confirmReleasePokemonUI
+import { loadGame, saveGame, manualSaveGame, confirmClearSave, exportSaveData, importSaveData, handlePastedImportData } from './saveLoad.js'; // Removed unused confirmReleasePokemonUI
+import { showStarterSelectionModal, updateDisplay, populateRouteSelector, addToPartyDialog, confirmReleasePokemon as confirmReleasePokemonUI, showExportModal, closeExportModal, copyExportDataToClipboard, showImportModal, closeImportModal, processImportDataFromModal, handlePokemonSpriteClick, closePokemonImageModal, togglePcDrawer } from './ui.js';
 import { manualBattle, attemptCatch, toggleAutoFight, buyBall, buyXpShareUpgrade, buyItem, useItem, handleRouteChange, leaveCurrentRoute, setActivePokemon, removeFromParty, attemptEvolution, freeFullHeal, cheatAddPokemon, cheatAddMoney } from './gameLogic.js'; // Renamed buyPotion, usePotion
 import { addBattleLog } from './utils.js';
 
@@ -107,6 +107,7 @@ window.processImportDataFromModal = processImportDataFromModal; // From ui.js
 window.handlePokemonSpriteClick = handlePokemonSpriteClick; // For sprite clicks
 window.closePokemonImageModal = closePokemonImageModal; // To close the image modal
 window.freeFullHeal = freeFullHeal;
+window.togglePcDrawer = togglePcDrawer; // For the new PC Drawer
 window.cheatAddPokemon = cheatAddPokemon; // Expose cheat function
 window.cheatAddMoney = cheatAddMoney; // Expose money cheat function
 

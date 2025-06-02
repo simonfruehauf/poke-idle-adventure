@@ -201,6 +201,8 @@
                     Free Full Heal
                 </button>
             </div>
+            <button class="panel pc-button btn secondary" onclick="window.togglePcDrawer()">PC</button>
+
             <div class="panel shop-panel"> <!-- New Shop Panel -->
                 <h2>Poké Mart</h2>
                 <div class="shop-sections-container">
@@ -289,8 +291,11 @@
                     </div>
                 </div>
             </div>
-            <div class="panel team-area">
-                <h2>PC</h2>
+            <div class="panel team-area" id="pc-drawer">
+                <div class="drawer-header">
+                    <h2>PC</h2>
+                    <button class="btn small close-drawer-btn" onclick="window.togglePcDrawer()">Close</button>
+                </div>
                 <div id="team-list">
                     <div style="text-align: center; color: #ccc; margin-top: 50px;">
                         No Pokemon caught yet!<br>
@@ -447,7 +452,7 @@
 </body>
 <footer>
     <div id="game-version">
-        v0.7.1
+        v0.7.5
     </div>
 </footer>
 

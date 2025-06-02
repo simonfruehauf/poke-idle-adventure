@@ -793,6 +793,23 @@ export function closePokemonImageModal() {
     if (modal) modal.style.display = 'none';
 }
 
+export function togglePcDrawer() {
+    const pcDrawer = document.getElementById('pc-drawer');
+    const body = document.body; // To potentially add an overlay class
+
+    if (pcDrawer) {
+        pcDrawer.classList.toggle('open');
+
+        // Optional: Add/remove a class on the body for an overlay or to disable body scroll
+        if (pcDrawer.classList.contains('open')) {
+            // body.classList.add('pc-drawer-overlay-active'); // Example for an overlay
+            // body.style.overflow = 'hidden'; // To prevent background scroll
+        } else {
+            // body.classList.remove('pc-drawer-overlay-active');
+            // body.style.overflow = ''; // Restore body scroll
+        }
+    }
+}
 export function populateRouteSelector() {
     const routeSelect = document.getElementById('route-select');
     if (!routeSelect) return;

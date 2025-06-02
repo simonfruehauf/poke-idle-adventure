@@ -91,11 +91,23 @@ body {
 
 .game-area {
     display: grid;
-    /* Items bar (narrow) | Main Content 1 | Main Content 2 */
-    grid-template-columns: minmax(120px, 0.2fr) 1fr 1fr;
-    grid-template-rows: auto auto;
-    /* Added for 2x2 grid */
+    grid-template-areas: 
+        "items-bar battle-area party-area"
+        "items-bar battle-area pc-button"
+        "items-bar shop-area shop-area";
     gap: 20px;
+}
+.items-bar {
+    grid-area: items-bar;
+}
+.battle-area {
+    grid-area: battle-area;
+}
+.pc-button {
+    grid-area: pc-button;
+}
+.shop-panel {
+    grid-area: shop-area;
 }
 
 .panel {
@@ -104,6 +116,7 @@ body {
     padding: 20px;
     backdrop-filter: blur(10px);
 }
+
 
 /* Add these styles to your css/style.css file */
 /* Styles for Export and Import Save Modals */
@@ -207,38 +220,10 @@ body {
     /* Remove grayscale if caught */
 }
 
-/* Grid areas for panels. Items bar is now on the left. */
-/* Row 1 */
-.items-bar {
-    grid-area: 1 / 1 / 3 / 2;
-}
 
-/* Spans both rows in the 1st column */
-.battle-area {
-    grid-area: 1 / 2 / 2 / 3;
-}
-
-/* Was 1/1, now 1/2 */
-.party-area {
-    grid-area: 1 / 3 / 2 / 4;
-}
-
-/* Was 1/2, now 1/3 */
-/* Row 2 */
-.shop-panel {
-    grid-area: 2 / 2 / 3 / 4;
-}
-
-/* Was 2/1, now 2/2 */
-.team-area {
-    grid-area: 3 / 1 / 4 / 4;
-}
-
-/* Was 2/2, now 2/3 */
-
-/* .items-bar styling remains largely the same, only its grid-area changes */
 /* .items-bar is defined above with its new grid-area */
 .items-bar {
+    grid-area: items-bar;
     /* Panel-like styles (consistent with .panel) */
     background: var(--panel-bg);
     border-radius: 15px;
@@ -271,6 +256,7 @@ footer {
 }
 
 .item-display {
+
     display: flex;
     position: relative;
     /* Ensure this is set for custom tooltip positioning */
@@ -463,19 +449,7 @@ footer {
     /* Using border color for hover for slight difference */
 }
 
-.route-btn.active {
-    background: var(--button-active-gradient);
-    border-color: var(--button-secondary-gradient);
-    /* Assuming active uses secondary theme */
-}
 
-.team-area {
-    /* Party area will no longer have a fixed max-height or scrollbar */
-    max-height: 500px;
-    overflow-y: auto;
-}
-
-/* .party-area styling is now separate if specific rules are needed beyond panel defaults */
 
 .pokemon-card {
     background: var(--interactive-bg);
@@ -827,4 +801,56 @@ footer {
     /* If you display names */
     font-weight: bold;
     font-size: 16px;
+}
+
+/* PC Drawer Styles */
+.team-area { /* This is the main drawer container, id="pc-drawer" */
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70vh; /* Adjust as desired, e.g., 70% of viewport height */
+    max-height: 480px; /* Maximum height of the drawer */
+    background: var(--modal-bg); /* Consistent with other popups like starter selection */
+    border-top: 2px solid var(--accent-color);
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.3); /* Shadow at the top */
+    transform: translateY(100%); /* Initially hidden below the viewport */
+    transition: transform 0.3s ease-in-out;
+    z-index: 1500; /* Below modals (z-index: 2000) but above most other content */
+    display: flex;
+    flex-direction: column;
+    /* padding: 0; Padding will be handled by inner elements if needed */
+}
+
+.team-area.open {
+    transform: translateY(0); /* Slide in to be visible */
+}
+
+.team-area .drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 20px;
+    background: var(--panel-bg-light); /* A slightly different background for the header */
+    border-bottom: 1px solid var(--interactive-border);
+    flex-shrink: 0; /* Prevent header from shrinking if content is too large */
+}
+
+.team-area .drawer-header h2 {
+    margin: 0; /* Remove default h2 margin */
+    font-size: 1.2em;
+    color: var(--accent-color);
+}
+
+/* Styles for the close button within the drawer header */
+.team-area .close-drawer-btn {
+    /* .btn and .small classes from existing styles will apply */
+    /* Add specific overrides if needed, e.g., for a more subtle look */
+}
+
+/* This is the scrollable content area within the drawer */
+#team-list {
+    flex-grow: 1; /* Allows the list to take up available vertical space */
+    overflow-y: auto; /* Enables scrolling for the Pokémon list */
+    padding: 15px; /* Padding around the Pokémon cards */
 }
