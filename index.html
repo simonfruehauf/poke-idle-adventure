@@ -16,10 +16,12 @@
             <h1>Pokemon Idle Adventure</h1>
 
             <div class="game-controls section" style="margin-top: 10px;">
-                <button class="btn" style="background: #2ecc71; margin-right: 5px;" onclick="window.manualSaveGame()">Save Game</button>
+                <button class="btn" style="background: #2ecc71; margin-right: 5px;"
+                    onclick="window.manualSaveGame()">Save Game</button>
                 <button class="btn secondary" onclick="window.exportSaveData()">Export Save</button>
                 <button class="btn secondary" onclick="window.importSaveData()">Import Save</button>
-                <button class="btn" onclick="window.confirmClearSave()" style="background: #e74c3c;">Clear Save Data</button>
+                <button class="btn" onclick="window.confirmClearSave()" style="background: #e74c3c;">Clear Save
+                    Data</button>
             </div>
         </div>
 
@@ -39,8 +41,6 @@
         </div>
 
         <div class="game-area">
-
-
             <div class="panel battle-area">
                 <!-- Wrapper to manage consistent height and bottom margin for route controls -->
                 <div id="route-controls-wrapper" style="margin-bottom: 10px;">
@@ -133,32 +133,37 @@
                         disabled style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
                         Use Hyper Potion (0)
                     </button>
-                    <button class="btn item-use-btn" id="use-item-moomoomilk-btn" onclick="useItem('moomoomilk')" disabled
-                        style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
+                    <button class="btn item-use-btn" id="use-item-moomoomilk-btn" onclick="useItem('moomoomilk')"
+                        disabled style="flex-grow: 1; background-color: #90ee90; color: #cecece;">
                         Use Moomoo Milk (0)
                     </button>
                 </div>
                 <!-- Evolution Stone Use Controls -->
                 <div class="controls item-controls" style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-firestone-btn" onclick="useItem('firestone')" disabled
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-firestone-btn"
+                        onclick="useItem('firestone')" disabled
                         style="flex-grow: 1; background-color: #e67e22; color: #ffffff;">
                         Use Fire Stone (0)
                     </button>
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-waterstone-btn" onclick="useItem('waterstone')"
-                        disabled style="flex-grow: 1; background-color: #3498db; color: #ffffff;">
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-waterstone-btn"
+                        onclick="useItem('waterstone')" disabled
+                        style="flex-grow: 1; background-color: #3498db; color: #ffffff;">
                         Use Water Stone (0)
                     </button>
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-thunderstone-btn" onclick="useItem('thunderstone')" disabled
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-thunderstone-btn"
+                        onclick="useItem('thunderstone')" disabled
                         style="flex-grow: 1; background-color: #f1c40f; color: #333333;">
                         Use Thunder Stone (0)
                     </button>
                     <!-- Moon and Leaf Stone Use Controls -->
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-moonstone-btn" onclick="useItem('moonstone')" disabled
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-moonstone-btn"
+                        onclick="useItem('moonstone')" disabled
                         style="flex-grow: 1; background-color: #95a5a6; color: #ffffff;">
                         Use Moon Stone (0)
                     </button>
-                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-leafstone-btn" onclick="useItem('leafstone')"
-                        disabled style="flex-grow: 1; background-color: #2ecc71; color: #ffffff;">
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-leafstone-btn"
+                        onclick="useItem('leafstone')" disabled
+                        style="flex-grow: 1; background-color: #2ecc71; color: #ffffff;">
                         Use Leaf Stone (0)
                     </button>
                 </div>
@@ -168,7 +173,6 @@
                     <div class="log-entry">Welcome to Pokemon Idle Adventure!</div>
                 </div>
             </div>
-
             <div class="panel party-area">
                 <div class="party-slots" id="party-slots">
                     <div class="party-slot" id="party-0">
@@ -197,7 +201,6 @@
                     Free Full Heal
                 </button>
             </div>
-
             <div class="panel shop-panel"> <!-- New Shop Panel -->
                 <h2>Poké Mart</h2>
                 <div class="shop-sections-container">
@@ -223,7 +226,7 @@
                         </div>
                     </div>
                     <div class="shop-section">
-                        <h3>Healing & Other</h3>
+                        <h3>Healing</h3>
                         <div class="shop-item" id="shop-item-potion">
                             <img src="sprites/items/potion.png" alt="Potion" class="shop-item-icon">
                             <span>Potion (x1)</span>
@@ -242,6 +245,9 @@
                             <button class="btn small" onclick="buyItem('moomoomilk', 1)">Buy - 80₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-moomoomilk"></div>
                         </div>
+                    </div>
+                    <div class="shop-section">
+                        <h3>Other</h3>
                         <div class="shop-item" id="exp-share-shop-item">
                             <img src="sprites/items/exp-share.png" alt="XP Share" class="shop-item-icon">
                             <span>XP Share</span>
@@ -280,11 +286,6 @@
                             <button class="btn small" onclick="buyItem('leafstone', 1)">Buy - 2.100₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-leafstone"></div>
                         </div>
-
-
-
-
-
                     </div>
                 </div>
             </div>
@@ -372,7 +373,8 @@
         </div>
     </div>
 
-    <div id="starter-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { /* No explicit close function, starter selection is mandatory */ }">
+    <div id="starter-modal" class="modal-overlay" style="display: none;"
+        onclick="if (event.target === this) { /* No explicit close function, starter selection is mandatory */ }">
         <!-- 
             Starter modal is a bit special as it resolves a promise upon selection.
             Closing it by clicking outside might interrupt the initial game flow.
@@ -386,38 +388,47 @@
         </div>
     </div>
 
-    <div id="export-save-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { window.closeExportModal(); }">
+    <div id="export-save-modal" class="modal-overlay" style="display: none;"
+        onclick="if (event.target === this) { window.closeExportModal(); }">
         <div class="modal-content">
             <h2>Export Save Data</h2>
             <p>Copy the text below and save it in a safe place.</p>
-            <textarea id="export-save-textarea" readonly rows="10" style="width: 95%; margin-bottom: 10px; resize: none; background-color: #2c3e50; color: #ecf0f1; border: 1px solid #7f8c8d; padding: 5px;"></textarea>
+            <textarea id="export-save-textarea" readonly rows="10"
+                style="width: 95%; margin-bottom: 10px; resize: none; background-color: #2c3e50; color: #ecf0f1; border: 1px solid #7f8c8d; padding: 5px;"></textarea>
             <div class="modal-actions">
                 <button class="btn" onclick="window.copyExportDataToClipboard()">Copy to Clipboard</button>
-                <button class="btn secondary" onclick="window.closeExportModal()" style="margin-left: 10px;">Close</button>
+                <button class="btn secondary" onclick="window.closeExportModal()"
+                    style="margin-left: 10px;">Close</button>
             </div>
-            <p id="copy-feedback-message" style="margin-top: 10px; color: #2ecc71; display: none;">Copied to clipboard!</p>
+            <p id="copy-feedback-message" style="margin-top: 10px; color: #2ecc71; display: none;">Copied to clipboard!
+            </p>
         </div>
     </div>
 
-    <div id="import-save-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { window.closeImportModal(); }">
+    <div id="import-save-modal" class="modal-overlay" style="display: none;"
+        onclick="if (event.target === this) { window.closeImportModal(); }">
         <div class="modal-content">
             <h2>Import Save Data</h2>
             <p>Paste your exported save data string below and click "Import".</p>
-            <textarea id="import-save-textarea" rows="10" style="width: 95%; margin-bottom: 10px; resize: none; background-color: #2c3e50; color: #ecf0f1; border: 1px solid #7f8c8d; padding: 5px;" placeholder="Paste your save data here..."></textarea>
+            <textarea id="import-save-textarea" rows="10"
+                style="width: 95%; margin-bottom: 10px; resize: none; background-color: #2c3e50; color: #ecf0f1; border: 1px solid #7f8c8d; padding: 5px;"
+                placeholder="Paste your save data here..."></textarea>
             <div class="modal-actions">
                 <button class="btn" onclick="window.processImportDataFromModal()">Import Data</button>
-                <button class="btn secondary" onclick="window.closeImportModal()" style="margin-left: 10px;">Cancel</button>
+                <button class="btn secondary" onclick="window.closeImportModal()"
+                    style="margin-left: 10px;">Cancel</button>
             </div>
             <!-- Optional: A place for feedback messages, though alerts are currently used -->
             <!-- <p id="import-feedback-message" style="margin-top: 10px; color: #e74c3c; display: none;"></p> -->
         </div>
     </div>
 
-    <div id="pokemon-image-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { window.closePokemonImageModal(); }">
+    <div id="pokemon-image-modal" class="modal-overlay" style="display: none;"
+        onclick="if (event.target === this) { window.closePokemonImageModal(); }">
         <div class="modal-content">
             <h2 id="pokemon-image-modal-title" style="margin-bottom: 15px;">Pokémon Name</h2>
-            <img id="pokemon-image-modal-sprite" src="sprites/pokemon/front/0.png" alt="Enlarged Pokémon" 
-                 style="max-width: 384px; max-height: 384px; width: auto; height: 300px; image-rendering: pixelated; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto; background-color: rgba(255,255,255,0.05); border-radius: 8px; padding:10px;">
+            <img id="pokemon-image-modal-sprite" src="sprites/pokemon/front/0.png" alt="Enlarged Pokémon"
+                style="max-width: 384px; max-height: 384px; width: auto; height: 300px; image-rendering: pixelated; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto; background-color: rgba(255,255,255,0.05); border-radius: 8px; padding:10px;">
             <div class="modal-actions">
                 <button class="btn secondary" onclick="window.closePokemonImageModal()">Close</button>
             </div>

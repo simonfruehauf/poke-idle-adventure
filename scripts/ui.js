@@ -83,6 +83,61 @@ export function getPokemonExpBarHTML(pokemon) {
 // Helper function to update general player stats display
 function _updatePlayerStatsDisplay() {
     const uniqueSpecies = new Set();
+
+    // Helper to manage visibility and count update for item bar items
+    function setItemBarDisplay(itemId, count, alwaysShow = false) {
+        let containerElement;
+        let countElementId;
+        let itemTitleForQuery; // Used for items that don't have a direct container ID
+
+        switch (itemId) {
+            case 'pokeball':
+                itemTitleForQuery = 'Poké Balls';
+                countElementId = 'pokeballs-standard';
+                break;
+            case 'greatball':
+                itemTitleForQuery = 'Great Balls';
+                countElementId = 'pokeballs-great';
+                break;
+            case 'ultraball':
+                itemTitleForQuery = 'Ultra Balls';
+                countElementId = 'pokeballs-ultra';
+                break;
+            case 'masterball':
+                containerElement = document.getElementById('itembar-display-masterball');
+                countElementId = 'itembar-masterball-count';
+                break;
+            default: // For items like potion, firestone, etc.
+                // Ensure itemData is loaded and the item exists to get its name for the title attribute
+                itemTitleForQuery = itemData[itemId] ? itemData[itemId].name : itemId.charAt(0).toUpperCase() + itemId.slice(1);
+                countElementId = `item-count-${itemId}`;
+                break;
+        }
+
+        if (itemTitleForQuery && !containerElement) {
+            // Try to find container using title attribute if not already found (e.g. for masterball)
+            containerElement = document.querySelector(`.items-bar .item-display[title="${itemTitleForQuery}"]`);
+        }
+
+        if (!containerElement && countElementId) { // Fallback if title-based query fails, try via count span
+            const countSpan = document.getElementById(countElementId);
+            if (countSpan) containerElement = countSpan.closest('.item-display');
+        }
+
+        if (containerElement) {
+            const countSpan = document.getElementById(countElementId);
+            if (countSpan) {
+                countSpan.textContent = count;
+            }
+
+            if (alwaysShow || count > 0) {
+                containerElement.style.display = ''; // Reverts to CSS default (e.g., flex)
+            } else {
+                containerElement.style.display = 'none';
+            }
+        }
+    }
+
     const uniqueShinySpecies = new Set();
     const allPlayerPokemon = [...gameState.party.filter(p => p), ...gameState.allPokemon.filter(p => p)];
 
@@ -101,42 +156,21 @@ function _updatePlayerStatsDisplay() {
     document.getElementById('pokedex-count').textContent = pokedexText;
     document.getElementById('battle-wins').textContent = gameState.battleWins;
     document.getElementById('money').textContent = formatNumberWithDots(gameState.money) + "₽";
-    document.getElementById('pokeballs-standard').textContent = gameState.pokeballs.pokeball;
-    document.getElementById('pokeballs-great').textContent = gameState.pokeballs.greatball;
-    document.getElementById('pokeballs-ultra').textContent = gameState.pokeballs.ultraball;
 
-    // Update general player stats display for Master Balls (e.g., top-left stats)
-    const masterballPlayerStatSpan = document.getElementById('pokeballs-master');
-    if (masterballPlayerStatSpan) {
-        masterballPlayerStatSpan.textContent = gameState.pokeballs.masterball;
-    }
+    // Update item bar displays using the helper
+    setItemBarDisplay('pokeball', gameState.pokeballs.pokeball, true); // Always show Poké Balls
+    setItemBarDisplay('greatball', gameState.pokeballs.greatball);
+    setItemBarDisplay('ultraball', gameState.pokeballs.ultraball);
+    setItemBarDisplay('masterball', gameState.pokeballs.masterball);
 
-    // Update item bar display for Master Balls
-    const masterballItemBarContainer = document.getElementById('itembar-display-masterball'); // The DIV container in the item bar
-    const masterballItemBarCountSpan = document.getElementById('itembar-masterball-count');   // The SPAN for the count within the item bar
-
-    if (masterballItemBarContainer) {
-        if (gameState.pokeballs.masterball > 0) {
-            masterballItemBarContainer.style.display = ''; // Show the container (CSS default like 'flex', 'inline-block')
-            if (masterballItemBarCountSpan) {
-                masterballItemBarCountSpan.textContent = gameState.pokeballs.masterball;
-            }
-        } else {
-            masterballItemBarContainer.style.display = 'none'; // Hide the container
-            if (masterballItemBarCountSpan) { // Also update count to 0 for consistency, though hidden
-                masterballItemBarCountSpan.textContent = '0';
-            }
-        }
-    }
-
-    if (document.getElementById('item-count-potion')) document.getElementById('item-count-potion').textContent = gameState.items.potion; 
-    if (document.getElementById('item-count-hyperpotion')) document.getElementById('item-count-hyperpotion').textContent = gameState.items.hyperpotion; // Renamed ID and gameState.potions
-    if (document.getElementById('item-count-moomoomilk')) document.getElementById('item-count-moomoomilk').textContent = gameState.items.moomoomilk; // Renamed ID and gameState.potions
-    if (document.getElementById('item-count-firestone')) document.getElementById('item-count-firestone').textContent = gameState.items.firestone || 0;
-    if (document.getElementById('item-count-waterstone')) document.getElementById('item-count-waterstone').textContent = gameState.items.waterstone || 0;
-    if (document.getElementById('item-count-thunderstone')) document.getElementById('item-count-thunderstone').textContent = gameState.items.thunderstone || 0;
-    if (document.getElementById('item-count-moonstone')) document.getElementById('item-count-moonstone').textContent = gameState.items.moonstone || 0;
-    if (document.getElementById('item-count-leafstone')) document.getElementById('item-count-leafstone').textContent = gameState.items.leafstone || 0;
+    setItemBarDisplay('potion', gameState.items.potion || 0);
+    setItemBarDisplay('hyperpotion', gameState.items.hyperpotion || 0);
+    setItemBarDisplay('moomoomilk', gameState.items.moomoomilk || 0);
+    setItemBarDisplay('firestone', gameState.items.firestone || 0);
+    setItemBarDisplay('waterstone', gameState.items.waterstone || 0);
+    setItemBarDisplay('thunderstone', gameState.items.thunderstone || 0);
+    setItemBarDisplay('moonstone', gameState.items.moonstone || 0);
+    setItemBarDisplay('leafstone', gameState.items.leafstone || 0);
 }
 
 // Helper function to update main action buttons (Fight, Catch, Auto-Fight, Route)
@@ -563,11 +597,18 @@ export function updatePartyDisplay() {
     for (let i = 0; i < 6; i++) {
         const slot = document.getElementById(`party-${i}`);
         const pokemon = gameState.party[i];
+        const isActive = gameState.activePokemonIndex === i && pokemon !== null;
+
+        // Clear previous state classes
+        slot.classList.remove('filled', 'active-pokemon-slot');
+
         if (pokemon) {
             slot.classList.add('filled');
+            if (isActive) {
+                slot.classList.add('active-pokemon-slot');
+            }
             slot.innerHTML = generatePokemonListItemHTML(pokemon, i, 'party');
         } else {
-            slot.classList.remove('filled');
             slot.innerHTML = generatePokemonListItemHTML(null, i, 'party');
         }
     }
