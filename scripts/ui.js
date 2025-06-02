@@ -132,6 +132,11 @@ function _updatePlayerStatsDisplay() {
     if (document.getElementById('item-count-potion')) document.getElementById('item-count-potion').textContent = gameState.items.potion; 
     if (document.getElementById('item-count-hyperpotion')) document.getElementById('item-count-hyperpotion').textContent = gameState.items.hyperpotion; // Renamed ID and gameState.potions
     if (document.getElementById('item-count-moomoomilk')) document.getElementById('item-count-moomoomilk').textContent = gameState.items.moomoomilk; // Renamed ID and gameState.potions
+    if (document.getElementById('item-count-firestone')) document.getElementById('item-count-firestone').textContent = gameState.items.firestone || 0;
+    if (document.getElementById('item-count-waterstone')) document.getElementById('item-count-waterstone').textContent = gameState.items.waterstone || 0;
+    if (document.getElementById('item-count-thunderstone')) document.getElementById('item-count-thunderstone').textContent = gameState.items.thunderstone || 0;
+    if (document.getElementById('item-count-moonstone')) document.getElementById('item-count-moonstone').textContent = gameState.items.moonstone || 0;
+    if (document.getElementById('item-count-leafstone')) document.getElementById('item-count-leafstone').textContent = gameState.items.leafstone || 0;
 }
 
 // Helper function to update main action buttons (Fight, Catch, Auto-Fight, Route)
@@ -225,10 +230,13 @@ function _updateMainActionButtonsState() {
         const hasNoMoomooMilk = (gameState.items.moomoomilk || 0) === 0; // Renamed from gameState.potions
         const hasNoHyperPotion = (gameState.items.hyperpotion || 0) === 0; // Renamed from gameState.potions
         const canShowFreeHeal = gameState.money < 800 && (hasNoMoomooMilk && hasNoHyperPotion) && !gameState.battleInProgress && gameState.currentRoute === null; 
-        freeHealBtn.disabled = !canShowFreeHeal;
 
         if (canShowFreeHeal) {
             freeHealBtn.style.display = ''; // Or 'inline-block' or 'block' depending on layout
+            freeHealBtn.disabled = false;
+        } else {
+            freeHealBtn.style.display = 'none';
+            freeHealBtn.disabled = true;
         } 
     }
 }
@@ -308,6 +316,21 @@ function _updateItemBarTooltips() {
         } else if (itemEl.querySelector('#item-count-moomoomilk')) { // Renamed ID
             tooltipEl = document.getElementById('tooltip-itembar-moomoomilk');
             if (itemData.moomoomilk) description = itemData.moomoomilk.description || itemData.moomoomilk.name; // Renamed potionData
+        } else if (itemEl.querySelector('#item-count-firestone')) {
+            tooltipEl = document.getElementById('tooltip-itembar-firestone');
+            if (itemData.firestone) description = itemData.firestone.description || itemData.firestone.name;
+        } else if (itemEl.querySelector('#item-count-waterstone')) {
+            tooltipEl = document.getElementById('tooltip-itembar-waterstone');
+            if (itemData.waterstone) description = itemData.waterstone.description || itemData.waterstone.name;
+        } else if (itemEl.querySelector('#item-count-thunderstone')) {
+            tooltipEl = document.getElementById('tooltip-itembar-thunderstone');
+            if (itemData.thunderstone) description = itemData.thunderstone.description || itemData.thunderstone.name;
+        } else if (itemEl.querySelector('#item-count-moonstone')) {
+            tooltipEl = document.getElementById('tooltip-itembar-moonstone');
+            if (itemData.moonstone) description = itemData.moonstone.description || itemData.moonstone.name;
+        } else if (itemEl.querySelector('#item-count-leafstone')) {
+            tooltipEl = document.getElementById('tooltip-itembar-leafstone');
+            if (itemData.leafstone) description = itemData.leafstone.description || itemData.leafstone.name;
         }
         if (tooltipEl && description) tooltipEl.textContent = description;
     });
@@ -318,6 +341,11 @@ function _updateItemUseButtons() { // Renamed from _updatePotionUseButtons
     const usePotionBtn = document.getElementById('use-item-potion-btn'); // Renamed ID
     const useHyperPotionBtn = document.getElementById('use-item-hyperpotion-btn'); // Renamed ID
     const useMoomooMilkBtn = document.getElementById('use-item-moomoomilk-btn'); // Renamed ID
+    const useFireStoneBtn = document.getElementById('use-item-firestone-btn');
+    const useWaterStoneBtn = document.getElementById('use-item-waterstone-btn');
+    const useThunderStoneBtn = document.getElementById('use-item-thunderstone-btn');
+    const useMoonStoneBtn = document.getElementById('use-item-moonstone-btn');
+    const useLeafStoneBtn = document.getElementById('use-item-leafstone-btn');
     const canUseItem = !gameState.battleInProgress;
     const activePokemon = getActivePokemon();
 
@@ -338,6 +366,45 @@ function _updateItemUseButtons() { // Renamed from _updatePotionUseButtons
         useMoomooMilkBtn.disabled = !canUseItem || !partyNeedsHealing || gameState.items.moomoomilk <= 0; // Changed gameState.potions to gameState.items
         useMoomooMilkBtn.style.display = gameState.items.moomoomilk > 0 ? '' : 'none'; // Changed gameState.potions to gameState.items
         useMoomooMilkBtn.textContent = `Use Moomoo Milk (${gameState.items.moomoomilk})`; // Changed gameState.potions to gameState.items
+    }
+
+    // Evolution Stones
+    const evolutionStoneLogic = (btn, itemId) => {
+        if (!btn) return;
+        let canEvolvePokemon = false;
+        if (activePokemon && itemData[itemId] && itemData[itemId].evolutionTargets) {
+            canEvolvePokemon = itemData[itemId].evolutionTargets.some(target => target.pokemon === activePokemon.name);
+        }
+        const hasItem = (gameState.items[itemId] || 0) > 0;
+        btn.disabled = !canUseItem || !hasItem || !activePokemon || !canEvolvePokemon;
+        btn.style.display = hasItem ? '' : 'none';
+        btn.textContent = `Use ${itemData[itemId] ? itemData[itemId].name : 'Stone'} (${gameState.items[itemId] || 0})`;
+    };
+
+    if (useFireStoneBtn && itemData.firestone) {
+        evolutionStoneLogic(useFireStoneBtn, 'firestone');
+    } else if (useFireStoneBtn) { // Hide if itemData not loaded yet
+        useFireStoneBtn.style.display = 'none';
+    }
+    if (useWaterStoneBtn && itemData.waterstone) {
+        evolutionStoneLogic(useWaterStoneBtn, 'waterstone');
+    } else if (useWaterStoneBtn) {
+        useWaterStoneBtn.style.display = 'none';
+    }
+    if (useThunderStoneBtn && itemData.thunderstone) {
+        evolutionStoneLogic(useThunderStoneBtn, 'thunderstone');
+    } else if (useThunderStoneBtn) {
+        useThunderStoneBtn.style.display = 'none';
+    }
+    if (useMoonStoneBtn && itemData.moonstone) {
+        evolutionStoneLogic(useMoonStoneBtn, 'moonstone');
+    } else if (useMoonStoneBtn) {
+        useMoonStoneBtn.style.display = 'none';
+    }
+    if (useLeafStoneBtn && itemData.leafstone) {
+        evolutionStoneLogic(useLeafStoneBtn, 'leafstone');
+    } else if (useLeafStoneBtn) {
+        useLeafStoneBtn.style.display = 'none';
     }
 }
 

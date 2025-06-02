@@ -480,6 +480,31 @@ export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
     } else if (itemInfo.effectType === 'party_full') {
         gameState.party.forEach(p => { if (p && p.currentHp > 0 && p.currentHp < p.maxHp) { p.heal(); healedSomething = true; }});
     }
+    // Handle Evolution Items
+    else if (itemInfo.effectType === 'evolution_item' && activePokemon) {
+        const evolutionDefinition = itemInfo.evolutionTargets?.find(target => target.pokemon === activePokemon.name);
+
+        if (evolutionDefinition && pokemonBaseStatsData[evolutionDefinition.evolvesTo]) {
+            const originalPokemonNameForLog = activePokemon.name;
+            const targetEvolutionName = evolutionDefinition.evolvesTo;
+            const preservedLevel = activePokemon.level;
+            const preservedShiny = activePokemon.isShiny;
+            const preservedBall = activePokemon.caughtWithBall;
+
+            // Update the active Pokemon instance in place
+            activePokemon.name = targetEvolutionName; // Set name first, so constructor uses it for stats
+            Object.assign(activePokemon, new Pokemon(activePokemon.name, preservedLevel, preservedShiny, preservedBall));
+            // The ID will change due to `new Pokemon`, which is consistent with existing level-up evolution.
+            activePokemon.heal(); // Fully heal on evolution
+            activePokemon.exp = 0;  // Reset EXP
+
+            addBattleLog(`Your ${originalPokemonNameForLog} used the ${itemInfo.name} and evolved into ${activePokemon.name}!`);
+            healedSomething = true; // To consume the item
+            populateRouteSelector(); // Evolution might change average level if it was a party member
+        } else {
+            addBattleLog(`${itemInfo.name} had no effect on ${activePokemon.name}.`);
+        }
+    }
     if (healedSomething) {
         gameState.items[itemId]--; addBattleLog(`Used ${itemInfo.name}!`); // Renamed from gameState.potions
     } else { addBattleLog(`${itemInfo.name} had no effect.`); }
@@ -507,4 +532,45 @@ export function freeFullHeal() {
     } else {
         addBattleLog("Conditions for free heal not met."); // Should not happen if button is hidden
     }
+}
+
+export function cheatAddPokemon(pokemonName, level = 5, isShiny = false) {
+    if (!pokemonBaseStatsData[pokemonName]) {
+        const errorMessage = `Cheat Error: Pokémon "${pokemonName}" not found in game data. Check spelling and capitalization.`;
+        console.error(errorMessage);
+        addBattleLog(errorMessage);
+        return;
+    }
+
+    const newPokemon = new Pokemon(pokemonName, parseInt(level, 10) || 5, !!isShiny); // Ensure level is int, shiny is bool
+    const emptyPartySlot = gameState.party.findIndex(slot => slot === null);
+
+    if (emptyPartySlot !== -1) {
+        gameState.party[emptyPartySlot] = newPokemon;
+        addBattleLog(`Cheated ${newPokemon.isShiny ? 'Shiny ' : ''}${newPokemon.name} (Lvl. ${newPokemon.level}) into party!`);
+        if (getActivePokemon() === null) { // If no active Pokemon, make this the active one
+            gameState.activePokemonIndex = emptyPartySlot;
+        }
+    } else {
+        gameState.allPokemon.push(newPokemon);
+        addBattleLog(`Cheated ${newPokemon.isShiny ? 'Shiny ' : ''}${newPokemon.name} (Lvl. ${newPokemon.level}) into PC!`);
+    }
+
+    updateDisplay();
+    populateRouteSelector(); // In case average party level changes
+    console.log(`Successfully added ${newPokemon.name} (Lvl ${newPokemon.level}, Shiny: ${newPokemon.isShiny}) to the game.`);
+}
+
+export function cheatAddMoney(amount) {
+    const moneyToAdd = parseInt(amount, 10);
+    if (isNaN(moneyToAdd) || moneyToAdd <= 0) {
+        const errorMessage = `Cheat Error: Invalid amount "${amount}". Please provide a positive number.`;
+        console.error(errorMessage);
+        addBattleLog(errorMessage);
+        return;
+    }
+    gameState.money += moneyToAdd;
+    addBattleLog(`Cheated ${formatNumberWithDots(moneyToAdd)}₽! Current money: ${formatNumberWithDots(gameState.money)}₽.`);
+    updateDisplay(); // Ensure the UI reflects the new money amount
+    console.log(`Successfully added ${moneyToAdd}₽. Current money: ${gameState.money}`);
 }

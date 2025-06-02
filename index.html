@@ -138,6 +138,30 @@
                         Use Moomoo Milk (0)
                     </button>
                 </div>
+                <!-- Evolution Stone Use Controls -->
+                <div class="controls item-controls" style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-firestone-btn" onclick="useItem('firestone')" disabled
+                        style="flex-grow: 1; background-color: #e67e22; color: #ffffff;">
+                        Use Fire Stone (0)
+                    </button>
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-waterstone-btn" onclick="useItem('waterstone')"
+                        disabled style="flex-grow: 1; background-color: #3498db; color: #ffffff;">
+                        Use Water Stone (0)
+                    </button>
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-thunderstone-btn" onclick="useItem('thunderstone')" disabled
+                        style="flex-grow: 1; background-color: #f1c40f; color: #333333;">
+                        Use Thunder Stone (0)
+                    </button>
+                    <!-- Moon and Leaf Stone Use Controls -->
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-moonstone-btn" onclick="useItem('moonstone')" disabled
+                        style="flex-grow: 1; background-color: #95a5a6; color: #ffffff;">
+                        Use Moon Stone (0)
+                    </button>
+                    <button class="btn item-use-btn evolution-stone-btn" id="use-item-leafstone-btn" onclick="useItem('leafstone')"
+                        disabled style="flex-grow: 1; background-color: #2ecc71; color: #ffffff;">
+                        Use Leaf Stone (0)
+                    </button>
+                </div>
 
 
                 <div class="battle-log" id="battle-log">
@@ -226,6 +250,41 @@
                             </button>
                             <div class="custom-tooltip" id="tooltip-exp-share-shop-item"></div>
                         </div>
+                        <div class="shop-item" id="shop-item-firestone">
+                            <img src="sprites/items/fire-stone.png" alt="Fire Stone" class="shop-item-icon">
+                            <span>Fire Stone (x1)</span>
+                            <button class="btn small" onclick="buyItem('firestone', 1)">Buy - 2.100₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-firestone"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-waterstone">
+                            <img src="sprites/items/water-stone.png" alt="Water Stone" class="shop-item-icon">
+                            <span>Water Stone (x1)</span>
+                            <button class="btn small" onclick="buyItem('waterstone', 1)">Buy - 2.100₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-waterstone"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-thunderstone">
+                            <img src="sprites/items/thunder-stone.png" alt="Thunder Stone" class="shop-item-icon">
+                            <span>Thunder Stone (x1)</span>
+                            <button class="btn small" onclick="buyItem('thunderstone', 1)">Buy - 2.100₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-thunderstone"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-moonstone">
+                            <img src="sprites/items/moon-stone.png" alt="Moon Stone" class="shop-item-icon">
+                            <span>Moon Stone (x1)</span>
+                            <button class="btn small" onclick="buyItem('moonstone', 1)">Buy - 3.000₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-moonstone"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-leafstone">
+                            <img src="sprites/items/leaf-stone.png" alt="Leaf Stone" class="shop-item-icon">
+                            <span>Leaf Stone (x1)</span>
+                            <button class="btn small" onclick="buyItem('leafstone', 1)">Buy - 2.100₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-leafstone"></div>
+                        </div>
+
+
+
+
+
                     </div>
                 </div>
             </div>
@@ -277,6 +336,37 @@
                     <span class="item-count" id="item-count-moomoomilk">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-moomoomilk"></div>
                 </div>
+                <!-- Evolution Stones -->
+                <div class="item-display" title="Fire Stone">
+                    <img src="sprites/items/fire-stone.png" alt="Fire Stone" class="item-icon">
+                    <span class="item-count" id="item-count-firestone">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-firestone"></div>
+                </div>
+                <div class="item-display" title="Water Stone">
+                    <img src="sprites/items/water-stone.png" alt="Water Stone" class="item-icon">
+                    <span class="item-count" id="item-count-waterstone">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-waterstone"></div>
+                </div>
+                <div class="item-display" title="Thunder Stone">
+                    <img src="sprites/items/thunder-stone.png" alt="Thunder Stone" class="item-icon">
+                    <span class="item-count" id="item-count-thunderstone">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-thunderstone"></div>
+                </div>
+                <!-- Moon and Leaf Stones -->
+                <div class="item-display" title="Moon Stone">
+                    <img src="sprites/items/moon-stone.png" alt="Moon Stone" class="item-icon">
+                    <span class="item-count" id="item-count-moonstone">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-moonstone"></div>
+                </div>
+                <div class="item-display" title="Leaf Stone">
+                    <img src="sprites/items/leaf-stone.png" alt="Leaf Stone" class="item-icon">
+                    <span class="item-count" id="item-count-leafstone">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-leafstone"></div>
+                </div>
+
+
+
+
             </div>
 
         </div>
@@ -346,7 +436,7 @@
 </body>
 <footer>
     <div id="game-version">
-        v0.6.2
+        v0.7.1
     </div>
 </footer>
 

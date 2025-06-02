@@ -11,7 +11,12 @@ export let gameState = {
     items: { // Renamed from potions
         potion: 0,
         hyperpotion: 0,
-        moomoomilk: 0
+        moomoomilk: 0,
+        firestone: 0,
+        waterstone: 0,
+        thunderstone: 0,
+        moonstone: 0,
+        leafstone: 0
     },
     party: [null, null, null, null, null, null],
     allPokemon: [],
