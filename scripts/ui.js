@@ -152,15 +152,12 @@ function _updateMainActionButtonsState() {
     if (freeHealBtn) {
         const hasNoMoomooMilk = (gameState.potions.moomoomilk || 0) === 0;
         const hasNoHyperPotion = (gameState.potions.hyperpotion || 0) === 0;
-        const canShowFreeHeal = gameState.money < 800 &&
-                                (hasNoMoomooMilk && hasNoHyperPotion) &&
-                                !gameState.battleInProgress && // Not in a battle
-                                gameState.currentRoute === null; // Not on a route
+        const canShowFreeHeal = gameState.money < 800 && (hasNoMoomooMilk && hasNoHyperPotion) && !gameState.battleInProgress && gameState.currentRoute === null; 
+        freeHealBtn.disabled = !canShowFreeHeal;
+
         if (canShowFreeHeal) {
             freeHealBtn.style.display = ''; // Or 'inline-block' or 'block' depending on layout
-        } else {
-            freeHealBtn.style.display = 'none';
-        }
+        } 
     }
 }
 
