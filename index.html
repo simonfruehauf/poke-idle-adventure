@@ -39,42 +39,9 @@
             </div>
         </div>
 
-        <div class="items-bar">
-            <!-- Poké Balls -->
-            <div class="item-display" title="Poké Balls">
-                <img src="sprites/items/poke-ball.png" alt="Poké Ball" class="item-icon">
-                <span class="item-count" id="pokeballs-standard">10</span>
-                <div class="custom-tooltip" id="tooltip-itembar-pokeball"></div>
-            </div>
-            <div class="item-display" title="Great Balls">
-                <img src="sprites/items/great-ball.png" alt="Great Ball" class="item-icon">
-                <span class="item-count" id="pokeballs-great">0</span>
-                <div class="custom-tooltip" id="tooltip-itembar-greatball"></div>
-            </div>
-            <div class="item-display" title="Ultra Balls">
-                <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="item-icon">
-                <span class="item-count" id="pokeballs-ultra">0</span>
-                <div class="custom-tooltip" id="tooltip-itembar-ultraball"></div>
-            </div>
-            <!-- Potions -->
-            <div class="item-display" title="Potions">
-                <img src="sprites/items/potion.png" alt="Potion" class="item-icon">
-                <span class="item-count" id="potions-potion">0</span>
-                <div class="custom-tooltip" id="tooltip-itembar-potion"></div>
-            </div>
-            <div class="item-display" title="Hyper Potions">
-                <img src="sprites/items/hyper-potion.png" alt="Hyper Potion" class="item-icon">
-                <span class="item-count" id="potions-hyperpotion">0</span>
-                <div class="custom-tooltip" id="tooltip-itembar-hyperpotion"></div>
-            </div>
-            <div class="item-display" title="Moomoo Milks">
-                <img src="sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="item-icon">
-                <span class="item-count" id="potions-moomoomilk">0</span>
-                <div class="custom-tooltip" id="tooltip-itembar-moomoomilk"></div>
-            </div>
-        </div>
-
         <div class="game-area">
+
+
             <div class="panel battle-area">
                 <!-- Wrapper to manage consistent height and bottom margin for route controls -->
                 <div id="route-controls-wrapper" style="margin-bottom: 10px;">
@@ -271,10 +238,44 @@
                     </div>
                 </div>
             </div>
+            <div class="items-bar">
+                <!-- Poké Balls -->
+                <div class="item-display" title="Poké Balls">
+                    <img src="sprites/items/poke-ball.png" alt="Poké Ball" class="item-icon">
+                    <span class="item-count" id="pokeballs-standard">10</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-pokeball"></div>
+                </div>
+                <div class="item-display" title="Great Balls">
+                    <img src="sprites/items/great-ball.png" alt="Great Ball" class="item-icon">
+                    <span class="item-count" id="pokeballs-great">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-greatball"></div>
+                </div>
+                <div class="item-display" title="Ultra Balls">
+                    <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="item-icon">
+                    <span class="item-count" id="pokeballs-ultra">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-ultraball"></div>
+                </div>
+                <!-- Potions -->
+                <div class="item-display" title="Potions">
+                    <img src="sprites/items/potion.png" alt="Potion" class="item-icon">
+                    <span class="item-count" id="potions-potion">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-potion"></div>
+                </div>
+                <div class="item-display" title="Hyper Potions">
+                    <img src="sprites/items/hyper-potion.png" alt="Hyper Potion" class="item-icon">
+                    <span class="item-count" id="potions-hyperpotion">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-hyperpotion"></div>
+                </div>
+                <div class="item-display" title="Moomoo Milks">
+                    <img src="sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="item-icon">
+                    <span class="item-count" id="potions-moomoomilk">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-moomoomilk"></div>
+                </div>
+            </div>
+
         </div>
     </div>
 
-    <!-- Starter Selection Modal -->
     <div id="starter-modal" class="modal-overlay" style="display: none;">
         <div class="modal-content">
             <h2>Choose your Starter Pokémon!</h2>
@@ -289,13 +290,6 @@
     <script type="module" src="scripts/utils.js"></script>
     <script type="module" src="scripts/pokemon.js"></script>
     <script type="module" src="scripts/dataService.js"></script>
-    <!-- gameLogic needs to be before ui if ui imports from it, but ui also has populateRouteSelector which gameLogic calls -->
-    <!-- Let's try gameLogic first, then ui, then saveLoad, then main -->
-    <!-- The window.function assignments in main.js will make functions globally available for onclicks -->
-    <!-- The populateRouteSelector in ui.js needs calculateAveragePartyLevel from gameLogic.js -->
-    <!-- The main.js initGame also calls populateRouteSelector -->
-
-    <!-- Order: config, state, utils, pokemon, dataService, gameLogic, ui, saveLoad, main -->
     <script type="module" src="scripts/gameLogic.js"></script>
     <script type="module" src="scripts/ui.js"></script>
     <script type="module" src="scripts/saveLoad.js"></script>
@@ -303,7 +297,7 @@
 </body>
 <footer>
     <div id="game-version">
-        v0.1.0
+        v0.2.0
     </div>
 </footer>
 

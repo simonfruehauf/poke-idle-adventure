@@ -310,19 +310,33 @@ export function attemptCatch(ballId = 'pokeball') {
 
 export function toggleAutoFight() {
     if (!gameState.autoFightUnlocked) { addBattleLog("Auto-Fight is still locked."); return; }
-    if (gameState.battleInProgress) { addBattleLog("Cannot change Auto-Fight mode during battle."); return; }
-    if (!gameState.autoBattleActive && gameState.currentRoute === null) {
-        addBattleLog("Cannot start Auto-Fight: No route selected."); updateDisplay(); return;
-    }
-    gameState.autoBattleActive = !gameState.autoBattleActive;
+
+    // If trying to START auto-fight
     if (gameState.autoBattleActive) {
+        // Current state is ON, so we are trying to turn it OFF (Stop)
+        gameState.autoBattleActive = false;
+        addBattleLog("Auto-Fight Stopped!");
+        if (autoFightIntervalId) {
+            clearInterval(autoFightIntervalId);
+            autoFightIntervalId = null;
+        }
+    } else {
+        // Current state is OFF, so we are trying to turn it ON (Start)
+        if (gameState.battleInProgress) {
+            addBattleLog("Cannot start Auto-Fight during battle.");
+            return;
+        }
+        if (gameState.currentRoute === null) {
+            addBattleLog("Cannot start Auto-Fight: No route selected.");
+            updateDisplay(); // Ensure button state is correct if it was disabled
+            return;
+        }
+
+        gameState.autoBattleActive = true;
         addBattleLog("Auto-Fight Started!");
         if (autoFightIntervalId) clearInterval(autoFightIntervalId);
-        autoFightIntervalId = setInterval(autoBattleTick, 2000); // Tick every 2 seconds
+        autoFightIntervalId = setInterval(autoBattleTick, 1000); // Tick every 2 seconds
         autoBattleTick();
-    } else {
-        addBattleLog("Auto-Fight Stopped!");
-        if (autoFightIntervalId) { clearInterval(autoFightIntervalId); autoFightIntervalId = null; }
     }
     updateDisplay();
 }

@@ -1,5 +1,3 @@
-// config.js
-
 export const STARTER_POKEMON_NAMES = ["Bulbasaur", "Charmander", "Squirtle", "Pikachu"]; 
 
 export const POKEMON_SPRITE_BASE_URL = "./sprites/pokemon/";
