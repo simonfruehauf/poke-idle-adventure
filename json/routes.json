@@ -65,8 +65,8 @@
         "pokemon": [
             { "name": "Rattata",   "chance": 30, "levelRange": [5, 10] },
             { "name": "Spearow",   "chance": 30, "levelRange": [5, 10] },
-            { "name": "Ekans",     "chance": 20, "levelRange": [6, 10], "notes": "More common in some versions" },
-            { "name": "Sandshrew", "chance": 20, "levelRange": [6, 10], "notes": "More common in some versions" }
+            { "name": "Ekans",     "chance": 20, "levelRange": [6, 10] },
+            { "name": "Sandshrew", "chance": 20, "levelRange": [6, 10] }
         ],
         "moneyMultiplier": 1.5,
         "avgLevelRequirement": 12
@@ -92,7 +92,7 @@
             { "name": "Weedle",     "chance": 15, "levelRange": [7, 10] },
             { "name": "Kakuna",     "chance": 10, "levelRange": [8, 11] },
             { "name": "Pidgey",     "chance": 15, "levelRange": [9, 12] },
-            { "name": "Abra",       "chance": 10, "levelRange": [7, 9], "notes": "Teleports!" },
+            { "name": "Abra",       "chance": 10, "levelRange": [7, 9], "notes": "Teleports?" },
             { "name": "Oddish",     "chance": 12.5, "levelRange": [10, 12] },
             { "name": "Bellsprout", "chance": 12.5, "levelRange": [10, 12] }
         ],
