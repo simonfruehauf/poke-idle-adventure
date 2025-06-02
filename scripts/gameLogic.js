@@ -277,12 +277,17 @@ export function attemptCatch(ballId = 'pokeball') {
     addBattleLog(`Used 1 ${ballUsed.name} on ${gameState.currentWildPokemon.name}...`);
     
     const wildPokemon = gameState.currentWildPokemon;
-    const healthMultiplier = 1 + (((wildPokemon.maxHp - wildPokemon.currentHp) / wildPokemon.maxHp) * 1.5);
-    const levelPenalty = Math.max(0.2, 1 - (wildPokemon.level / 75));
-    let catchChance = 0.25 * healthMultiplier * levelPenalty * ballUsed.modifier;
-    catchChance = Math.max(0.05, Math.min(catchChance, 0.95));
-    addBattleLog(`Calculated catch chance: ${(catchChance * 100).toFixed(1)}%`);
+    let catchChance;
 
+    if (ballId === 'masterball') {
+        catchChance = 1.0; // 100% catch rate for Master Ball
+    } else {
+        const healthMultiplier = 1 + (((wildPokemon.maxHp - wildPokemon.currentHp) / wildPokemon.maxHp) * 1.5);
+        const levelPenalty = Math.max(0.2, 1 - (wildPokemon.level / 75));
+        catchChance = 0.25 * healthMultiplier * levelPenalty * ballUsed.modifier;
+        catchChance = Math.max(0.05, Math.min(catchChance, 0.95)); // Cap for non-Master Balls
+    }
+    
     setTimeout(async () => {
         if (Math.random() < catchChance) {
             const caughtPokemon = new Pokemon(wildPokemon.name, wildPokemon.level, wildPokemon.isShiny, ballId);

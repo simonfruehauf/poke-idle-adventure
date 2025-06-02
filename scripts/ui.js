@@ -145,17 +145,33 @@ function _updateMainActionButtonsState() {
     }
 
     const canCatch = gameState.currentWildPokemon && gameState.currentWildPokemon.currentHp > 0 && !gameState.battleInProgress && !gameState.autoBattleActive;
-    if (catchPokeballBtn) catchPokeballBtn.disabled = !canCatch || gameState.pokeballs.pokeball <= 0;
-    if (catchGreatballBtn) catchGreatballBtn.disabled = !canCatch || gameState.pokeballs.greatball <= 0;
-    if (catchUltraballBtn) catchUltraballBtn.disabled = !canCatch || gameState.pokeballs.ultraball <= 0;
+    
+    if (catchPokeballBtn) {
+        catchPokeballBtn.disabled = !canCatch || gameState.pokeballs.pokeball <= 0;
+        catchPokeballBtn.style.display = gameState.pokeballs.pokeball > 0 ? '' : 'none';
+    }
+    if (catchGreatballBtn) {
+        catchGreatballBtn.disabled = !canCatch || gameState.pokeballs.greatball <= 0;
+        catchGreatballBtn.style.display = gameState.pokeballs.greatball > 0 ? '' : 'none';
+    }
+    if (catchUltraballBtn) {
+        catchUltraballBtn.disabled = !canCatch || gameState.pokeballs.ultraball <= 0;
+        catchUltraballBtn.style.display = gameState.pokeballs.ultraball > 0 ? '' : 'none';
+    }
     if (catchMasterballBtn) {
         catchMasterballBtn.disabled = !canCatch || gameState.pokeballs.masterball <= 0;
         catchMasterballBtn.style.display = gameState.pokeballs.masterball > 0 ? '' : 'none';
     }
 
-    if (pokeballData.pokeball && catchPokeballBtn) catchPokeballBtn.textContent = `Catch (${pokeballData.pokeball.name} - ${gameState.pokeballs.pokeball})`;
-    if (pokeballData.greatball && catchGreatballBtn) catchGreatballBtn.textContent = `Catch (${pokeballData.greatball.name} - ${gameState.pokeballs.greatball})`;
-    if (pokeballData.ultraball && catchUltraballBtn) catchUltraballBtn.textContent = `Catch (${pokeballData.ultraball.name} - ${gameState.pokeballs.ultraball})`;
+    if (pokeballData.pokeball && catchPokeballBtn && gameState.pokeballs.pokeball > 0) {
+        catchPokeballBtn.textContent = `Catch (${pokeballData.pokeball.name} - ${gameState.pokeballs.pokeball})`;
+    }
+    if (pokeballData.greatball && catchGreatballBtn && gameState.pokeballs.greatball > 0) {
+        catchGreatballBtn.textContent = `Catch (${pokeballData.greatball.name} - ${gameState.pokeballs.greatball})`;
+    }
+    if (pokeballData.ultraball && catchUltraballBtn && gameState.pokeballs.ultraball > 0) {
+        catchUltraballBtn.textContent = `Catch (${pokeballData.ultraball.name} - ${gameState.pokeballs.ultraball})`;
+    }
     if (pokeballData.masterball && catchMasterballBtn) {
         if (gameState.pokeballs.masterball > 0) {
             catchMasterballBtn.textContent = `Catch (${pokeballData.masterball.name} - ${gameState.pokeballs.masterball})`;
@@ -287,16 +303,19 @@ function _updatePotionUseButtons() {
     if (usePotionBtn) {
         const activePokemonNeedsPotion = activePokemon && activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp;
         usePotionBtn.disabled = !canUseItem || !activePokemonNeedsPotion || gameState.potions.potion <= 0;
+        usePotionBtn.style.display = gameState.potions.potion > 0 ? '' : 'none';
         usePotionBtn.textContent = `Use Potion (${gameState.potions.potion})`;
     }
     if (useHyperPotionBtn) {
         const activePokemonNeedsHyperPotion = activePokemon && activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp;
         useHyperPotionBtn.disabled = !canUseItem || !activePokemonNeedsHyperPotion || gameState.potions.hyperpotion <= 0;
+        useHyperPotionBtn.style.display = gameState.potions.hyperpotion > 0 ? '' : 'none';
         useHyperPotionBtn.textContent = `Use Hyper Potion (${gameState.potions.hyperpotion})`;
     }
     if (useMoomooMilkBtn) {
         const partyNeedsHealing = gameState.party.some(p => p && p.currentHp > 0 && p.currentHp < p.maxHp);
         useMoomooMilkBtn.disabled = !canUseItem || !partyNeedsHealing || gameState.potions.moomoomilk <= 0;
+        useMoomooMilkBtn.style.display = gameState.potions.moomoomilk > 0 ? '' : 'none';
         useMoomooMilkBtn.textContent = `Use Moomoo Milk (${gameState.potions.moomoomilk})`;
     }
 }

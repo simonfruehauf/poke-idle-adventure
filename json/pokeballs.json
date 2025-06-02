@@ -26,7 +26,7 @@
     "masterball": {
         "id": "masterball",
         "name": "Master Ball",
-        "modifier": 255,
+        "modifier": 0,
         "cost": 0,
         "image": "sprites/items/master-ball.png",
         "description": "The best Poké Ball with the ultimate performance. It will catch any wild Pokémon without fail."
