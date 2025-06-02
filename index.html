@@ -282,7 +282,12 @@
         </div>
     </div>
 
-    <div id="starter-modal" class="modal-overlay" style="display: none;">
+    <div id="starter-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { /* No explicit close function, starter selection is mandatory */ }">
+        <!-- 
+            Starter modal is a bit special as it resolves a promise upon selection.
+            Closing it by clicking outside might interrupt the initial game flow.
+            For now, clicking outside won't close it unless a specific close function is implemented and desired.
+        -->
         <div class="modal-content">
             <h2>Choose your Starter Pokémon!</h2>
             <div class="starter-options">
@@ -291,7 +296,7 @@
         </div>
     </div>
 
-    <div id="export-save-modal" class="modal-overlay" style="display: none;">
+    <div id="export-save-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { window.closeExportModal(); }">
         <div class="modal-content">
             <h2>Export Save Data</h2>
             <p>Copy the text below and save it in a safe place.</p>
@@ -304,7 +309,7 @@
         </div>
     </div>
 
-    <div id="import-save-modal" class="modal-overlay" style="display: none;">
+    <div id="import-save-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { window.closeImportModal(); }">
         <div class="modal-content">
             <h2>Import Save Data</h2>
             <p>Paste your exported save data string below and click "Import".</p>
@@ -315,6 +320,17 @@
             </div>
             <!-- Optional: A place for feedback messages, though alerts are currently used -->
             <!-- <p id="import-feedback-message" style="margin-top: 10px; color: #e74c3c; display: none;"></p> -->
+        </div>
+    </div>
+
+    <div id="pokemon-image-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { window.closePokemonImageModal(); }">
+        <div class="modal-content">
+            <h2 id="pokemon-image-modal-title" style="margin-bottom: 15px;">Pokémon Name</h2>
+            <img id="pokemon-image-modal-sprite" src="sprites/pokemon/front/0.png" alt="Enlarged Pokémon" 
+                 style="max-width: 384px; max-height: 384px; width: auto; height: 300px; image-rendering: pixelated; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto; background-color: rgba(255,255,255,0.05); border-radius: 8px; padding:10px;">
+            <div class="modal-actions">
+                <button class="btn secondary" onclick="window.closePokemonImageModal()">Close</button>
+            </div>
         </div>
     </div>
 

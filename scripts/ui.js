@@ -372,7 +372,16 @@ export function displayPokemonData(pokemon, elements, spriteType = 'front') {
         elements.nameEl.innerHTML = getPokemonNameHTML(pokemon, elements.shinyIndicatorClass || 'shiny-indicator', false, isWildForCaughtCheck);
         if (elements.levelEl) elements.levelEl.textContent = getPokemonLevelText(pokemon);
         elements.spriteEl.src = getPokemonSpritePath(pokemon, spriteType);
+        elements.spriteEl.classList.add('zoomable-sprite'); // Add zoomable class
         elements.spriteEl.alt = pokemon.name;
+        elements.spriteEl.style.cursor = 'pointer'; // Indicate clickable
+        if (pokemon === getActivePokemon()) {
+            elements.spriteEl.onclick = () => window.handlePokemonSpriteClick(-1, 'player');
+        } else if (pokemon === gameState.currentWildPokemon) {
+            elements.spriteEl.onclick = () => window.handlePokemonSpriteClick(-1, 'wild');
+        } else {
+            elements.spriteEl.onclick = null; // Should not happen with this function's typical use
+        }
         if (elements.hpTextEl) elements.hpTextEl.textContent = getPokemonHpText(pokemon);
         if (elements.statsEl) elements.statsEl.textContent = getPokemonStatsString(pokemon);
         if (elements.hpBarId) updateHpBar(elements.hpBarId, pokemon.currentHp, pokemon.maxHp);
@@ -383,9 +392,12 @@ export function displayPokemonData(pokemon, elements, spriteType = 'front') {
         if (elements.levelEl) elements.levelEl.textContent = '';
         elements.spriteEl.src = getPokemonSpritePath(null);
         elements.spriteEl.alt = elements.defaultAlt || "No Pokemon";
+        elements.spriteEl.classList.remove('zoomable-sprite'); // Remove zoomable class
         if (elements.hpTextEl) elements.hpTextEl.textContent = getPokemonHpText(null);
         if (elements.statsEl) elements.statsEl.textContent = getPokemonStatsString(null);
         if (elements.hpBarId) updateHpBar(elements.hpBarId, 0, 1);
+        elements.spriteEl.style.cursor = 'default';
+        elements.spriteEl.onclick = null;
         elements.spriteEl.classList.remove('shiny-pokemon');
     }
 }
@@ -428,6 +440,7 @@ export function generatePokemonListItemHTML(pokemon, index, locationType) {
     const spritePath = getPokemonSpritePath(pokemon, 'front');
     let evolveButtonHtml = '';
     if (pokemon.evolutionTargetName && pokemon.evolveLevel && pokemon.level >= pokemon.evolveLevel) {
+        // Stop propagation for evolve button in storage to prevent card click if any other listener is on card.
         const onclickAction = locationType === 'party' ? `window.attemptEvolution(${index}, 'party')` : `event.stopPropagation(); window.attemptEvolution(${index}, 'storage')`;
         evolveButtonHtml = `<button class="btn small" onclick="${onclickAction}" style="background: #ffc107; color: #333; margin-left: 5px;">Evolve</button>`;
     }
@@ -460,10 +473,11 @@ export function generatePokemonListItemHTML(pokemon, index, locationType) {
             </div>`;
     }
 
-    const imgStyle = locationType === 'storage' ? 'style="width: 48px; height: 48px; float: left; margin-right: 10px; image-rendering: pixelated;"' : '';
+    const imgStyle = locationType === 'storage' ? 'width: 48px; height: 48px; float: left; margin-right: 10px; image-rendering: pixelated; cursor: pointer;"' : 'style="cursor: pointer;"';
+    const spriteOnclick = locationType === 'party' ? `window.handlePokemonSpriteClick(${index}, 'party')` : `event.stopPropagation(); window.handlePokemonSpriteClick(${index}, 'storage')`;
 
     const cardContent = `
-        <img class="pokemon-sprite ${shinyClass}" src="${spritePath}" alt="${pokemon.name}" ${imgStyle}>
+        <img class="pokemon-sprite zoomable-sprite ${shinyClass}" src="${spritePath}" alt="${pokemon.name}" style="${imgStyle}" onclick="${spriteOnclick}">
         <div class="pokemon-name">${getPokemonNameHTML(pokemon, 'shiny-indicator', locationType === 'party')}</div>
         <div class="pokemon-level">${getPokemonFullLevelText(pokemon)}</div>
         ${getPokemonDetailedStatsHTML(pokemon)}
@@ -631,6 +645,44 @@ export function closeImportModal() {
 export function processImportDataFromModal() {
     const textarea = document.getElementById('import-save-textarea');
     window.handlePastedImportData(textarea.value); // Call the function in saveLoad.js
+}
+
+
+function _showPokemonImageModal(pokemon) { // Internal helper
+    const modal = document.getElementById('pokemon-image-modal');
+    const titleEl = document.getElementById('pokemon-image-modal-title');
+    const spriteEl = document.getElementById('pokemon-image-modal-sprite');
+
+    if (modal && titleEl && spriteEl && pokemon) {
+        titleEl.innerHTML = getPokemonNameHTML(pokemon, 'shiny-indicator'); // Re-use to get name + shiny
+        spriteEl.src = getPokemonSpritePath(pokemon, 'front');
+        spriteEl.alt = pokemon.name;
+        modal.style.display = 'flex';
+    } else {
+        console.error("Pokemon image modal elements not found or no Pokemon data provided.");
+    }
+}
+
+export function handlePokemonSpriteClick(index, locationType) {
+    let pokemonToDisplay = null;
+    if (locationType === 'party') {
+        pokemonToDisplay = gameState.party[index];
+    } else if (locationType === 'storage') {
+        pokemonToDisplay = gameState.allPokemon[index];
+    } else if (locationType === 'player') {
+        pokemonToDisplay = getActivePokemon();
+    } else if (locationType === 'wild') {
+        pokemonToDisplay = gameState.currentWildPokemon;
+    }
+
+    if (pokemonToDisplay) {
+        _showPokemonImageModal(pokemonToDisplay);
+    }
+}
+
+export function closePokemonImageModal() {
+    const modal = document.getElementById('pokemon-image-modal');
+    if (modal) modal.style.display = 'none';
 }
 
 export function populateRouteSelector() {
