@@ -4,16 +4,18 @@
     --text-color: white;
     --text-color-light: #eee;
     --text-color-lighter: #ccc;
-    --accent-color: #ffd700; /* Gold */
+    --accent-color: #ffd700;
+    /* Gold */
 
     --panel-bg: rgba(0, 0, 0, 0.4);
     --panel-bg-light: rgba(0, 0, 0, 0.3);
     --panel-bg-lighter: rgba(0, 0, 0, 0.2);
-    --panel-bg-lightest: rgba(0,0,0,0.1);
+    --panel-bg-lightest: rgba(0, 0, 0, 0.1);
 
     --button-primary-gradient: linear-gradient(45deg, #ff6b6b, #ee5a52);
     --button-secondary-gradient: linear-gradient(45deg, #4ecdc4, #44a08d);
-    --button-active-gradient: linear-gradient(45deg, #4ecdc4, #44a08d); /* Same as secondary for now */
+    --button-active-gradient: linear-gradient(45deg, #4ecdc4, #44a08d);
+    /* Same as secondary for now */
 
     --hp-bar-bg: #333;
     --hp-fill-gradient: linear-gradient(90deg, #4caf50, #8bc34a);
@@ -27,13 +29,13 @@
 
     --modal-bg: #3a3a3a;
     --modal-overlay-bg: rgba(0, 0, 0, 0.75);
-    --modal-border-color: rgba(255,255,255,0.1);
+    --modal-border-color: rgba(255, 255, 255, 0.1);
     --interactive-bg: rgba(255, 255, 255, 0.1);
     --interactive-bg-hover: rgba(255, 255, 255, 0.2);
     --interactive-border: rgba(255, 255, 255, 0.3);
     --interactive-starter-bg: rgba(255, 255, 255, 0.08);
     --interactive-starter-bg-hover: rgba(255, 255, 255, 0.15);
-    --interactive-starter-border: rgba(255,255,255,0.2);
+    --interactive-starter-border: rgba(255, 255, 255, 0.2);
 }
 
 * {
@@ -59,12 +61,15 @@ body {
     text-align: center;
     margin-bottom: 30px;
 }
+
 .stat-horizontal {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center; /* Centers the group of items within the .stat div */
+    justify-content: center;
+    /* Centers the group of items within the .stat div */
 }
+
 .stats-bar {
     display: flex;
     justify-content: space-around;
@@ -87,8 +92,9 @@ body {
 .game-area {
     display: grid;
     /* Items bar (narrow) | Main Content 1 | Main Content 2 */
-    grid-template-columns: minmax(120px, 0.2fr) 1fr 1fr; 
-    grid-template-rows: auto auto;    /* Added for 2x2 grid */
+    grid-template-columns: minmax(120px, 0.2fr) 1fr 1fr;
+    grid-template-rows: auto auto;
+    /* Added for 2x2 grid */
     gap: 20px;
 }
 
@@ -99,14 +105,66 @@ body {
     backdrop-filter: blur(10px);
 }
 
+/* Add this to your main CSS file */
+.caught-indicator-icon {
+    width: 1.0em;
+    height: 1.0em;
+    vertical-align: -0.20em;
+    margin-right: 0.0em;
+    image-rendering: pixelated;
+
+    vertical-align: middle;
+    /* Aligns the icon nicely with text */
+    margin-right: 5px;
+    image-rendering: pixelated;
+    /* Keeps pixel art crisp if your sprites are pixelated */
+    filter: grayscale(100%); /* Default to grayscale */
+    transition: filter 0.3s ease; /* Smooth transition for color change */
+}
+
+.inline-ball-icon {
+    /* Styles for the ball icon next to a Pokemon's name in party/storage, not the caught status indicator */
+    /* This rule seems to be duplicated, the one below is more specific or later in cascade */
+    /* Keeping both for now as per original file structure, but review for redundancy might be good. */
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: -0.20em;
+    margin-right: 0.0em;
+    image-rendering: pixelated;
+}
+
+.caught-indicator-icon.is-caught {
+    filter: none; /* Remove grayscale if caught */
+}
+
 /* Grid areas for panels. Items bar is now on the left. */
 /* Row 1 */
-.items-bar { grid-area: 1 / 1 / 3 / 2; } /* Spans both rows in the 1st column */
-.battle-area { grid-area: 1 / 2 / 2 / 3; } /* Was 1/1, now 1/2 */
-.party-area { grid-area: 1 / 3 / 2 / 4; }  /* Was 1/2, now 1/3 */
+.items-bar {
+    grid-area: 1 / 1 / 3 / 2;
+}
+
+/* Spans both rows in the 1st column */
+.battle-area {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+/* Was 1/1, now 1/2 */
+.party-area {
+    grid-area: 1 / 3 / 2 / 4;
+}
+
+/* Was 1/2, now 1/3 */
 /* Row 2 */
-.shop-panel { grid-area: 2 / 2 / 3 / 3; } /* Was 2/1, now 2/2 */
-.team-area { grid-area: 2 / 3 / 3 / 4; }   /* Was 2/2, now 2/3 */
+.shop-panel {
+    grid-area: 2 / 2 / 3 / 3;
+}
+
+/* Was 2/1, now 2/2 */
+.team-area {
+    grid-area: 2 / 3 / 3 / 4;
+}
+
+/* Was 2/2, now 2/3 */
 
 /* .items-bar styling remains largely the same, only its grid-area changes */
 /* .items-bar is defined above with its new grid-area */
@@ -120,8 +178,10 @@ body {
     /* Flex container for vertical items */
     display: flex;
     flex-direction: column;
-    align-items: stretch; /* Make items fill the width of this panel */
-    gap: 10px; /* Spacing between items */
+    align-items: stretch;
+    /* Make items fill the width of this panel */
+    gap: 10px;
+    /* Spacing between items */
 
     overflow: visible;
 }
@@ -130,7 +190,8 @@ body {
     font-size: 0.7em;
     text-align: right;
     padding: 10px 10px;
-    color: #afafaf; /* A muted color */
+    color: #afafaf;
+    /* A muted color */
 }
 
 footer {
@@ -138,16 +199,20 @@ footer {
     position: fixed;
     bottom: 0;
 }
+
 .item-display {
     display: flex;
-    position: relative; /* Ensure this is set for custom tooltip positioning */
+    position: relative;
+    /* Ensure this is set for custom tooltip positioning */
     align-items: center;
     padding: 5px 10px;
-    background-color: #34495e; /* Background for each item */
+    background-color: #34495e;
+    /* Background for each item */
     border-radius: 4px;
     color: white;
     font-size: 0.9em;
-    min-width: 80px; /* Ensure items don't get too squished */
+    min-width: 80px;
+    /* Ensure items don't get too squished */
     justify-content: center;
 }
 
@@ -156,27 +221,39 @@ footer {
     font-weight: bold;
 }
 
-.item-controls .btn { /* Style for the potion use buttons */
-    font-size: 0.85em; /* Slightly smaller text for these buttons */
+.item-controls .btn {
+    /* Style for the potion use buttons */
+    font-size: 0.85em;
+    /* Slightly smaller text for these buttons */
     padding: 8px 10px;
 }
 
 .item-controls .btn:disabled {
-    background-color: #555 !important; 
+    background-color: #555 !important;
     color: #888 !important;
     cursor: not-allowed;
     border-color: #444 !important;
 }
+
 .inline-ball-icon {
-    width: 1.2em; height: 1.2em; vertical-align: -0.20em; margin-right: 0.0em; image-rendering: pixelated;
+    width: 1.2em;
+    height: 1.2em;
+    vertical-align: -0.20em;
+    margin-right: 0.0em;
+    image-rendering: pixelated;
 }
+
 .battle-field {
     display: flex;
     flex-direction: column;
-    justify-content: space-between; /* Pushes wild to top, player to bottom */
-    align-items: stretch; /* Make children take full width for alignment */
-    min-height: 280px; /* Adjust as needed to create space */
-    background: var(--panel-bg-lightest); /* Optional: to visualize the field */
+    justify-content: space-between;
+    /* Pushes wild to top, player to bottom */
+    align-items: stretch;
+    /* Make children take full width for alignment */
+    min-height: 280px;
+    /* Adjust as needed to create space */
+    background: var(--panel-bg-lightest);
+    /* Optional: to visualize the field */
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 15px;
@@ -184,53 +261,72 @@ footer {
 
 .pokemon-battle {
     display: flex;
-    
-    align-items: center; /* Vertically align sprite and info box */
-    /* margin: 15px 0; */ /* Handled by battle-field */
+
+    align-items: center;
+    /* Vertically align sprite and info box */
+    /* margin: 15px 0; */
+    /* Handled by battle-field */
     padding: 10px;
-    background: var(--interactive-starter-bg); /* Using a similar very light bg */
+    background: var(--interactive-starter-bg);
+    /* Using a similar very light bg */
     border-radius: 8px;
-    /* width: fit-content; */ /* Removed */
-    width: 100%; /* Make each battle box take up almost half the battle-field width */
+    /* width: fit-content; */
+    /* Removed */
+    width: 100%;
+    /* Make each battle box take up almost half the battle-field width */
 }
 
 .pokemon-battle.wild {
-    align-self: flex-end; /* Pushes wild Pokemon to the right */
+    align-self: flex-end;
+    /* Pushes wild Pokemon to the right */
 }
+
 .pokemon-battle.player {
-    align-self: flex-start; /* Pushes player Pokemon to the left */
-    flex-direction: row; /* Sprite on left, Info on right, matching HTML order */
+    align-self: flex-start;
+    /* Pushes player Pokemon to the left */
+    flex-direction: row;
+    /* Sprite on left, Info on right, matching HTML order */
 
 }
 
 .pokemon-sprite {
-    width: 96px; /* Standard sprite size */
+    width: 96px;
+    /* Standard sprite size */
     height: 96px;
-    margin: -16px auto; /* Reduced top/bottom margin */
+    margin: -16px auto;
+    /* Reduced top/bottom margin */
     display: flex;
     align-items: center;
     justify-content: center;
-    image-rendering: pixelated; /* For crisp pixel art */
+    image-rendering: pixelated;
+    /* For crisp pixel art */
     color: var(--text-color);
-    text-shadow: 2px 2px 4px var(--panel-bg); /* Using panel-bg for shadow consistency */
-    flex-shrink: 0; /* Prevent sprite from shrinking */
+    text-shadow: 2px 2px 4px var(--panel-bg);
+    /* Using panel-bg for shadow consistency */
+    flex-shrink: 0;
+    /* Prevent sprite from shrinking */
 }
 
 .pokemon-battle.player .pokemon-sprite {
-    margin-right: 10px; /* This provides space between the sprite and the info box */
+    margin-right: 10px;
+    /* This provides space between the sprite and the info box */
 }
+
 .pokemon-battle.wild .pokemon-sprite {
-    order: 2; /* Sprite second */
+    order: 2;
+    /* Sprite second */
     margin-left: 10px;
 }
 
 .pokemon-info {
-    flex-grow: 1; /* Allow info box to take remaining space */
+    flex-grow: 1;
+    /* Allow info box to take remaining space */
 }
 
 .pokemon-battle.player .pokemon-info {
-    text-align: left; 
+    text-align: left;
 }
+
 .pokemon-battle.wild .pokemon-info {
     text-align: right;
 }
@@ -238,15 +334,19 @@ footer {
 .hp-text {
     font-size: 16px;
     font-weight: bold;
-    margin-top: 3px; /* Space between HP bar and HP text */
-    margin-bottom: 10px; /* Space between HP text and other stats */
+    margin-top: 3px;
+    /* Space between HP bar and HP text */
+    margin-bottom: 10px;
+    /* Space between HP text and other stats */
     color: var(--text-color-light);
 }
 
 .pokemon-stats {
     font-size: 12px;
-    /* margin: 3px 0; */ /* Margin handled by hp-text now or can be adjusted here */
-    color: var(--text-color-lighter); /* Lighter color for ATK/DEF stats */
+    /* margin: 3px 0; */
+    /* Margin handled by hp-text now or can be adjusted here */
+    color: var(--text-color-lighter);
+    /* Lighter color for ATK/DEF stats */
 }
 
 .hp-bar {
@@ -279,18 +379,22 @@ footer {
 }
 
 .route-btn:hover {
-    background: var(--interactive-border); /* Using border color for hover for slight difference */
+    background: var(--interactive-border);
+    /* Using border color for hover for slight difference */
 }
 
 .route-btn.active {
     background: var(--button-active-gradient);
-    border-color: var(--button-secondary-gradient); /* Assuming active uses secondary theme */
+    border-color: var(--button-secondary-gradient);
+    /* Assuming active uses secondary theme */
 }
 
-.team-area { /* Party area will no longer have a fixed max-height or scrollbar */
+.team-area {
+    /* Party area will no longer have a fixed max-height or scrollbar */
     max-height: 500px;
     overflow-y: auto;
 }
+
 /* .party-area styling is now separate if specific rules are needed beyond panel defaults */
 
 .pokemon-card {
@@ -386,14 +490,17 @@ footer {
     padding: 6px 12px;
     font-size: 11px;
 }
+
 .btn.medium {
     font-size: 15px;
 }
 
 .leave-route {
-    padding-top: 21px; 
-    padding-bottom: 20px; /* Adjusted padding for height */
+    padding-top: 21px;
+    padding-bottom: 20px;
+    /* Adjusted padding for height */
 }
+
 .shop {
     background: var(--panel-bg-light);
     border-radius: 10px;
@@ -401,25 +508,31 @@ footer {
     margin-top: 15px;
 }
 
-.shop-panel h2 { /* Ensure the main Poké Mart title is centered */
+.shop-panel h2 {
+    /* Ensure the main Poké Mart title is centered */
     text-align: center;
     margin-bottom: 15px;
 }
 
 .shop-sections-container {
     display: flex;
-    gap: 20px; /* Space between the two shop sections */
-    flex-wrap: wrap; /* Allow sections to wrap on smaller screens if needed */
+    gap: 20px;
+    /* Space between the two shop sections */
+    flex-wrap: wrap;
+    /* Allow sections to wrap on smaller screens if needed */
 }
 
 .shop-section {
-    flex: 1; /* Each section tries to take equal width */
-    min-width: 200px; /* Minimum width before wrapping */
+    flex: 1;
+    /* Each section tries to take equal width */
+    min-width: 200px;
+    /* Minimum width before wrapping */
 }
 
 .shop-item {
     display: flex;
-    position: relative; /* Needed for absolute positioning of the tooltip */
+    position: relative;
+    /* Needed for absolute positioning of the tooltip */
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
@@ -429,37 +542,50 @@ footer {
 }
 
 .custom-tooltip {
-    visibility: hidden; /* Hidden by default */
-    opacity: 0;         /* Start fully transparent */
+    visibility: hidden;
+    /* Hidden by default */
+    opacity: 0;
+    /* Start fully transparent */
     position: absolute;
-    bottom: 125%; /* Position above the parent item, with a small gap */
+    bottom: 125%;
+    /* Position above the parent item, with a small gap */
     left: 50%;
-    transform: translateX(-50%); /* Center the tooltip */
-    background-color: #2c3e50; /* Dark background, adjust as needed */
+    transform: translateX(-50%);
+    /* Center the tooltip */
+    background-color: #2c3e50;
+    /* Dark background, adjust as needed */
     color: var(--text-color-light);
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 0.85em;
-    white-space: normal; /* Allow text to wrap */
-    width: max-content; /* Adjust width based on content */
-    max-width: 250px; /* But not too wide */
-    z-index: 1001; /* Ensure it's above many other elements but below modals (modal-overlay is 2000) */
-    box-shadow: 0 3px 8px rgba(0,0,0,0.3);
-    pointer-events: none; /* Tooltip shouldn't interfere with mouse events on the item */
+    white-space: normal;
+    /* Allow text to wrap */
+    width: max-content;
+    /* Adjust width based on content */
+    max-width: 250px;
+    /* But not too wide */
+    z-index: 1001;
+    /* Ensure it's above many other elements but below modals (modal-overlay is 2000) */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    /* Tooltip shouldn't interfere with mouse events on the item */
     text-align: left;
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out; /* Smooth transition */
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    /* Smooth transition */
 }
 
 /* Optional: Arrow for the tooltip */
 .custom-tooltip::after {
     content: "";
     position: absolute;
-    top: 100%; /* At the bottom of the tooltip */
+    top: 100%;
+    /* At the bottom of the tooltip */
     left: 50%;
     transform: translateX(-50%);
     border-width: 6px;
     border-style: solid;
-    border-color: #2c3e50 transparent transparent transparent; /* Arrow pointing down */
+    border-color: #2c3e50 transparent transparent transparent;
+    /* Arrow pointing down */
 }
 
 .shop-item:hover .custom-tooltip {
@@ -467,7 +593,8 @@ footer {
     opacity: 1;
 }
 
-.item-display:hover .custom-tooltip { /* Add this rule for the item bar */
+.item-display:hover .custom-tooltip {
+    /* Add this rule for the item bar */
     visibility: visible;
     opacity: 1;
 }
@@ -526,6 +653,7 @@ footer {
 }
 
 @keyframes pulse {
+
     0%,
     100% {
         opacity: 1;
@@ -551,27 +679,32 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--modal-overlay-bg); /* Darker overlay */
+    background: var(--modal-overlay-bg);
+    /* Darker overlay */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000; /* Ensure it's on top */
+    z-index: 2000;
+    /* Ensure it's on top */
     backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    background: var(--modal-bg); /* Modal background */
+    background: var(--modal-bg);
+    /* Modal background */
     padding: 30px 40px;
     border-radius: 15px;
     text-align: center;
     color: var(--text-color);
-    box-shadow: 0 8px 30px var(--panel-bg); /* Using panel-bg for consistency */
+    box-shadow: 0 8px 30px var(--panel-bg);
+    /* Using panel-bg for consistency */
     border: 1px solid var(--modal-border-color);
 }
 
 .modal-content h2 {
     margin-bottom: 25px;
-    color: var(--accent-color); /* Gold color for heading */
+    color: var(--accent-color);
+    /* Gold color for heading */
     font-size: 24px;
 }
 
@@ -595,14 +728,16 @@ footer {
     transform: translateY(-5px);
 }
 
-.starter-option img { /* Styles for images within starter options, if you add them */
+.starter-option img {
+    /* Styles for images within starter options, if you add them */
     width: 80px;
     height: 80px;
     margin-bottom: 10px;
     image-rendering: pixelated;
 }
 
-.starter-option .pokemon-name { /* If you display names */
+.starter-option .pokemon-name {
+    /* If you display names */
     font-weight: bold;
     font-size: 16px;
 }

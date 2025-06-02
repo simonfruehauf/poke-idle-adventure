@@ -1,12 +1,12 @@
 // ui.js
 import { gameState, pokemonBaseStatsData, pokeballData, potionData, routes } from './state.js';
 import { getActivePokemon, formatNumberWithDots, addBattleLog } from './utils.js';
-import { POKEMON_SPRITE_BASE_URL, AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, STARTER_POKEMON_NAMES } from './config.js';
+import { POKEMON_SPRITE_BASE_URL, AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, STARTER_POKEMON_NAMES, SHINY_CHANCE } from './config.js'; // SHINY_CHANCE might not be directly used here but good to keep track of config imports
 import { Pokemon } from './pokemon.js';
 import { calculateAveragePartyLevel, attemptEvolution, setActivePokemon, removeFromParty, confirmReleasePokemon as confirmReleasePokemonLogic, addToParty as addToPartyLogic } from './gameLogic.js'; // Import logic functions
 
 // --- Utility functions for Pokémon data presentation ---
-export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicator', showBallIcon = false) {
+export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicator', showBallIcon = false, checkCaughtStatus = false) {
     if (!pokemon) return '';
     let ballIconHTML = '';
     if (showBallIcon) {
@@ -15,7 +15,28 @@ export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicat
         ballIconHTML = `<img src="${ballInfo.image}" alt="${ballInfo.name}" title="${ballInfo.name}" class="inline-ball-icon"> `;
     }
     const shinySpan = pokemon.isShiny ? ` <span class="${shinyIndicatorClass}">(Shiny)</span>` : '';
-    return `${ballIconHTML}${pokemon.name}${shinySpan}`;}
+    let caughtIndicatorHTML = '';
+    if (checkCaughtStatus && pokemon.pokedexId) {
+        // Determine if the player has caught this species
+        const isCaught = gameState.party.some(p => p && p.pokedexId === pokemon.pokedexId) ||
+                         gameState.allPokemon.some(p => p && p.pokedexId === pokemon.pokedexId);
+        
+        const pokeballImageSrc = pokeballData.pokeball?.image; // Use the standard Pokeball image for the indicator
+        const titleText = isCaught ? 'Caught' : 'Not Caught';
+
+        if (pokeballImageSrc) {
+            // Always show the icon if its image source is available.
+            // The 'caught-indicator-icon' class applies default grayscale.
+            // The 'is-caught' class will be added if the Pokemon is caught, removing the grayscale.
+            const caughtClass = isCaught ? ' is-caught' : ''; // Add a leading space for the additional class
+            caughtIndicatorHTML = `<img src="${pokeballImageSrc}" alt="Caught Status" title="${titleText}" class="caught-indicator-icon${caughtClass}"> `;
+        } else {
+            // Fallback to text indicator if the icon's image source is missing.
+            // Show text only if caught, to maintain consistency with the original fallback behavior.
+            if (isCaught) caughtIndicatorHTML = `<span class="caught-indicator-text" title="Caught">(C)</span> `;
+        }
+    }
+    return `${caughtIndicatorHTML}${ballIconHTML}${pokemon.name}${shinySpan}`;}
 
 export function getPokemonSpritePath(pokemon, spriteType = 'front', baseSpriteUrl = POKEMON_SPRITE_BASE_URL) {
     if (!pokemon || !pokemon.pokedexId) return "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="; // Placeholder
@@ -347,7 +368,8 @@ export function updateDisplay() {
 
 export function displayPokemonData(pokemon, elements, spriteType = 'front') {
     if (pokemon) {
-        elements.nameEl.innerHTML = getPokemonNameHTML(pokemon, elements.shinyIndicatorClass, false);
+        const isWildForCaughtCheck = pokemon === gameState.currentWildPokemon;
+        elements.nameEl.innerHTML = getPokemonNameHTML(pokemon, elements.shinyIndicatorClass || 'shiny-indicator', false, isWildForCaughtCheck);
         if (elements.levelEl) elements.levelEl.textContent = getPokemonLevelText(pokemon);
         elements.spriteEl.src = getPokemonSpritePath(pokemon, spriteType);
         elements.spriteEl.alt = pokemon.name;
