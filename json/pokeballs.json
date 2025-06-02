@@ -3,23 +3,23 @@
         "id": "pokeball",
         "name": "Poké Ball",
         "modifier": 1.0,
-        "cost": 200,
+        "cost": 50,
         "image": "sprites/items/poke-ball.png",
         "description": "A tool for catching wild Pokémon."
     },
     "greatball": {
         "id": "greatball",
         "name": "Great Ball",
-        "modifier": 1.5,
-        "cost": 600,
+        "modifier": 1.6,
+        "cost": 250,
         "image": "sprites/items/great-ball.png",
         "description": "A ball with a decent catch rate."
     },
     "ultraball": {
         "id": "ultraball",
         "name": "Ultra Ball",
-        "modifier": 2.0,
-        "cost": 1200,
+        "modifier": 2.2,
+        "cost": 600,
         "image": "sprites/items/ultra-ball.png",
         "description": "A ball with a high rate of success."
     }

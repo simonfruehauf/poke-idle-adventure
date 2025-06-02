@@ -223,7 +223,17 @@ export async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlaye
             if (gameState.autoBattleActive) toggleAutoFight();
         }
     } else {
-        const expGained = faintedPokemon.level * 15;
+        const baseExp = faintedPokemon.level * 20;
+        const levelDifference = faintedPokemon.level - victorPokemon.level; // Positive if wild is higher, negative if player is higher
+
+        // XP Multiplier:
+        // - Increases by 10% for each level the wild Pokemon is higher.
+        // - Decreases by 10% for each level the player's Pokemon is higher.
+        // - Capped between 0.1x (10%) and 2.0x (250%)
+        let xpMultiplier = 1 + (levelDifference * 0.10);
+        xpMultiplier = Math.max(0.1, Math.min(xpMultiplier, 2.5));
+        const expGained = Math.max(1, Math.floor(baseExp * xpMultiplier)); // Ensure at least 1 XP
+
         const moneyGained = Math.floor( (Math.sqrt(faintedPokemon.level)/2.0) * 15.0 * (currentRouteData ? currentRouteData.moneyMultiplier : 1));
         victorPokemon.gainExp(expGained);
         gameState.money += moneyGained;
