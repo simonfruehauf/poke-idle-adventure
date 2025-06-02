@@ -10,3 +10,7 @@ export const XP_SHARE_CONFIG = [
     { cost: 45000, percentage: 0.15, name: "EXP Share (15%)" },
     { cost: 100000, percentage: 0.25, name: "EXP Share (25%)" },
 ];
+
+export const XP_LEVEL_DIFF_FACTOR = 0.08; // 8% change per level difference from base 1.0x
+export const XP_MULTIPLIER_MIN = 0.2;     // Minimum XP multiplier (e.g., 0.2 means 20% of base XP)
+export const XP_MULTIPLIER_MAX = 3.0;     // Maximum XP multiplier (e.g., 3.0 means 300% of base XP)

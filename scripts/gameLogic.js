@@ -1,9 +1,9 @@
 // gameLogic.js
 import { gameState, routes, pokeballData, itemData, pokemonBaseStatsData, eventDefinitions } from './state.js';
 import { Pokemon } from './pokemon.js';
-import { addBattleLog, getActivePokemon, findNextHealthyPokemon, formatNumberWithDots } from './utils.js';
+import { addBattleLog, getActivePokemon, findNextHealthyPokemon, formatNumberWithDots } from './utils.js'; // XP_LEVEL_DIFF_FACTOR, XP_MULTIPLIER_MIN, XP_MULTIPLIER_MAX
 import { updateDisplay, updateWildPokemonDisplay, populateRouteSelector, showEventModal, closeEventModal } from './ui.js';
-import { AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG } from './config.js';
+import { AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, XP_LEVEL_DIFF_FACTOR, XP_MULTIPLIER_MIN, XP_MULTIPLIER_MAX } from './config.js';
 
 let autoFightIntervalId = null;
 
@@ -240,12 +240,12 @@ export async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlaye
         const baseExp = faintedPokemon.level * 20;
         const levelDifference = faintedPokemon.level - victorPokemon.level; // Positive if wild is higher, negative if player is higher
 
-        // XP Multiplier:
-        // - Increases by 10% for each level the wild Pokemon is higher.
-        // - Decreases by 10% for each level the player's Pokemon is higher.
-        // - Capped between 0.1x (10%) and 2.0x (250%)
-        let xpMultiplier = 1 + (levelDifference * 0.10);
-        xpMultiplier = Math.max(0.1, Math.min(xpMultiplier, 2.5));
+        // XP Multiplier based on level difference:
+        // - Modifies base XP by +/- (XP_LEVEL_DIFF_FACTOR * 100)% per level difference from a base of 1.0x.
+        // - Example: If XP_LEVEL_DIFF_FACTOR is 0.08, it's +/- 8% per level.
+        // - Capped between XP_MULTIPLIER_MIN and XP_MULTIPLIER_MAX.
+        let xpMultiplier = 1 + (levelDifference * XP_LEVEL_DIFF_FACTOR);
+        xpMultiplier = Math.max(XP_MULTIPLIER_MIN, Math.min(xpMultiplier, XP_MULTIPLIER_MAX));
         const expGained = Math.max(1, Math.floor(baseExp * xpMultiplier)); // Ensure at least 1 XP
 
         const moneyGained = Math.floor( (Math.sqrt(faintedPokemon.level)/2.0) * 15.0 * (currentRouteData ? currentRouteData.moneyMultiplier : 1));
@@ -259,20 +259,23 @@ export async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlaye
 
         if (gameState.xpShareLevel > 0 && gameState.xpShareLevel <= XP_SHARE_CONFIG.length) {
             const currentXpShare = XP_SHARE_CONFIG[gameState.xpShareLevel - 1];
-            const rawSharedExp = expGained * currentXpShare.percentage;
-            let sharedExpAmount = Math.floor(rawSharedExp);
-            if (rawSharedExp > 0 && sharedExpAmount === 0) {
-                sharedExpAmount = 1; // Ensure at least 1 XP is shared if any fraction was calculated
-            }
-            if (sharedExpAmount > 0) {
-                let sharedCount = 0;
-                gameState.party.forEach(p => {
-                    if (p && p.id !== victorPokemon.id && p.currentHp > 0) {
-                        p.gainExp(sharedExpAmount); sharedCount++;
+            let sharedCount = 0;
+            gameState.party.forEach(p => {
+                if (p && p.id !== victorPokemon.id && p.currentHp > 0) {
+                    const levelDifferenceP = faintedPokemon.level - p.level; // Positive if wild is higher, negative if player is higher
+                    let xpMultiplierp = 1 + (levelDifferenceP * XP_LEVEL_DIFF_FACTOR);
+                    xpMultiplierp = Math.max(XP_MULTIPLIER_MIN, Math.min(xpMultiplierp, XP_MULTIPLIER_MAX));
+                    const expGained = Math.max(1, Math.floor(baseExp * xpMultiplierp)); // Ensure at least 1 XP
+
+                    const rawSharedExp = expGained * currentXpShare.percentage;
+
+                    let sharedExpAmount = Math.floor(rawSharedExp);
+                    if (rawSharedExp > 0 && sharedExpAmount === 0) {
+                        sharedExpAmount = 1; // Ensure at least 1 XP is shared if any fraction was calculated
                     }
-                });
-                if (sharedCount > 0) addBattleLog(`XP Share distributed ${sharedExpAmount} EXP to ${sharedCount} other Pokémon!`);
-            }
+                    p.gainExp(sharedExpAmount); sharedCount++;
+                }
+            });
         }
         gameState.currentWildPokemon = null;
         populateRouteSelector(); // Level ups might unlock new routes

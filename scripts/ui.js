@@ -73,10 +73,13 @@ export function getPokemonDetailedStatsHTML(pokemon) { // For party/storage disp
 
 export function getPokemonExpBarHTML(pokemon) {
     if (!pokemon || typeof pokemon.exp !== 'number' || typeof pokemon.expToNext !== 'number' || pokemon.expToNext === 0) {
-        return '<div class="pokemon-exp" style="height: 8px; margin: 5px 0;"><div class="exp-fill" style="width: 0%"></div></div>';
+        // Still provide a title for consistency, even if it's 0/0
+        const titleText = `0 / 0 EXP`;
+        return `<div class="pokemon-exp" title="${titleText}" style="height: 8px; margin: 5px 0;"><div class="exp-fill" style="width: 0%"></div></div>`;
     }
     const expPercentage = (pokemon.exp / pokemon.expToNext) * 100;
-    return `<div class="pokemon-exp" style="height: 8px; margin: 5px 0;"><div class="exp-fill" style="width: ${expPercentage}%"></div></div>`;
+    const titleText = `${pokemon.exp} / ${pokemon.expToNext} EXP`;
+    return `<div class="pokemon-exp" title="${titleText}" style="height: 8px; margin: 5px 0;"><div class="exp-fill" style="width: ${expPercentage}%"></div></div>`;
 }
 // --- End of utility functions ---
 

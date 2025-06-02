@@ -72,7 +72,9 @@ export class Pokemon {
     }
 
     getExpToNext() {
-        return this.level * 100;
+        // Quadratic scaling to make higher levels require progressively more EXP.
+        // The factor (1 + (this.level - 1) * 0.025) increases the base (level * 100) requirement.
+        return Math.floor(this.level * 100 * (1 + (this.level - 1) * 0.025));
     }
 
     takeDamage(damage) {
