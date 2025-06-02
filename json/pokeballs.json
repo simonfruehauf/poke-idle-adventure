@@ -22,5 +22,13 @@
         "cost": 600,
         "image": "sprites/items/ultra-ball.png",
         "description": "A ball with a high rate of success."
+    },
+    "masterball": {
+        "id": "masterball",
+        "name": "Master Ball",
+        "modifier": 255,
+        "cost": 0,
+        "image": "sprites/items/master-ball.png",
+        "description": "The best Poké Ball with the ultimate performance. It will catch any wild Pokémon without fail."
     }
 }

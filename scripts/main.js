@@ -36,6 +36,40 @@ async function initGame() {
     setInterval(saveGame, 15000);
 }
 
+// Konami Code Easter Egg
+const konamiCode = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+let userInputSequence = [];
+
+function handleKonamiCode(event) {
+    if (gameState.konamiCodeActivated) return;
+
+    const key = event.key.toLowerCase(); // Use toLowerCase for 'b' and 'a'
+    userInputSequence.push(key);
+
+    // Keep the sequence at the length of the Konami code
+    if (userInputSequence.length > konamiCode.length) {
+        userInputSequence.shift();
+    }
+
+    if (userInputSequence.length === konamiCode.length) {
+        let match = true;
+        for (let i = 0; i < konamiCode.length; i++) {
+            if (userInputSequence[i] !== konamiCode[i]) {
+                match = false;
+                break;
+            }
+        }
+        if (match) {
+            gameState.konamiCodeActivated = true;
+            gameState.money += 7777;
+            gameState.pokeballs.masterball = (gameState.pokeballs.masterball || 0) + 1;
+            addBattleLog("KONAMI CODE! You feel a surge of retro power! Received 7777₽ and 1 Master Ball!");
+            updateDisplay(); saveGame();
+            userInputSequence = []; // Reset sequence
+        }
+    }
+}
+
 function startAutoUpdateLoop() {
     // This loop is for general UI updates, not auto-battle
     setInterval(() => {
@@ -72,6 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (routeSelect) {
         routeSelect.addEventListener('change', (event) => handleRouteChange(event.target.value));
     }
+    document.addEventListener('keydown', handleKonamiCode);
 
     // Initialize the game once the DOM is fully loaded
     initGame();

@@ -5,7 +5,8 @@ export let gameState = {
     pokeballs: {
         pokeball: 5,
         greatball: 0,
-        ultraball: 0
+        ultraball: 0,
+        masterball: 0
     },
     potions: {
         potion: 0,
@@ -21,7 +22,8 @@ export let gameState = {
     battleInProgress: false,
     autoBattleActive: false,
     autoFightUnlocked: false,
-    xpShareLevel: 0
+    xpShareLevel: 0,
+    konamiCodeActivated: false
 };
 
 export let routes = {};

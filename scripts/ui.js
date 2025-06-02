@@ -83,6 +83,31 @@ function _updatePlayerStatsDisplay() {
     document.getElementById('pokeballs-standard').textContent = gameState.pokeballs.pokeball;
     document.getElementById('pokeballs-great').textContent = gameState.pokeballs.greatball;
     document.getElementById('pokeballs-ultra').textContent = gameState.pokeballs.ultraball;
+
+    // Update general player stats display for Master Balls (e.g., top-left stats)
+    const masterballPlayerStatSpan = document.getElementById('pokeballs-master');
+    if (masterballPlayerStatSpan) {
+        masterballPlayerStatSpan.textContent = gameState.pokeballs.masterball;
+    }
+
+    // Update item bar display for Master Balls
+    const masterballItemBarContainer = document.getElementById('itembar-display-masterball'); // The DIV container in the item bar
+    const masterballItemBarCountSpan = document.getElementById('itembar-masterball-count');   // The SPAN for the count within the item bar
+
+    if (masterballItemBarContainer) {
+        if (gameState.pokeballs.masterball > 0) {
+            masterballItemBarContainer.style.display = ''; // Show the container (CSS default like 'flex', 'inline-block')
+            if (masterballItemBarCountSpan) {
+                masterballItemBarCountSpan.textContent = gameState.pokeballs.masterball;
+            }
+        } else {
+            masterballItemBarContainer.style.display = 'none'; // Hide the container
+            if (masterballItemBarCountSpan) { // Also update count to 0 for consistency, though hidden
+                masterballItemBarCountSpan.textContent = '0';
+            }
+        }
+    }
+
     if (document.getElementById('potions-potion')) document.getElementById('potions-potion').textContent = gameState.potions.potion;
     if (document.getElementById('potions-hyperpotion')) document.getElementById('potions-hyperpotion').textContent = gameState.potions.hyperpotion;
     if (document.getElementById('potions-moomoomilk')) document.getElementById('potions-moomoomilk').textContent = gameState.potions.moomoomilk;
@@ -94,6 +119,7 @@ function _updateMainActionButtonsState() {
     const catchPokeballBtn = document.getElementById('catch-pokeball-btn');
     const catchGreatballBtn = document.getElementById('catch-greatball-btn');
     const catchUltraballBtn = document.getElementById('catch-ultraball-btn');
+    const catchMasterballBtn = document.getElementById('catch-masterball-btn');
     const autoFightBtn = document.getElementById('auto-fight-btn');
     const freeHealBtn = document.getElementById('free-heal-btn');
 
@@ -122,10 +148,19 @@ function _updateMainActionButtonsState() {
     if (catchPokeballBtn) catchPokeballBtn.disabled = !canCatch || gameState.pokeballs.pokeball <= 0;
     if (catchGreatballBtn) catchGreatballBtn.disabled = !canCatch || gameState.pokeballs.greatball <= 0;
     if (catchUltraballBtn) catchUltraballBtn.disabled = !canCatch || gameState.pokeballs.ultraball <= 0;
+    if (catchMasterballBtn) {
+        catchMasterballBtn.disabled = !canCatch || gameState.pokeballs.masterball <= 0;
+        catchMasterballBtn.style.display = gameState.pokeballs.masterball > 0 ? '' : 'none';
+    }
 
     if (pokeballData.pokeball && catchPokeballBtn) catchPokeballBtn.textContent = `Catch (${pokeballData.pokeball.name} - ${gameState.pokeballs.pokeball})`;
     if (pokeballData.greatball && catchGreatballBtn) catchGreatballBtn.textContent = `Catch (${pokeballData.greatball.name} - ${gameState.pokeballs.greatball})`;
     if (pokeballData.ultraball && catchUltraballBtn) catchUltraballBtn.textContent = `Catch (${pokeballData.ultraball.name} - ${gameState.pokeballs.ultraball})`;
+    if (pokeballData.masterball && catchMasterballBtn) {
+        if (gameState.pokeballs.masterball > 0) {
+            catchMasterballBtn.textContent = `Catch (${pokeballData.masterball.name} - ${gameState.pokeballs.masterball})`;
+        }
+    }
 
     if (!gameState.autoFightUnlocked) {
         autoFightBtn.textContent = `Auto-Fight (LOCKED - ${AUTO_FIGHT_UNLOCK_WINS} wins)`;
@@ -224,6 +259,9 @@ function _updateItemBarTooltips() {
         } else if (itemEl.querySelector('#pokeballs-ultra')) {
             tooltipEl = document.getElementById('tooltip-itembar-ultraball');
             if (pokeballData.ultraball) description = pokeballData.ultraball.description || pokeballData.ultraball.name;
+        } else if (itemEl.querySelector('#pokeballs-master')) {
+            tooltipEl = document.getElementById('tooltip-itembar-masterball');
+            if (pokeballData.masterball) description = pokeballData.masterball.description || pokeballData.masterball.name;
         } else if (itemEl.querySelector('#potions-potion')) {
             tooltipEl = document.getElementById('tooltip-itembar-potion');
             if (potionData.potion) description = potionData.potion.description || potionData.potion.name;

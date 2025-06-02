@@ -120,7 +120,7 @@
                         style="flex-grow: 1; background-color: #f1c40f; color: #333;">
                         Catch (Ultra Ball - 0)
                     </button>
-                    <!-- Add more catch buttons here if new balls are added -->
+                    <button id="catch-masterball-btn" class="btn catch-btn masterball" onclick="attemptCatch('masterball')">Catch (Master Ball - 0)</button>
                 </div>
 
                 <!-- Potion Use Controls -->
@@ -255,6 +255,12 @@
                     <span class="item-count" id="pokeballs-ultra">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-ultraball"></div>
                 </div>
+                <div class="item-display tooltip-container" id="itembar-display-masterball">
+                    <img src="sprites/items/master-ball.png" alt="Master Ball">
+                    <span id="itembar-masterball-count">0</span>
+                    <span class="tooltip-text" id="tooltip-itembar-masterball"></span>
+                </div>
+
                 <!-- Potions -->
                 <div class="item-display" title="Potions">
                     <img src="sprites/items/potion.png" alt="Potion" class="item-icon">
@@ -297,7 +303,7 @@
 </body>
 <footer>
     <div id="game-version">
-        v0.3.1
+        v0.3.4
     </div>
 </footer>
 

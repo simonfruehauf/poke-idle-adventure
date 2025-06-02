@@ -41,7 +41,8 @@ export function saveGame() {
         currentRoute: gameState.currentRoute,
         autoBattleActive: gameState.autoBattleActive, // Will be reset on load, but saved for consistency
         autoFightUnlocked: gameState.autoFightUnlocked,
-        xpShareLevel: gameState.xpShareLevel
+        xpShareLevel: gameState.xpShareLevel,
+        konamiCodeActivated: gameState.konamiCodeActivated
     };
     localStorage.setItem('pokemonIdleGameV2', JSON.stringify(saveData));
 }
@@ -60,6 +61,7 @@ export function loadGame() {
             pokeball: (data.pokeballs && data.pokeballs.pokeball !== undefined) ? data.pokeballs.pokeball : 5,
             greatball: (data.pokeballs && data.pokeballs.greatball) || 0,
             ultraball: (data.pokeballs && data.pokeballs.ultraball) || 0,
+            masterball: (data.pokeballs && data.pokeballs.masterball) || 0,
         };
         gameState.potions = data.potions || { potion: 0, hyperpotion: 0, moomoomilk: 0 };
         gameState.battleWins = data.battleWins || 0;
@@ -67,6 +69,7 @@ export function loadGame() {
         gameState.autoFightUnlocked = data.autoFightUnlocked || false;
         gameState.autoBattleActive = false; // Always start with auto-battle off
         gameState.xpShareLevel = data.xpShareLevel || 0;
+        gameState.konamiCodeActivated = data.konamiCodeActivated || false;
 
         if (data.party) gameState.party = data.party.map(pData => pData ? deserializePokemon(pData) : null);
         const firstHealthyInParty = gameState.party.findIndex(p => p && p.currentHp > 0);
