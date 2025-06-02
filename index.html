@@ -13,7 +13,6 @@
     <div class="container">
         <div class="header">
             <h1>Pokemon Idle Adventure</h1>
-            <p>Auto-battle, catch, and train Pokemon across different routes!</p>
             <div style="margin-top: 10px;">
                 <button class="btn small" onclick="manualSaveGame()" style="background: #2ecc71; margin-right: 5px;">
                     Save Game
@@ -29,33 +28,48 @@
                 <div class="stat-value" id="money">100</div>
                 <div>Money</div>
             </div>
-            <div class="stat stat-horizontal" title="Poké Balls" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                <img src="sprites/items/poke-ball.png" alt="Poké Ball" style="width:24px; height:24px; margin-right: 3px; margin-bottom: 0;">
-                <span class="stat-value" style="margin-right: 5px;">x</span>
-                <div class="stat-value" id="pokeballs-standard">10</div>
-            </div>
-            <div class="stat stat-horizontal" title="Great Balls" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                <img src="sprites/items/great-ball.png" alt="Great Ball" style="width:24px; height:24px; margin-right: 3px; margin-bottom: 0;">
-                <span class="stat-value" style="margin-right: 5px;">x</span>
-                <div class="stat-value" id="pokeballs-great">0</div>
-            </div>
-            <div class="stat stat-horizontal" title="Ultra Balls" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" style="width:24px; height:24px; margin-right: 3px; margin-bottom: 0;">
-                <span class="stat-value" style="margin-right: 5px;">x</span>
-                <div class="stat-value" id="pokeballs-ultra">0</div>
-            </div>
-            <div class="stat stat-horizontal" title="Dusk Balls" style="display: flex; flex-direction: row; align-items: center; justify-content: center;">
-                <img class="inline-ball-icon" src="sprites/items/dusk-ball.png" alt="Dusk Ball" >
-                <span class="stat-value" style="margin-right: 5px;">x</span>
-                <div class="stat-value" id="pokeballs-dusk">0</div>
-            </div>
             <div class="stat">
-                <div class="stat-value" id="caught">0</div>
-                <div>Caught</div>
+                <div class="stat-value" id="pokedex-count">0 (0 Shiny)</div>
+                <div>Pokedex</div>
             </div>
             <div class="stat">
                 <div class="stat-value" id="battle-wins">0</div>
                 <div>Wins</div>
+            </div>
+        </div>
+
+        <div class="items-bar">
+            <!-- Poké Balls -->
+            <div class="item-display" title="Poké Balls">
+                <img src="sprites/items/poke-ball.png" alt="Poké Ball" class="item-icon">
+                <span class="item-count" id="pokeballs-standard">10</span>
+                <div class="custom-tooltip" id="tooltip-itembar-pokeball"></div>
+            </div>
+            <div class="item-display" title="Great Balls">
+                <img src="sprites/items/great-ball.png" alt="Great Ball" class="item-icon">
+                <span class="item-count" id="pokeballs-great">0</span>
+                <div class="custom-tooltip" id="tooltip-itembar-greatball"></div>
+            </div>
+            <div class="item-display" title="Ultra Balls">
+                <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="item-icon">
+                <span class="item-count" id="pokeballs-ultra">0</span>
+                <div class="custom-tooltip" id="tooltip-itembar-ultraball"></div>
+            </div>
+            <!-- Potions -->
+            <div class="item-display" title="Potions">
+                <img src="sprites/items/potion.png" alt="Potion" class="item-icon">
+                <span class="item-count" id="potions-potion">0</span>
+                <div class="custom-tooltip" id="tooltip-itembar-potion"></div>
+            </div>
+            <div class="item-display" title="Hyper Potions">
+                <img src="sprites/items/hyper-potion.png" alt="Hyper Potion" class="item-icon">
+                <span class="item-count" id="potions-hyperpotion">0</span>
+                <div class="custom-tooltip" id="tooltip-itembar-hyperpotion"></div>
+            </div>
+            <div class="item-display" title="Moomoo Milks">
+                <img src="sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="item-icon">
+                <span class="item-count" id="potions-moomoomilk">0</span>
+                <div class="custom-tooltip" id="tooltip-itembar-moomoomilk"></div>
             </div>
         </div>
 
@@ -65,13 +79,14 @@
                 <div id="route-controls-wrapper" style="margin-bottom: 10px;">
                     <!-- Container for just the label and select dropdown -->
                     <div id="route-select-container" class="route-selector-group">
-                        <label for="route-select" style="margin-bottom: 5px; font-weight: bold; display: block;">Select Route:</label>
-                        <select id="route-select" onchange="handleRouteChange(this.value)" 
-                                style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #555; background-color: #333; color: white; box-sizing: border-box;"></select>
+                        <label for="route-select" style="margin-bottom: 5px; font-weight: bold; display: block;">Select
+                            Route:</label>
+                        <select id="route-select" onchange="handleRouteChange(this.value)"
+                            style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #555; background-color: #333; color: white; box-sizing: border-box;"></select>
                     </div>
                     <!-- Leave Route Button, now separate and initially hidden -->
-                    <button id="leave-route-btn" class="leave-route btn medium secondary " onclick="leaveCurrentRoute()" 
-                            style="background-color: #f39c12; display: none; 
+                    <button id="leave-route-btn" class="leave-route btn medium secondary " onclick="leaveCurrentRoute()"
+                        style="background-color: #f39c12; display: none; 
                                    width: 100%; 
                                    box-sizing: border-box;">
                         Leave Current Route
@@ -93,11 +108,13 @@
                             <div class="hp-text" id="wild-hp-text">HP: 0/0</div>
                             <div class="pokemon-stats" id="wild-stats">ATK: 0 | DEF: 0</div>
                         </div>
-                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Wild Pokemon" class="pokemon-sprite" id="wild-sprite">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Wild Pokemon"
+                            class="pokemon-sprite" id="wild-sprite">
                     </div>
 
                     <div id="player-pokemon" class="pokemon-battle player">
-                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Player Pokemon" class="pokemon-sprite" id="player-sprite">
+                        <img src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Player Pokemon"
+                            class="pokemon-sprite" id="player-sprite">
                         <div class="pokemon-info">
                             <div id="player-name" class="pokemon-battle-name">No Pokemon</div>
                             <div id="player-level" class="pokemon-battle-level">Lv.0</div>
@@ -114,25 +131,44 @@
                     <button class="btn" id="fight-btn" onclick="manualBattle()">
                         Fight!
                     </button>
-                    <button class="btn" id="auto-fight-btn" onclick="toggleAutoFight()" style="background-color: #4CAF50; margin-left: 5px;" disabled>
+                    <button class="btn" id="auto-fight-btn" onclick="toggleAutoFight()"
+                        style="background-color: #4CAF50; margin-left: 5px;" disabled>
                         Auto-Fight (LOCKED)
                     </button>
                 </div>
                 <div class="controls" style="margin-top: 5px; display: flex; flex-wrap: wrap; gap: 5px;">
-                    <button class="btn secondary catch-ball-btn" id="catch-pokeball-btn" onclick="attemptCatch('pokeball')" disabled style="flex-grow: 1;">
+                    <button class="btn secondary catch-ball-btn" id="catch-pokeball-btn"
+                        onclick="attemptCatch('pokeball')" disabled style="flex-grow: 1;">
                         Catch (Poké Ball - 0)
                     </button>
-                    <button class="btn secondary catch-ball-btn" id="catch-greatball-btn" onclick="attemptCatch('greatball')" disabled style="flex-grow: 1; background-color: #3498db;">
+                    <button class="btn secondary catch-ball-btn" id="catch-greatball-btn"
+                        onclick="attemptCatch('greatball')" disabled style="flex-grow: 1; background-color: #3498db;">
                         Catch (Great Ball - 0)
                     </button>
-                    <button class="btn secondary catch-ball-btn" id="catch-ultraball-btn" onclick="attemptCatch('ultraball')" disabled style="flex-grow: 1; background-color: #f1c40f; color: #333;">
+                    <button class="btn secondary catch-ball-btn" id="catch-ultraball-btn"
+                        onclick="attemptCatch('ultraball')" disabled
+                        style="flex-grow: 1; background-color: #f1c40f; color: #333;">
                         Catch (Ultra Ball - 0)
-                    </button>
-                    <button class="btn secondary catch-ball-btn" id="catch-duskball-btn" onclick="attemptCatch('duskball')" disabled style="flex-grow: 1; background-color: #5D3FD3;">
-                        Catch (Dusk Ball - 0)
                     </button>
                     <!-- Add more catch buttons here if new balls are added -->
                 </div>
+
+                <!-- Potion Use Controls -->
+                <div class="controls item-controls" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;">
+                    <button class="btn item-use-btn" id="use-potion-btn" onclick="usePotion('potion')" disabled
+                        style="flex-grow: 1; background-color: #90ee90; color: #333;">
+                        Use Potion (0)
+                    </button>
+                    <button class="btn item-use-btn" id="use-hyperpotion-btn" onclick="usePotion('hyperpotion')"
+                        disabled style="flex-grow: 1; background-color: #add8e6; color: #333;">
+                        Use Hyper Potion (0)
+                    </button>
+                    <button class="btn item-use-btn" id="use-moomoomilk-btn" onclick="usePotion('moomoomilk')" disabled
+                        style="flex-grow: 1; background-color: #fffacd; color: #333;">
+                        Use Moomoo Milk (0)
+                    </button>
+                </div>
+
 
                 <div class="battle-log" id="battle-log">
                     <div class="log-entry">Welcome to Pokemon Idle Adventure!</div>
@@ -161,42 +197,62 @@
                     </div>
                 </div>
 
-                <div class="controls">
-                    <button id="party-heal-btn" class="btn small secondary" onclick="healAllParty()">Heal All (50G)</button>
-                </div>
+                <!-- Heal All button removed -->
             </div>
 
             <div class="panel shop-panel"> <!-- New Shop Panel -->
                 <h2>Poké Mart</h2>
-                <div class="shop-item">
-                    <img src="sprites/items/poke-ball.png" alt="Pokeball" class="shop-item-icon">
-                    <span>Pokeball (x1)</span>
-                    <button class="btn small" onclick="buyBall('pokeball', 1)">Buy - 10G</button>
-                </div>
-                <div class="shop-item">
-                    <img src="sprites/items/great-ball.png" alt="Great Ball" class="shop-item-icon">
-                    <span>Great Ball (x1)</span>
-                    <button class="btn small" onclick="buyBall('greatball', 1)">Buy - 30G</button>
-                </div>
-                <div class="shop-item">
-                    <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="shop-item-icon">
-                    <span>Ultra Ball (x1)</span>
-                    <button class="btn small" onclick="buyBall('ultraball', 1)">Buy - 60G</button>
-                </div>
-                <div class="shop-item">
-                    <img src="sprites/items/dusk-ball.png" alt="Dusk Ball" class="shop-item-icon">
-                    <span>Dusk Ball (x1)</span>
-                    <button class="btn small" onclick="buyBall('duskball', 1)">Buy - 100G</button>
-                </div>
-                <!-- Add shop items for bulk purchase of new balls if desired -->
-
-
-                <div class="shop-item" id="exp-share-shop-item">
-                    <img src="sprites/items/exp-share.png" alt="XP Share" class="shop-item-icon">
-                    <span>XP Share</span>
-                    <button id="exp-share-buy-btn" class="btn small" onclick="buyXpShareUpgrade()">
-                        <!-- Dynamically updated by JS -->
-                    </button>
+                <div class="shop-sections-container">
+                    <div class="shop-section">
+                        <h3>Poké Balls</h3>
+                        <div class="shop-item" id="shop-item-pokeball">
+                            <img src="sprites/items/poke-ball.png" alt="Pokeball" class="shop-item-icon">
+                            <span>Pokeball (x1)</span>
+                            <button class="btn small" onclick="buyBall('pokeball', 1)">Buy - 10G</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-pokeball"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-greatball">
+                            <img src="sprites/items/great-ball.png" alt="Great Ball" class="shop-item-icon">
+                            <span>Great Ball (x1)</span>
+                            <button class="btn small" onclick="buyBall('greatball', 1)">Buy - 30G</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-greatball"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-ultraball">
+                            <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="shop-item-icon">
+                            <span>Ultra Ball (x1)</span>
+                            <button class="btn small" onclick="buyBall('ultraball', 1)">Buy - 60G</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-ultraball"></div>
+                        </div>
+                    </div>
+                    <div class="shop-section">
+                        <h3>Healing & Other</h3>
+                        <div class="shop-item" id="shop-item-potion">
+                            <img src="sprites/items/potion.png" alt="Potion" class="shop-item-icon">
+                            <span>Potion (x1)</span>
+                            <button class="btn small" onclick="buyPotion('potion', 1)">Buy - 20G</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-potion"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-hyperpotion">
+                            <img src="sprites/items/hyper-potion.png" alt="Hyper Potion" class="shop-item-icon">
+                            <span>Hyper Potion (x1)</span>
+                            <button class="btn small" onclick="buyPotion('hyperpotion', 1)">Buy - 50G</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-hyperpotion"></div>
+                        </div>
+                        <div class="shop-item" id="shop-item-moomoomilk">
+                            <img src="sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="shop-item-icon">
+                            <span>Moomoo Milk (x1)</span>
+                            <button class="btn small" onclick="buyPotion('moomoomilk', 1)">Buy - 80G</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-moomoomilk"></div>
+                        </div>
+                        <div class="shop-item" id="exp-share-shop-item">
+                            <img src="sprites/items/exp-share.png" alt="XP Share" class="shop-item-icon">
+                            <span>XP Share</span>
+                            <button id="exp-share-buy-btn" class="btn small" onclick="buyXpShareUpgrade()">
+                                <!-- Dynamically updated by JS -->
+                            </button>
+                            <div class="custom-tooltip" id="tooltip-exp-share-shop-item"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="panel team-area">

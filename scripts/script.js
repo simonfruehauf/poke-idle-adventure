@@ -1,45 +1,13 @@
 // Routes configuration
 let routes = {}; // Will be loaded from routes.json
 
-const STARTER_POKEMON_NAMES = ["Bulbasaur", "Charmander", "Squirtle"]; // Define starter options
+const STARTER_POKEMON_NAMES = ["Bulbasaur", "Charmander", "Squirtle", "Pikachu"]; 
 
 const POKEMON_SPRITE_BASE_URL = "./sprites/pokemon/"; // Changed to local path
 const AUTO_FIGHT_UNLOCK_WINS = 10; // Wins needed to unlock auto-fight
 const SHINY_CHANCE = 1 / 100; // Chance for a Pokemon to be shiny (e.g., 1 in 1024)
 let autoFightIntervalId = null; // For managing the auto-fight loop
 
-const POKEBALL_TYPES = {
-    pokeball: {
-        id: "pokeball",
-        name: "Poké Ball",
-        modifier: 1.0,
-        cost: 10,
-        cost10: 90, // Special price for 10 Poké Balls
-        image: "sprites/items/poke-ball.png" 
-    },
-    greatball: {
-        id: "greatball",
-        name: "Great Ball",
-        modifier: 1.5,
-        cost: 30,
-        image: "sprites/items/great-ball.png"
-    },
-    ultraball: {
-        id: "ultraball",
-        name: "Ultra Ball",
-        modifier: 2.0,
-        cost: 60,
-        image: "sprites/items/ultra-ball.png" 
-    },
-    // Example of a 3rd new ball. You can customize this.
-    duskball: { // For simplicity, flat modifier. Could be conditional (e.g. "at night" or "in caves") in a more complex game.
-        id: "duskball",
-        name: "Dusk Ball",
-        modifier: 2.5, // Higher than Ultra
-        cost: 100,
-        image: "sprites/items/dusk-ball.png" 
-    }
-};
 const XP_SHARE_CONFIG = [
     { cost: 1000, percentage: 0.05, name: "EXP Share (5%)" }, // To get to level 1
     { cost: 2500, percentage: 0.10, name: "EXP Share (10%)" }, // To get to level 2
@@ -48,16 +16,22 @@ const XP_SHARE_CONFIG = [
 ];
 
 let pokemonBaseStatsData = {}; // Will be loaded from statmap.json
-
+let pokeballData = {}; // Will be loaded from pokeballs.json
+let potionData = {};   // Will be loaded from potions.json
 // Game state
 let gameState = {
     money: 100,
     pokeballs: { // Changed to an object
         pokeball: 5,
         greatball: 0,
-        ultraball: 0,
-        duskball: 0
-    },    party: [null, null, null, null, null, null], // 6 party slots
+        ultraball: 0
+    },
+    potions: { // To store potion counts
+        potion: 0,
+        hyperpotion: 0,
+        moomoomilk: 0
+    },
+    party: [null, null, null, null, null, null], // 6 party slots
     allPokemon: [], // All caught pokemon
     battleWins: 0,
     currentRoute: 1, // Can be null if not on a route
@@ -147,6 +121,11 @@ class Pokemon {
         this.currentHp = this.maxHp;
     }
 
+    healPartial(percentage) {
+        const healAmount = Math.floor(this.maxHp * percentage);
+        this.currentHp = Math.min(this.maxHp, this.currentHp + healAmount);
+    }
+
     gainExp(amount) {
         this.exp += amount;
         while (this.exp >= this.expToNext && this.level < 100) {
@@ -193,25 +172,39 @@ class Pokemon {
 
 async function loadGameData() {
     try {
-        const routesResponse = await fetch('stats/routes.json');
+        const routesResponse = await fetch('json/routes.json');
         if (!routesResponse.ok) {
-            throw new Error(`HTTP error! status: ${routesResponse.status} while fetching routes.json`);
+            throw new Error(`HTTP error! status: ${routesResponse.status} while fetching json/routes.json`);
         }
         routes = await routesResponse.json();
 
-        const statsResponse = await fetch('stats/statmap.json');
+        const statsResponse = await fetch('json/statmap.json');
         if (!statsResponse.ok) {
-            throw new Error(`HTTP error! status: ${statsResponse.status} while fetching statmap.json`);
+            throw new Error(`HTTP error! status: ${statsResponse.status} while fetching json/statmap.json`);
         }
         pokemonBaseStatsData = await statsResponse.json();
+
+        const pokeballsResponse = await fetch('json/pokeballs.json');
+        if (!pokeballsResponse.ok) {
+            throw new Error(`HTTP error! status: ${pokeballsResponse.status} while fetching json/pokeballs.json`);
+        }
+        pokeballData = await pokeballsResponse.json();
+
+        const potionsResponse = await fetch('json/potions.json');
+        if (!potionsResponse.ok) {
+            throw new Error(`HTTP error! status: ${potionsResponse.status} while fetching json/potions.json`);
+        }
+        potionData = await potionsResponse.json();
 
         console.log("Game data loaded successfully.");
     } catch (error) {
         console.error("Failed to load game data:", error);
         document.body.innerHTML = `<div style="color: red; text-align: center; padding: 20px; font-family: sans-serif;">
                                     <h1>Error Initializing Game</h1>
-                                    <p>Could not load essential game data (routes.json or statmap.json). Please check the console for details and ensure the files are in the correct location, then try refreshing the page.</p>
-                                  </div>`;
+                                    <p>Could not load essential game data (routes.json, statmap.json, pokeballs.json, or potions.json). 
+                                       Please check the console for details and ensure the files are in the correct 'stats/' or 'items/' directory, 
+                                       then try refreshing the page.</p>
+                                    </div>`;
         throw error; // Re-throw to stop further initialization
     }
 }
@@ -289,9 +282,8 @@ async function showStarterSelectionModal() {
 function startAutoLoop() {
 
     setInterval(() => {
-        gameState.money += 2;
         updateDisplay();
-    }, 10000); // 2 money every 10 seconds
+    }, 10000);
 }
 
 async function manualBattle() {
@@ -654,20 +646,21 @@ function attemptCatch(ballId = 'pokeball') { // Default to pokeball if no ID pas
         addBattleLog("No wild Pokemon to catch!");
         return;
     }
-    if (gameState.currentWildPokemon.currentHp <= 0) {
-        addBattleLog(`Cannot catch ${gameState.currentWildPokemon.name}, it has fainted!`); //This is already handled by updateDisplay disabling buttons
-        return;
-    }
-    if (!gameState.pokeballs[ballId] || gameState.pokeballs[ballId] <= 0) {
-        addBattleLog(`No ${POKEBALL_TYPES[ballId] ? POKEBALL_TYPES[ballId].name : 'Poké Balls'} left!`);
-        return;
-    }
+    // This check is mostly handled by button disabling in updateDisplay, but good for direct calls
+    // if (gameState.currentWildPokemon.currentHp <= 0) {
+    //     addBattleLog(`Cannot catch ${gameState.currentWildPokemon.name}, it has fainted!`);
+    //     return;
+    // }
+    // if (!gameState.pokeballs[ballId] || gameState.pokeballs[ballId] <= 0) {
+    //     addBattleLog(`No ${pokeballData[ballId] ? pokeballData[ballId].name : 'Poké Balls'} left!`);
+    //     return;
+    // }
 
     gameState.battleInProgress = true; // Prevent other actions during catch attempt
     updateDisplay(); // Visually disable buttons
 
     gameState.pokeballs[ballId]--; // Correctly decrement the specific ball type
-    const ballUsed = POKEBALL_TYPES[ballId] || POKEBALL_TYPES.pokeball; // Fallback to pokeball if ID is weird
+    const ballUsed = pokeballData[ballId] || pokeballData.pokeball; // Fallback to pokeball if ID is weird
     addBattleLog(`Used 1 ${ballUsed.name} on ${gameState.currentWildPokemon.name}...`);
     
     const wildPokemon = gameState.currentWildPokemon;
@@ -846,7 +839,7 @@ function removeFromParty(partySlot) {
 }
 
 function buyBall(ballId, amount = 1) {
-    const ballType = POKEBALL_TYPES[ballId];
+    const ballType = pokeballData[ballId];
     if (!ballType) {
         addBattleLog("Invalid item selected.");
         return;
@@ -867,28 +860,6 @@ function buyBall(ballId, amount = 1) {
         addBattleLog(`Bought ${amount} ${ballType.name}${amount > 1 ? 's' : ''}!`);
     } else {
         addBattleLog(`Not enough money for ${amount} ${ballType.name}${amount > 1 ? 's' : ''}. Needs ${cost}G.`);
-    }
-}
-
-function healAllParty() {
-    const isFreeHeal = gameState.currentRoute === null && !gameState.battleInProgress;
-    const healCost = isFreeHeal ? 0 : 50;
-
-    if (gameState.money >= healCost) {
-        if (healCost > 0) {
-            gameState.money -= healCost;
-        }
-        gameState.party.forEach(pokemon => {
-            if (pokemon) pokemon.heal();
-        });
-        // Also heal Pokemon in storage
-        gameState.allPokemon.forEach(pokemon => {
-            if (pokemon) pokemon.heal();
-        });
-        updateDisplay();
-        addBattleLog(isFreeHeal ? "All Pokemon healed for free (not on a route)!" : `All Pokemon (Party & Storage) healed for ${healCost}G!`);
-    } else {
-        addBattleLog(`Not enough money to heal! (Cost: ${healCost}💰)`);
     }
 }
 
@@ -913,14 +884,90 @@ function buyXpShareUpgrade() {
     }
 }
 
+function buyPotion(potionId, quantity = 1) {
+    const potionInfo = potionData[potionId];
+    if (!potionInfo) {
+        addBattleLog("Invalid item selected.");
+        return;
+    }
+
+    const cost = potionInfo.cost * quantity;
+
+    if (gameState.money >= cost) {
+        gameState.money -= cost;
+        gameState.potions[potionId] = (gameState.potions[potionId] || 0) + quantity;
+        updateDisplay();
+        addBattleLog(`Bought ${quantity} ${potionInfo.name}${quantity > 1 ? 's' : ''}!`);
+    } else {
+        addBattleLog(`Not enough money for ${quantity} ${potionInfo.name}${quantity > 1 ? 's' : ''}. Needs ${cost}G.`);
+    }
+}
+
+function usePotion(potionId) {
+    const potionInfo = potionData[potionId];
+    if (!potionInfo) {
+        addBattleLog("Invalid potion type.");
+        return;
+    }
+
+    if (!gameState.potions[potionId] || gameState.potions[potionId] <= 0) {
+        addBattleLog(`No ${potionInfo.name}s left!`);
+        return;
+    }
+
+    let healedSomething = false;
+    const activePokemon = getActivePokemon();
+
+    if (potionInfo.effectType === 'active_pokemon_percentage' && activePokemon) {
+        if (activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp) {
+            activePokemon.healPartial(potionInfo.effectValue);
+            addBattleLog(`${activePokemon.name} was healed by the ${potionInfo.name}!`);
+            healedSomething = true;
+        } else if (activePokemon.currentHp === activePokemon.maxHp) {
+            addBattleLog(`${activePokemon.name} is already at full HP. Potion not used.`);
+        } else {
+            addBattleLog(`${activePokemon.name} has fainted and cannot be healed by this potion.`);
+        }
+    } else if (potionInfo.effectType === 'active_pokemon_full' && activePokemon) {
+        if (activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp) {
+            activePokemon.heal();
+            addBattleLog(`${activePokemon.name} was fully healed by the ${potionInfo.name}!`);
+            healedSomething = true;
+        } else if (activePokemon.currentHp === activePokemon.maxHp) {
+            addBattleLog(`${activePokemon.name} is already at full HP. Potion not used.`);
+        } else {
+            addBattleLog(`${activePokemon.name} has fainted and cannot be healed by this potion.`);
+        }
+    } else if (potionInfo.effectType === 'party_full') {
+        let anyPartyMemberHealed = false;
+        gameState.party.forEach(pokemon => {
+            if (pokemon && pokemon.currentHp > 0 && pokemon.currentHp < pokemon.maxHp) {
+                pokemon.heal();
+                anyPartyMemberHealed = true;
+            }
+        });
+        if (anyPartyMemberHealed) {
+            addBattleLog(`The party was healed by the ${potionInfo.name}!`);
+            healedSomething = true; 
+        } else {
+            addBattleLog(`No Pokémon in the party needed healing. ${potionInfo.name} not used.`);
+        }
+    }
+
+
+    if (healedSomething) {
+        gameState.potions[potionId]--;
+    }
+    updateDisplay();
+}
 // --- Utility functions for Pokémon data presentation ---
 function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicator', showBallIcon = false) {
     if (!pokemon) return '';
     let ballIconHTML = '';
     if (showBallIcon) {
         const ballId = pokemon.caughtWithBall || 'pokeball';
-        const ballData = POKEBALL_TYPES[ballId] || POKEBALL_TYPES.pokeball;
-        ballIconHTML = `<img src="${ballData.image}" alt="${ballData.name}" title="${ballData.name}" class="inline-ball-icon"> `; // Added space
+        const ballInfo = pokeballData[ballId] || pokeballData.pokeball; // Use pokeballData
+        ballIconHTML = `<img src="${ballInfo.image}" alt="${ballInfo.name}" title="${ballInfo.name}" class="inline-ball-icon"> `;
     }
     const shinySpan = pokemon.isShiny ? ` <span class="${shinyIndicatorClass}">(Shiny)</span>` : '';
     return `${ballIconHTML}${pokemon.name}${shinySpan}`;}
@@ -973,18 +1020,35 @@ function updateDisplay() {
     document.getElementById('pokeballs-standard').textContent = gameState.pokeballs.pokeball;
     document.getElementById('pokeballs-great').textContent = gameState.pokeballs.greatball;
     document.getElementById('pokeballs-ultra').textContent = gameState.pokeballs.ultraball;
-    document.getElementById('pokeballs-dusk').textContent = gameState.pokeballs.duskball;    // Calculate caught Pokemon correctly (unique instances)
-    const uniqueCaught = new Set();
-    gameState.party.forEach(p => p && uniqueCaught.add(p.id));
-    gameState.allPokemon.forEach(p => p && uniqueCaught.add(p.id));
-    document.getElementById('caught').textContent = uniqueCaught.size;
-    document.getElementById('battle-wins').textContent = gameState.battleWins;
+    // Update potion counts (You'll need to add HTML elements with these IDs to display them)
+    if (document.getElementById('potions-potion')) document.getElementById('potions-potion').textContent = gameState.potions.potion;
+    if (document.getElementById('potions-hyperpotion')) document.getElementById('potions-hyperpotion').textContent = gameState.potions.hyperpotion;
+    if (document.getElementById('potions-moomoomilk')) document.getElementById('potions-moomoomilk').textContent = gameState.potions.moomoomilk;
+
+    // Calculate Pokedex count (unique species and unique shiny species)
+    const uniqueSpecies = new Set();
+    const uniqueShinySpecies = new Set();
+    const allPlayerPokemon = [...gameState.party.filter(p => p), ...gameState.allPokemon.filter(p => p)];
+
+    allPlayerPokemon.forEach(pokemon => {
+        if (pokemon.pokedexId) { // Ensure pokedexId exists
+            uniqueSpecies.add(pokemon.pokedexId);
+            if (pokemon.isShiny) {
+                uniqueShinySpecies.add(pokemon.pokedexId);
+            }
+        }
+    });
+    let pokedexText = `${uniqueSpecies.size}`;
+    if (uniqueShinySpecies.size > 0) {
+        pokedexText += ` (${uniqueShinySpecies.size} Shiny)`;
+    }
+    document.getElementById('pokedex-count').textContent = pokedexText;    document.getElementById('battle-wins').textContent = gameState.battleWins;
 
     const fightBtn = document.getElementById('fight-btn');
     const catchPokeballBtn = document.getElementById('catch-pokeball-btn');
     const catchGreatballBtn = document.getElementById('catch-greatball-btn');
     const catchUltraballBtn = document.getElementById('catch-ultraball-btn');
-    const catchDuskballBtn = document.getElementById('catch-duskball-btn');    const autoFightBtn = document.getElementById('auto-fight-btn');
+    const autoFightBtn = document.getElementById('auto-fight-btn');
 
     // Get references to route UI elements
     const routeSelectContainer = document.getElementById('route-select-container');
@@ -1014,11 +1078,11 @@ function updateDisplay() {
     if (catchPokeballBtn) catchPokeballBtn.disabled = !canCatch || gameState.pokeballs.pokeball <= 0;
     if (catchGreatballBtn) catchGreatballBtn.disabled = !canCatch || gameState.pokeballs.greatball <= 0;
     if (catchUltraballBtn) catchUltraballBtn.disabled = !canCatch || gameState.pokeballs.ultraball <= 0;
-    if (catchDuskballBtn) catchDuskballBtn.disabled = !canCatch || gameState.pokeballs.duskball <= 0;
-    if (catchPokeballBtn) catchPokeballBtn.textContent = `Catch (${POKEBALL_TYPES.pokeball.name} - ${gameState.pokeballs.pokeball})`;
-    if (catchGreatballBtn) catchGreatballBtn.textContent = `Catch (${POKEBALL_TYPES.greatball.name} - ${gameState.pokeballs.greatball})`;
-    if (catchUltraballBtn) catchUltraballBtn.textContent = `Catch (${POKEBALL_TYPES.ultraball.name} - ${gameState.pokeballs.ultraball})`;
-    if (catchDuskballBtn) catchDuskballBtn.textContent = `Catch (${POKEBALL_TYPES.duskball.name} - ${gameState.pokeballs.duskball})`;
+    // Ensure pokeballData is loaded before accessing its properties
+    if (pokeballData.pokeball && catchPokeballBtn) catchPokeballBtn.textContent = `Catch (${pokeballData.pokeball.name} - ${gameState.pokeballs.pokeball})`;
+    if (pokeballData.greatball && catchGreatballBtn) catchGreatballBtn.textContent = `Catch (${pokeballData.greatball.name} - ${gameState.pokeballs.greatball})`;
+    if (pokeballData.ultraball && catchUltraballBtn) catchUltraballBtn.textContent = `Catch (${pokeballData.ultraball.name} - ${gameState.pokeballs.ultraball})`;
+
 
     // Auto-Fight Button
     if (!gameState.autoFightUnlocked) {
@@ -1032,30 +1096,148 @@ function updateDisplay() {
         autoFightBtn.style.backgroundColor = gameState.autoBattleActive ? "#e74c3c" : "#4CAF50"; // Red for Stop, Green for Start
     }
 
-    // Heal Buttons Text
-    const isFreeHeal = gameState.currentRoute === null && !gameState.battleInProgress;
-    const healCost = isFreeHeal ? 0 : 50;
-    const healButtonText = `Heal All (${isFreeHeal ? 'FREE' : `${healCost}G`})`;
-    const shopHealButtonText = `Heal (${isFreeHeal ? 'FREE' : `${healCost}G`})`;
-
-    const partyHealAllBtn = document.getElementById('party-heal-btn');
-    if (partyHealAllBtn) partyHealAllBtn.textContent = healButtonText;
-    const shopHealAllBtn = document.getElementById('shop-heal-btn');
-    if (shopHealAllBtn) shopHealAllBtn.textContent = shopHealButtonText;
+    // Removed Heal All button logic as the button itself was removed from HTML.
 
     // Update XP Share Button
-    const xpShareButton = document.getElementById('exp-share-buy-btn');
-    if (xpShareButton) {
+    const xpShareShopItemEl = document.getElementById('exp-share-shop-item');
+    const xpShareTooltipEl = document.getElementById('tooltip-exp-share-shop-item');
+    if (xpShareShopItemEl && xpShareTooltipEl) {
+        const xpShareButton = document.getElementById('exp-share-buy-btn');
         if (gameState.xpShareLevel >= XP_SHARE_CONFIG.length) {
-            xpShareButton.textContent = "XP Share (Max Level)";
-            xpShareButton.disabled = true;
+            if (xpShareButton) {
+                xpShareButton.textContent = "XP Share (Max Level)";
+                xpShareButton.disabled = true;
+            }
+            xpShareTooltipEl.textContent = "XP Share is at its maximum level.";
         } else {
             const nextLevelConfig = XP_SHARE_CONFIG[gameState.xpShareLevel];
-            xpShareButton.textContent = `Buy ${nextLevelConfig.name} - ${nextLevelConfig.cost}G`;
-            xpShareButton.disabled = false;
+            if (xpShareButton) {
+                xpShareButton.textContent = `Buy ${nextLevelConfig.name} - ${nextLevelConfig.cost}G`;
+                xpShareButton.disabled = false;
+            }
+            xpShareTooltipEl.textContent = `${nextLevelConfig.name}: Increases EXP gained by benched Pokémon by ${nextLevelConfig.percentage * 100}%.`;
         }
     }
 
+    // Update Shop Item Custom Tooltips, Prices, and Buy Button Texts
+    for (const ballId in pokeballData) {
+        const ballInfo = pokeballData[ballId];
+        const shopItemEl = document.getElementById(`shop-item-${ballId}`);
+
+        if (shopItemEl && ballInfo) {
+            // Update item name (e.g., "Pokeball (x1)")
+            const nameSpan = shopItemEl.querySelector('span'); // Assumes it's the first span for the name
+            if (nameSpan) {
+                nameSpan.textContent = `${ballInfo.name} (x1)`;
+            }
+
+            // Update buy button text with price (e.g., "Buy - 10G")
+            const buyButton = shopItemEl.querySelector(`button[onclick="buyBall('${ballId}', 1)"]`);
+            if (buyButton && typeof ballInfo.cost === 'number') {
+                buyButton.textContent = `Buy - ${ballInfo.cost}G`;
+            }
+
+            // Update tooltip
+            const tooltipEl = document.getElementById(`tooltip-shop-item-${ballId}`);
+            if (tooltipEl) {
+                tooltipEl.textContent = ballInfo.description || ballInfo.name;
+            }
+            
+            // Handle "Buy 10" button if it exists
+            const buy10ButtonEl = document.getElementById(`buy-10-shop-${ballId}`);
+            if (buy10ButtonEl) {
+                if (typeof ballInfo.cost10 !== 'undefined') {
+                    buy10ButtonEl.textContent = `Buy 10 (${ballInfo.cost10}G)`;
+                    buy10ButtonEl.style.display = ''; // Ensure it's visible
+                } else {
+                    buy10ButtonEl.style.display = 'none'; // Hide if no "Buy 10" deal
+                }
+            }
+        }
+    }
+    for (const potionId in potionData) {
+        const potionInfo = potionData[potionId];
+        const shopItemEl = document.getElementById(`shop-item-${potionId}`);
+
+        if (shopItemEl && potionInfo) {
+            // Update item name (e.g., "Potion (x1)")
+            const nameSpan = shopItemEl.querySelector('span'); // Assumes it's the first span for the name
+            if (nameSpan) {
+                nameSpan.textContent = `${potionInfo.name} (x1)`;
+            }
+
+            // Update buy button text with price (e.g., "Buy - 20G")
+            const buyButton = shopItemEl.querySelector(`button[onclick="buyPotion('${potionId}', 1)"]`);
+            if (buyButton && typeof potionInfo.cost === 'number') {
+                buyButton.textContent = `Buy - ${potionInfo.cost}G`;
+            }
+
+            // Update tooltip
+            const tooltipEl = document.getElementById(`tooltip-shop-item-${potionId}`);
+            if (tooltipEl) {
+                tooltipEl.textContent = potionInfo.description || potionInfo.name;
+            }
+        }
+    }
+
+    // Update Item Bar Custom Tooltips
+    const itemDisplayElements = document.querySelectorAll('.items-bar .item-display');
+    itemDisplayElements.forEach(itemEl => {
+        // The 'title' attribute on item-display is now just for semantic fallback or if JS fails.
+        // We'll use specific IDs for the tooltips for clarity.
+        let description = '';
+        let tooltipEl = null;
+
+        // Poké Balls
+        if (itemEl.querySelector('#pokeballs-standard')) { // Check if it's the pokeball display
+            tooltipEl = document.getElementById('tooltip-itembar-pokeball');
+            if (pokeballData.pokeball) description = pokeballData.pokeball.description || pokeballData.pokeball.name;
+        } else if (itemEl.querySelector('#pokeballs-great')) {
+            tooltipEl = document.getElementById('tooltip-itembar-greatball');
+            if (pokeballData.greatball) description = pokeballData.greatball.description || pokeballData.greatball.name;
+        } else if (itemEl.querySelector('#pokeballs-ultra')) {
+            tooltipEl = document.getElementById('tooltip-itembar-ultraball');
+            if (pokeballData.ultraball) description = pokeballData.ultraball.description || pokeballData.ultraball.name;
+        // Potions
+        } else if (itemEl.querySelector('#potions-potion')) {
+            tooltipEl = document.getElementById('tooltip-itembar-potion');
+            if (potionData.potion) description = potionData.potion.description || potionData.potion.name;
+        } else if (itemEl.querySelector('#potions-hyperpotion')) {
+            tooltipEl = document.getElementById('tooltip-itembar-hyperpotion');
+            if (potionData.hyperpotion) description = potionData.hyperpotion.description || potionData.hyperpotion.name;
+        } else if (itemEl.querySelector('#potions-moomoomilk')) {
+            tooltipEl = document.getElementById('tooltip-itembar-moomoomilk');
+            if (potionData.moomoomilk) description = potionData.moomoomilk.description || potionData.moomoomilk.name;
+        }
+
+        if (tooltipEl && description) {
+            tooltipEl.textContent = description;
+        }
+    });
+
+
+    // Potion Use Buttons
+    const usePotionBtn = document.getElementById('use-potion-btn');
+    const useHyperPotionBtn = document.getElementById('use-hyperpotion-btn');
+    const useMoomooMilkBtn = document.getElementById('use-moomoomilk-btn');
+
+    const canUseItem = !gameState.battleInProgress; // General condition for using items from this UI
+
+    if (usePotionBtn) {
+        const activePokemonNeedsPotion = activePokemon && activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp;
+        usePotionBtn.disabled = !canUseItem || !activePokemonNeedsPotion || gameState.potions.potion <= 0;
+        usePotionBtn.textContent = `Use Potion (${gameState.potions.potion})`;
+    }
+    if (useHyperPotionBtn) {
+        const activePokemonNeedsHyperPotion = activePokemon && activePokemon.currentHp > 0 && activePokemon.currentHp < activePokemon.maxHp;
+        useHyperPotionBtn.disabled = !canUseItem || !activePokemonNeedsHyperPotion || gameState.potions.hyperpotion <= 0;
+        useHyperPotionBtn.textContent = `Use Hyper Potion (${gameState.potions.hyperpotion})`;
+    }
+    if (useMoomooMilkBtn) {
+        const partyNeedsHealing = gameState.party.some(p => p && p.currentHp > 0 && p.currentHp < p.maxHp);
+        useMoomooMilkBtn.disabled = !canUseItem || !partyNeedsHealing || gameState.potions.moomoomilk <= 0;
+        useMoomooMilkBtn.textContent = `Use Moomoo Milk (${gameState.potions.moomoomilk})`;
+    }
     // Update player pokemon display using the new helper function
     const playerElements = {
         nameEl: document.getElementById('player-name'),
@@ -1144,8 +1326,8 @@ function generatePokemonListItemHTML(pokemon, index, locationType) {
 
     const shinyClass = pokemon.isShiny ? 'shiny-pokemon' : '';
     const spritePath = getPokemonSpritePath(pokemon, 'front'); // Party/storage always use front sprites
-    const ballId = pokemon.caughtWithBall || 'pokeball'; // Default to pokeball if undefined
-    const ballData = POKEBALL_TYPES[ballId] || POKEBALL_TYPES.pokeball; // Fallback for safety
+    // const ballId = pokemon.caughtWithBall || 'pokeball'; // Default to pokeball if undefined - Handled by getPokemonNameHTML
+    // const ballInfo = pokeballData[ballId] || pokeballData.pokeball; // Fallback for safety - Handled by getPokemonNameHTML
 
     let evolveButtonHtml = '';
     if (pokemon.evolutionTargetName && pokemon.evolveLevel && pokemon.level >= pokemon.evolveLevel) {
@@ -1351,6 +1533,7 @@ function saveGame() {
     const saveData = {
         money: gameState.money,
         pokeballs: gameState.pokeballs,
+        potions: gameState.potions, // Save potions
         party: gameState.party.map(p => serializePokemon(p)),
         allPokemon: gameState.allPokemon.map(p => serializePokemon(p)),
         currentWildPokemon: serializePokemon(gameState.currentWildPokemon),
@@ -1379,7 +1562,11 @@ function loadGame() {
             pokeball: (data.pokeballs && data.pokeballs.pokeball !== undefined) ? data.pokeballs.pokeball : 10,
             greatball: (data.pokeballs && data.pokeballs.greatball) || 0,
             ultraball: (data.pokeballs && data.pokeballs.ultraball) || 0,
-            duskball: (data.pokeballs && data.pokeballs.duskball) || 0,
+        };
+        gameState.potions = data.potions || { // Load potions, defaulting to 0 for each
+            potion: 0,
+            hyperpotion: 0,
+            moomoomilk: 0,
         };
         gameState.battleWins = data.battleWins || 0;
         gameState.currentRoute = data.currentRoute !== undefined ? data.currentRoute : 1;
