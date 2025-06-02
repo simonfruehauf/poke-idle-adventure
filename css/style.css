@@ -128,12 +128,6 @@ body {
     justify-content: center;
 }
 
-.item-icon {
-    width: 24px; 
-    height: 24px;
-    margin-right: 8px;
-    image-rendering: pixelated; /* Keep pixel art crisp */
-}
 
 .item-count {
     font-weight: bold;
@@ -151,7 +145,7 @@ body {
     border-color: #444 !important;
 }
 .inline-ball-icon {
-    width: 1em; height: 1em; vertical-align: -0.15em; margin-right: 0.25em; image-rendering: pixelated;
+    width: 1.2em; height: 1.2em; vertical-align: -0.20em; margin-right: 0.0em; image-rendering: pixelated;
 }
 .battle-field {
     display: flex;
