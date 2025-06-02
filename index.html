@@ -14,13 +14,12 @@
     <div class="container">
         <div class="header">
             <h1>Pokemon Idle Adventure</h1>
-            <div style="margin-top: 10px;">
-                <button class="btn small" onclick="manualSaveGame()" style="background: #2ecc71; margin-right: 5px;">
-                    Save Game
-                </button>
-                <button class="btn small" onclick="confirmClearSave()" style="background: #e74c3c;">
-                    Clear Save Data
-                </button>
+
+            <div class="game-controls section" style="margin-top: 10px;">
+                <button class="btn" style="background: #2ecc71; margin-right: 5px;" onclick="window.manualSaveGame()">Save Game</button>
+                <button class="btn secondary" onclick="window.exportSaveData()">Export Save</button>
+                <button class="btn secondary" onclick="window.importSaveData()">Import Save</button>
+                <button class="btn" onclick="window.confirmClearSave()" style="background: #e74c3c;">Clear Save Data</button>
             </div>
         </div>
 
@@ -120,7 +119,8 @@
                         style="flex-grow: 1; background-color: #f1c40f; color: #333;">
                         Catch (Ultra Ball - 0)
                     </button>
-                    <button id="catch-masterball-btn" class="btn catch-btn masterball" onclick="attemptCatch('masterball')">Catch (Master Ball - 0)</button>
+                    <button id="catch-masterball-btn" class="btn catch-btn masterball"
+                        onclick="attemptCatch('masterball')">Catch (Master Ball - 0)</button>
                 </div>
 
                 <!-- Potion Use Controls -->
@@ -288,6 +288,33 @@
             <div class="starter-options">
                 <!-- Starter options will be populated by JavaScript -->
             </div>
+        </div>
+    </div>
+
+    <div id="export-save-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Export Save Data</h2>
+            <p>Copy the text below and save it in a safe place.</p>
+            <textarea id="export-save-textarea" readonly rows="10" style="width: 95%; margin-bottom: 10px; resize: none; background-color: #2c3e50; color: #ecf0f1; border: 1px solid #7f8c8d; padding: 5px;"></textarea>
+            <div class="modal-actions">
+                <button class="btn" onclick="window.copyExportDataToClipboard()">Copy to Clipboard</button>
+                <button class="btn secondary" onclick="window.closeExportModal()" style="margin-left: 10px;">Close</button>
+            </div>
+            <p id="copy-feedback-message" style="margin-top: 10px; color: #2ecc71; display: none;">Copied to clipboard!</p>
+        </div>
+    </div>
+
+    <div id="import-save-modal" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <h2>Import Save Data</h2>
+            <p>Paste your exported save data string below and click "Import".</p>
+            <textarea id="import-save-textarea" rows="10" style="width: 95%; margin-bottom: 10px; resize: none; background-color: #2c3e50; color: #ecf0f1; border: 1px solid #7f8c8d; padding: 5px;" placeholder="Paste your save data here..."></textarea>
+            <div class="modal-actions">
+                <button class="btn" onclick="window.processImportDataFromModal()">Import Data</button>
+                <button class="btn secondary" onclick="window.closeImportModal()" style="margin-left: 10px;">Cancel</button>
+            </div>
+            <!-- Optional: A place for feedback messages, though alerts are currently used -->
+            <!-- <p id="import-feedback-message" style="margin-top: 10px; color: #e74c3c; display: none;"></p> -->
         </div>
     </div>
 

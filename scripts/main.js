@@ -1,8 +1,8 @@
 // main.js
 import { gameState, routes } from './state.js'; // routes might be needed if initGame directly manipulates it
 import { loadGameData } from './dataService.js';
-import { loadGame, saveGame, manualSaveGame, confirmClearSave } from './saveLoad.js';
-import { showStarterSelectionModal, updateDisplay, populateRouteSelector, addToPartyDialog, confirmReleasePokemon as confirmReleasePokemonUI } from './ui.js'; // Removed unused confirmReleasePokemonUI
+import { loadGame, saveGame, manualSaveGame, confirmClearSave, exportSaveData, importSaveData, handlePastedImportData } from './saveLoad.js';
+import { showStarterSelectionModal, updateDisplay, populateRouteSelector, addToPartyDialog, confirmReleasePokemon as confirmReleasePokemonUI, showExportModal, closeExportModal, copyExportDataToClipboard, showImportModal, closeImportModal, processImportDataFromModal } from './ui.js'; // Removed unused confirmReleasePokemonUI
 import { manualBattle, attemptCatch, toggleAutoFight, buyBall, buyXpShareUpgrade, buyPotion, usePotion, handleRouteChange, leaveCurrentRoute, setActivePokemon, removeFromParty, attemptEvolution, freeFullHeal } from './gameLogic.js';
 import { addBattleLog } from './utils.js';
 
@@ -94,10 +94,20 @@ window.attemptEvolution = attemptEvolution;
 window.confirmReleasePokemon = confirmReleasePokemonUI; // From ui.js, which calls logic
 window.manualSaveGame = manualSaveGame;
 window.confirmClearSave = confirmClearSave;
+window.exportSaveData = exportSaveData;
+window.importSaveData = importSaveData;
+window.handlePastedImportData = handlePastedImportData; // From saveLoad.js
+
+window.showExportModal = showExportModal; // Though likely called internally by exportSaveData
+window.closeExportModal = closeExportModal;
+window.copyExportDataToClipboard = copyExportDataToClipboard;
+window.showImportModal = showImportModal; // Though likely called internally by importSaveData
+window.closeImportModal = closeImportModal;
+window.processImportDataFromModal = processImportDataFromModal; // From ui.js
 window.freeFullHeal = freeFullHeal;
 
 // Specific UI handlers that might not be in gameLogic
-window.showStarterSelectionModal = showStarterSelectionModal; // if needed from HTML
+// window.showStarterSelectionModal = showStarterSelectionModal; // Already handled by initGame
 
 
 // Event listener for route select dropdown

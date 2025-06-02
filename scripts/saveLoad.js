@@ -2,7 +2,7 @@
 import { gameState, routes } from './state.js';
 import { Pokemon } from './pokemon.js';
 import { addBattleLog } from './utils.js';
-import { updateDisplay, populateRouteSelector } from './ui.js'; // populateRouteSelector might be needed if load changes avg level
+import { updateDisplay, populateRouteSelector, showExportModal, showImportModal, closeImportModal } from './ui.js'; // populateRouteSelector might be needed if load changes avg level
 
 export function serializePokemon(p) {
     if (!p) return null;
@@ -94,4 +94,57 @@ export function clearSaveData() {
     localStorage.removeItem('pokemonIdleGameV2');
     addBattleLog("Save data cleared. Reloading game...");
     setTimeout(() => { location.reload(); }, 1500);
+}
+
+export function exportSaveData() {
+    const saveDataString = localStorage.getItem('pokemonIdleGameV2');
+    if (!saveDataString) {
+        addBattleLog("No save data found to export.");
+        alert("No save data found to export.");
+        return;
+    }
+
+    // Obfuscate the data using Base64
+    let obfuscatedData;
+    try {
+        obfuscatedData = btoa(saveDataString); // Encode to Base64
+    } catch (error) {
+        addBattleLog("Error obfuscating save data for export.");
+        alert("Error preparing save data for export. Could not encode data.");
+        return;
+    }
+
+    showExportModal(obfuscatedData); // Call the UI function to show the modal
+    addBattleLog("Save data exported (obfuscated)!");
+}
+
+export function importSaveData() {
+    showImportModal(); // Show the modal instead of a prompt
+}
+
+export function handlePastedImportData(importedString) {
+    // This function contains the core logic previously in importSaveData
+    try {
+        // De-obfuscate the data using Base64
+        let deobfuscatedString;
+        try {
+            deobfuscatedString = atob(importedString); // Decode from Base64
+        } catch (error) {
+            throw new Error("Invalid import format. Data does not appear to be a valid export.");
+        }
+
+        // Basic validation: Try to parse and check for a key property
+        const data = JSON.parse(deobfuscatedString);
+        if (typeof data.money === 'undefined' || typeof data.party === 'undefined') {
+            throw new Error("Invalid save data structure.");
+        }
+        closeImportModal(); // Close modal on successful start of import
+        localStorage.setItem('pokemonIdleGameV2', deobfuscatedString); // Store the original JSON string
+        addBattleLog("Save data imported successfully! Reloading game to apply changes...");
+        setTimeout(() => { location.reload(); }, 1500);
+    } catch (error) {
+        // Modal remains open on error, allowing user to correct or cancel.
+        addBattleLog(`Error importing save data: ${error.message}. Please ensure the data is correct and was exported from this game.`);
+        alert(`Error importing save data: ${error.message}. Please ensure the data is correct and was exported from this game.`);
+    }
 }

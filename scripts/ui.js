@@ -566,6 +566,73 @@ export function confirmReleasePokemon(storageIndex) {
     confirmReleasePokemonLogic(storageIndex);
 }
 
+
+export function showExportModal(dataString) {
+    const modal = document.getElementById('export-save-modal');
+    const textarea = document.getElementById('export-save-textarea');
+    const feedbackMessage = document.getElementById('copy-feedback-message');
+
+    if (modal && textarea) {
+        textarea.value = dataString;
+        modal.style.display = 'flex';
+        if (feedbackMessage) feedbackMessage.style.display = 'none'; // Reset feedback message
+    } else {
+        console.error("Export modal elements not found.");
+        alert("Could not display export window. Please check console.");
+    }
+}
+
+export function closeExportModal() {
+    const modal = document.getElementById('export-save-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+export async function copyExportDataToClipboard() {
+    const textarea = document.getElementById('export-save-textarea');
+    const feedbackMessage = document.getElementById('copy-feedback-message');
+    try {
+        await navigator.clipboard.writeText(textarea.value);
+        if (feedbackMessage) {
+            feedbackMessage.textContent = "Copied to clipboard!";
+            feedbackMessage.style.display = 'block';
+            setTimeout(() => { feedbackMessage.style.display = 'none'; }, 2000);
+        }
+    } catch (err) {
+        console.error('Failed to copy text: ', err);
+        if (feedbackMessage) feedbackMessage.textContent = "Failed to copy. Please copy manually.";
+        feedbackMessage.style.display = 'block';
+    }
+}
+
+export function showImportModal() {
+    const modal = document.getElementById('import-save-modal');
+    const textarea = document.getElementById('import-save-textarea');
+    // const feedbackMessage = document.getElementById('import-feedback-message'); // If using dedicated feedback P tag
+
+    if (modal && textarea) {
+        textarea.value = ''; // Clear previous input
+        modal.style.display = 'flex';
+        // if (feedbackMessage) feedbackMessage.style.display = 'none'; // Reset feedback
+    } else {
+        console.error("Import modal elements not found.");
+        alert("Could not display import window. Please check console.");
+    }
+}
+
+export function closeImportModal() {
+    const modal = document.getElementById('import-save-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}
+
+export function processImportDataFromModal() {
+    const textarea = document.getElementById('import-save-textarea');
+    window.handlePastedImportData(textarea.value); // Call the function in saveLoad.js
+}
+
 export function populateRouteSelector() {
     const routeSelect = document.getElementById('route-select');
     if (!routeSelect) return;

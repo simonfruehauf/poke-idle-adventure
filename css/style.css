@@ -104,7 +104,45 @@ body {
     padding: 20px;
     backdrop-filter: blur(10px);
 }
+/* Add these styles to your css/style.css file */
+/* Styles for Export and Import Save Modals */
+#export-save-modal .modal-content,
+#import-save-modal .modal-content {
+    max-width: 500px; /* Or your preferred width */
+    text-align: left; /* Align text to the left for better readability of instructions */
+}
 
+#export-save-modal textarea,
+#import-save-modal textarea {
+    font-family: monospace; /* Good for code-like strings */
+    background-color: #222; /* Darker background for textarea */
+    color: #ddd; /* Lighter text */
+    border: 1px solid #444;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%; /* Make textarea take full width of its container */
+    margin-bottom: 15px;
+}
+
+#export-save-modal .modal-actions,
+#import-save-modal .modal-actions {
+    text-align: right; /* Align buttons to the right */
+}
+
+#export-save-modal .modal-actions button,
+#import-save-modal .modal-actions button {
+    margin-left: 10px;
+}
+
+#export-save-modal .modal-actions button:first-child,
+#import-save-modal .modal-actions button:first-child {
+    margin-left: 0;
+}
+
+#copy-feedback-message { /* Specific to export modal for now */
+    font-size: 0.9em;
+    text-align: center;
+}
 /* Add this to your main CSS file */
 .caught-indicator-icon {
     width: 1.0em;
