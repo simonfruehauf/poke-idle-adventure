@@ -93,18 +93,37 @@ body {
     display: grid;
     grid-template-areas: 
         "items-bar battle-area party-area"
-        "items-bar battle-area pc-button"
+        "items-bar battle-area party-area"
+        "items-bar battle-area party-area" /* party-area now spans 4 rows */
+        "items-bar battle-area party-area" /* party-area now spans 4 rows */
+        "items-bar shop-area shop-area"
         "items-bar shop-area shop-area";
+    grid-template-columns: 120px 1fr 1fr;    
+    grid-template-rows: 120px repeat(3, 1fr) repeat(2, 1fr);
+    gap: 20px;
+
+}
+
+.party-area {
+    grid-area: party-area;
+    
     gap: 20px;
 }
 .items-bar {
     grid-area: items-bar;
+    background: var(--panel-bg);
+    border-radius: 15px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    overflow: visible;
 }
 .battle-area {
     grid-area: battle-area;
-}
-.pc-button {
-    grid-area: pc-button;
 }
 .shop-panel {
     grid-area: shop-area;
@@ -221,25 +240,6 @@ body {
 }
 
 
-/* .items-bar is defined above with its new grid-area */
-.items-bar {
-    grid-area: items-bar;
-    /* Panel-like styles (consistent with .panel) */
-    background: var(--panel-bg);
-    border-radius: 15px;
-    padding: 20px;
-    backdrop-filter: blur(10px);
-
-    /* Flex container for vertical items */
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    /* Make items fill the width of this panel */
-    gap: 10px;
-    /* Spacing between items */
-
-    overflow: visible;
-}
 
 #game-version {
     font-size: 0.7em;
@@ -256,7 +256,6 @@ footer {
 }
 
 .item-display {
-
     display: flex;
     position: relative;
     /* Ensure this is set for custom tooltip positioning */
@@ -842,15 +841,54 @@ footer {
     color: var(--accent-color);
 }
 
-/* Styles for the close button within the drawer header */
-.team-area .close-drawer-btn {
-    /* .btn and .small classes from existing styles will apply */
-    /* Add specific overrides if needed, e.g., for a more subtle look */
-}
 
 /* This is the scrollable content area within the drawer */
 #team-list {
     flex-grow: 1; /* Allows the list to take up available vertical space */
     overflow-y: auto; /* Enables scrolling for the Pokémon list */
-    padding: 15px; /* Padding around the Pokémon cards */
+padding: 15px;
+    display: grid; /* NEW: Use grid layout */
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* NEW: Responsive columns */
+    gap: 15px; /* NEW: Spacing between cards */
+}
+
+/* Styles for Pokémon cards specifically within the PC drawer (#team-list) */
+#team-list .pokemon-card {
+    background: var(--interactive-bg); /* Existing style from .pokemon-card */
+    border-radius: 10px; /* Existing style */
+    padding: 12px; /* Existing style */
+    /* margin: 8px 0; REMOVED - grid gap handles spacing */
+    cursor: default; /* Override general .pokemon-card cursor: pointer; as card itself isn't main action */
+    transition: all 0.3s; /* Existing style */
+    display: flex; /* NEW: For centering content within the card */
+    flex-direction: column; /* NEW: Stack content vertically */
+    align-items: center; /* NEW: Center content horizontally */
+    text-align: center; /* NEW: Center text elements */
+}
+
+#team-list .pokemon-card:hover {
+    background: var(--interactive-bg-hover); /* Existing style */
+    transform: translateY(-2px); /* Existing style */
+}
+
+/* Styles for Pokémon sprites specifically within cards in the PC drawer */
+#team-list .pokemon-card .pokemon-sprite {
+    width: 80px; /* NEW: Increased size */
+    height: 80px; /* NEW: Increased size */
+    margin-bottom: 10px; /* NEW: Space below sprite */
+}
+
+/* Ensure controls within PC cards are also centered if they wrap */
+#team-list .pokemon-card .controls {
+    justify-content: center; /* Reinforce centering for buttons */
+    width: 100%; /* Ensure controls take full width to center properly */
+}
+
+/* Floating PC Button */
+#floating-pc-btn {
+    position: fixed;
+    top: 20px; /* Adjust as needed */
+    right: 20px; /* Adjust as needed */
+    z-index: 1010; /* Above most elements (like tooltips at 1001), below modals (1500+) */
+    /* .btn, .secondary, .small classes from existing styles will provide base styling */
 }

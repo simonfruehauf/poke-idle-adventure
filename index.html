@@ -201,8 +201,6 @@
                     Free Full Heal
                 </button>
             </div>
-            <button class="panel pc-button btn secondary" onclick="window.togglePcDrawer()">PC</button>
-
             <div class="panel shop-panel"> <!-- New Shop Panel -->
                 <h2>Poké Mart</h2>
                 <div class="shop-sections-container">
@@ -369,22 +367,17 @@
                     <span class="item-count" id="item-count-leafstone">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-leafstone"></div>
                 </div>
-
-
-
-
             </div>
 
         </div>
     </div>
 
+
+    <button id="floating-pc-btn" class="btn secondary medium" onclick="window.togglePcDrawer()">PC</button>
+
     <div id="starter-modal" class="modal-overlay" style="display: none;"
         onclick="if (event.target === this) { /* No explicit close function, starter selection is mandatory */ }">
-        <!-- 
-            Starter modal is a bit special as it resolves a promise upon selection.
-            Closing it by clicking outside might interrupt the initial game flow.
-            For now, clicking outside won't close it unless a specific close function is implemented and desired.
-        -->
+
         <div class="modal-content">
             <h2>Choose your Starter Pokémon!</h2>
             <div class="starter-options">

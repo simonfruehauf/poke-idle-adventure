@@ -539,14 +539,16 @@ export function generatePokemonListItemHTML(pokemon, index, locationType) {
 
     const shinyClass = pokemon.isShiny ? 'shiny-pokemon' : '';
     const spritePath = getPokemonSpritePath(pokemon, 'front');
+    
     let evolveButtonHtml = '';
     if (pokemon.evolutionTargetName && pokemon.evolveLevel && pokemon.level >= pokemon.evolveLevel) {
-        // Stop propagation for evolve button in storage to prevent card click if any other listener is on card.
-        const onclickAction = locationType === 'party' ? `window.attemptEvolution(${index}, 'party')` : `event.stopPropagation(); window.attemptEvolution(${index}, 'storage')`;
-        evolveButtonHtml = `<button class="btn small" onclick="${onclickAction}" style="background: #ffc107; color: #333; margin-left: 5px;">Evolve</button>`;
+        const onclickAction = locationType === 'party' 
+            ? `window.attemptEvolution(${index}, 'party')` 
+            : `event.stopPropagation(); window.attemptEvolution(${index}, 'storage')`;
+        evolveButtonHtml = `<button class="btn small" onclick="${onclickAction}" style="background: #ffc107; color: #333;">Evolve</button>`;
     }
-
     let controlsHtml = '';
+
     if (locationType === 'party') {
         const isActive = gameState.activePokemonIndex === index;
         controlsHtml = `
@@ -556,25 +558,26 @@ export function generatePokemonListItemHTML(pokemon, index, locationType) {
                         ${pokemon.currentHp <= 0 ? 'disabled' : ''}>
                     ${isActive ? 'Active' : 'Select'}
                 </button>
-                <button class="btn small" onclick="window.removeFromParty(${index})" style="background: #f44336;">
+                <button class="btn small" onclick="window.removeFromParty(${index})" style="background: #f44336;"> 
                     Remove
                 </button>
-                ${evolveButtonHtml}
+                ${evolveButtonHtml} 
             </div>`;
     } else { // storage
         controlsHtml = `
-            <div class="controls" style="margin-top: 8px; clear:both;">
+            <div class="controls" style="margin-top: 8px;"> 
                 <button class="btn small secondary" onclick="event.stopPropagation(); window.addToPartyDialog(${index})">
                     Add to Party
                 </button>
-                <button class="btn small" onclick="event.stopPropagation(); window.confirmReleasePokemon(${index})" style="background: #dc3545; margin-left: 5px;">
+                <button class="btn small" onclick="event.stopPropagation(); window.confirmReleasePokemon(${index})" style="background: #dc3545;"> 
                     Release
                 </button>
-                ${evolveButtonHtml}
+                ${evolveButtonHtml} 
             </div>`;
     }
 
-    const imgStyle = locationType === 'storage' ? 'width: 48px; height: 48px; float: left; margin-right: 10px; image-rendering: pixelated; cursor: pointer;"' : 'style="cursor: pointer;"';
+    // Let CSS handle size, float, and margin for storage sprites. Party sprites use default .pokemon-sprite class.
+    const imgStyle = locationType === 'storage' ? 'image-rendering: pixelated; cursor: pointer;"' : 'style="cursor: pointer;"';
     const spriteOnclick = locationType === 'party' ? `window.handlePokemonSpriteClick(${index}, 'party')` : `event.stopPropagation(); window.handlePokemonSpriteClick(${index}, 'storage')`;
 
     const cardContent = `
