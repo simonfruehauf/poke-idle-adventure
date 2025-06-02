@@ -159,6 +159,8 @@ function _updatePlayerStatsDisplay() {
                         itemSpecificCondition = activePokemon.currentHp < activePokemon.maxHp && activePokemon.currentHp > 0; // Cannot use on fainted for these
                         if (itemInfo.canRevive && activePokemon.currentHp <= 0) itemSpecificCondition = true; // Allow if item can revive
                     } else if (itemInfo.effectType === 'evolution_item') {
+                    itemSpecificCondition = itemInfo.evolutionTargets?.some(target => target.pokemon === activePokemon.name);
+                } else if (itemInfo.effectType === 'level_up') {
                         itemSpecificCondition = itemInfo.evolutionTargets?.some(target => target.pokemon === activePokemon.name);
                     }
                 } else if (itemInfo && itemInfo.effectType === 'party_full') { // Moomoo Milk example
@@ -166,7 +168,15 @@ function _updatePlayerStatsDisplay() {
                 } else if (itemInfo && (itemInfo.effectType === 'active_pokemon_percentage' || itemInfo.effectType === 'active_pokemon_full' || itemInfo.effectType === 'evolution_item') && !activePokemon) {
                     itemSpecificCondition = false; // Cannot use on active Pokemon if no active Pokemon
                 }
-                itemButton.disabled = !canUseItemGenerally || count <= 0 || !itemSpecificCondition;
+            // For Rare Candy, specific condition is active Pokemon exists and is not level 100
+            if (itemInfo && itemInfo.effectType === 'level_up') {
+                itemSpecificCondition = activePokemon && activePokemon.level < 100;
+            }
+
+                itemButton.disabled = !canUseItemGenerally || 
+                    count <= 0 || 
+                    !itemSpecificCondition || 
+                    gameState.eventModalActive;
             }
         }
     }
@@ -204,6 +214,7 @@ function _updatePlayerStatsDisplay() {
     setItemBarDisplay('thunderstone', gameState.items.thunderstone || 0);
     setItemBarDisplay('moonstone', gameState.items.moonstone || 0);
     setItemBarDisplay('leafstone', gameState.items.leafstone || 0);
+    setItemBarDisplay('rarecandy', gameState.items.rarecandy || 0);
 }
 
 // Helper function to update main action buttons (Fight, Catch, Auto-Fight, Route)
@@ -227,7 +238,7 @@ function _updateMainActionButtonsState() {
         fightBtn.disabled = true;
         if (routeSelectContainer) routeSelectContainer.style.display = '';
         if (leaveRouteBtn) leaveRouteBtn.style.display = 'none';
-    } else {
+    } else if (!gameState.eventModalActive) { // Only enable if not in event modal
         fightBtn.textContent = gameState.currentWildPokemon ? "Fight!" : "Find Pokémon";
         fightBtn.disabled = gameState.battleInProgress || gameState.autoBattleActive || !playerCanInitiateAction;
         if (routeSelectContainer) routeSelectContainer.style.display = 'none';
@@ -235,7 +246,11 @@ function _updateMainActionButtonsState() {
             leaveRouteBtn.style.display = '';
             leaveRouteBtn.disabled = gameState.battleInProgress || gameState.autoBattleActive;
         }
+    } else { // Event modal is active
+        fightBtn.disabled = true;
+        if (leaveRouteBtn) leaveRouteBtn.disabled = true;
     }
+
 
     const canCatch = gameState.currentWildPokemon && gameState.currentWildPokemon.currentHp > 0 && !gameState.battleInProgress && !gameState.autoBattleActive;
     
@@ -289,14 +304,19 @@ function _updateMainActionButtonsState() {
             autoFightBtn.textContent = 'Start Auto-Fight';
             autoFightBtn.disabled = !gameState.autoFightUnlocked || 
                                        gameState.currentRoute === null || 
-                                       gameState.battleInProgress;
+                                       gameState.battleInProgress ||
+                                       gameState.eventModalActive;
         }
     }
     // Free Heal Button
     if (freeHealBtn) {
         const hasNoMoomooMilk = (gameState.items.moomoomilk || 0) === 0; // Renamed from gameState.potions
         const hasNoHyperPotion = (gameState.items.hyperpotion || 0) === 0; // Renamed from gameState.potions
-        const canShowFreeHeal = gameState.money < 800 && (hasNoMoomooMilk && hasNoHyperPotion) && !gameState.battleInProgress && gameState.currentRoute === null; 
+        const canShowFreeHeal = gameState.money < 800 && 
+            (hasNoMoomooMilk && hasNoHyperPotion) && 
+            !gameState.battleInProgress && 
+            !gameState.eventModalActive && 
+            gameState.currentRoute === null;
 
         if (canShowFreeHeal) {
             freeHealBtn.style.display = ''; // Or 'inline-block' or 'block' depending on layout
@@ -398,6 +418,9 @@ function _updateItemBarTooltips() {
         } else if (itemEl.querySelector('#item-count-leafstone')) {
             tooltipEl = document.getElementById('tooltip-itembar-leafstone');
             if (itemData.leafstone) description = itemData.leafstone.description || itemData.leafstone.name;
+        } else if (itemEl.querySelector('#item-count-rarecandy')) {
+            tooltipEl = document.getElementById('tooltip-itembar-rarecandy');
+            if (itemData.rarecandy) description = itemData.rarecandy.description || itemData.rarecandy.name;
         }
         if (tooltipEl && description) tooltipEl.textContent = description;
     });
@@ -802,4 +825,31 @@ export function populateRouteSelector() {
         routeSelect.appendChild(option);
     });
     routeSelect.value = gameState.currentRoute !== null ? gameState.currentRoute.toString() : "";
+}
+// --- Event Modal UI Functions ---
+export function showEventModal(eventData) {
+    const modal = document.getElementById('event-modal');
+    const titleEl = document.getElementById('event-modal-title');
+    const imageEl = document.getElementById('event-modal-image');
+    const messageEl = document.getElementById('event-modal-message');
+    // const claimBtn = document.getElementById('event-modal-claim-btn'); // Button is already wired in HTML
+
+    if (modal && titleEl && imageEl && messageEl) {
+        titleEl.textContent = eventData.name || "An Event Occurred!";
+        imageEl.src = eventData.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
+        imageEl.alt = eventData.name || "Event Image";
+        
+        let displayMessage = eventData.message || eventData.description;
+        if (eventData.type === "give_item" && eventData.resolvedQuantity !== undefined) {
+            displayMessage = displayMessage.replace("{quantity}", eventData.resolvedQuantity);
+        }
+        messageEl.textContent = displayMessage;
+
+        modal.style.display = 'flex';
+    }
+}
+
+export function closeEventModal() {
+    const modal = document.getElementById('event-modal');
+    if (modal) modal.style.display = 'none';
 }

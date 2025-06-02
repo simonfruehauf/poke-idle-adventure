@@ -1,0 +1,64 @@
+{
+    "globalEventChance": 0.05,
+    "events": [
+        {
+            "id": "nurse_joy_heal",
+            "name": "Nurse Joy's Visit",
+            "description": "Nurse Joy appeared and healed your Pokémon!",
+            "type": "heal_party",
+            "weight": 30,
+            "message": "A kind Nurse Joy offered to heal your Pokémon! Your party is now fully healed.",
+            "image": "sprites/events/nursejoy.png"
+        },
+        {
+            "id": "trainer_gift_pokeball",
+            "name": "Generous Trainer",
+            "description": "A passing trainer gave you a Poké Ball!",
+            "type": "give_item",
+            "item": "pokeball",
+            "quantity": 1,
+            "weight": 30,
+            "message": "A passing trainer gave you a Poké Ball!",
+            "image": "sprites/events/trainer1.png"
+        },        
+        {
+            "id": "trainer_gift_pokeballs_mult",
+            "name": "Generous Trainer",
+            "description": "A friendly trainer gave you some Poké Balls!",
+            "type": "give_item",
+            "item": "pokeball",
+            "quantity": [
+                3,
+                5
+            ],
+            "weight": 15,
+            "message": "A friendly trainer gave you {quantity} Poké Balls!",
+            "image": "sprites/events/trainer1.png"
+        },
+        {
+            "id": "trainer_gift_greatballs",
+            "name": "Experienced Trainer",
+            "description": "An experienced trainer gave you some Great Balls!",
+            "type": "give_item",
+            "item": "greatball",
+            "quantity": [
+                1,
+                3
+            ],
+            "weight": 10,
+            "message": "An experienced trainer noticed your journey and gifted you {quantity} Great Balls!",
+            "image": "sprites/events/trainer2.png"
+        },
+        {
+            "id": "found_rare_candy",
+            "name": "Found a Rare Candy",
+            "description": "You stumbled upon a Rare Candy!",
+            "type": "give_item",
+            "item": "rarecandy",
+            "quantity": 1,
+            "weight": 115,
+            "message": "You found a Rare Candy hidden on the route!",
+            "image": "sprites/items/rare-candy.png"
+        }
+    ]
+}

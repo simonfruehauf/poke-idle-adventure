@@ -16,7 +16,8 @@ export let gameState = {
         waterstone: 0,
         thunderstone: 0,
         moonstone: 0,
-        leafstone: 0
+        leafstone: 0,
+        rarecandy: 0
     },
     party: [null, null, null, null, null, null],
     allPokemon: [],
@@ -28,7 +29,10 @@ export let gameState = {
     autoBattleActive: false,
     autoFightUnlocked: false,
     xpShareLevel: 0,
-    konamiCodeActivated: false
+    konamiCodeActivated: false,
+    eventModalActive: false,      // True if the post-battle event modal is shown
+    currentPostBattleEvent: null, // Stores the data of the currently active post-battle event
+    eventModalTimerId: null       // Timer ID for auto-closing event modal during auto-battle
 };
 
 export let routes = {};
@@ -38,3 +42,5 @@ export let pokemonBaseStatsData = {};
 export let pokeballData = {}; // Data for different types of Pokeballs
 
 export let itemData = {}; // Renamed from potionData, holds data for usable items like potions
+
+export let eventDefinitions = { globalEventChance: 0, events: [] }; // To store loaded events.json

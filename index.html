@@ -301,6 +301,12 @@
                     <span class="item-bar-count-text" id="item-count-leafstone">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-leafstone">Evolves certain species of Pokémon.</div>
                 </button>
+                <!-- Rare Candy -->
+                <button class="item-display item-button" id="item-display-rarecandy" onclick="window.useItem('rarecandy')" title="Rare Candy" style="display: none;" data-item-id="rarecandy">
+                    <img src="./sprites/items/rare-candy.png" alt="Rare Candy" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-rarecandy">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-rarecandy">Raises the level of the active Pokémon by one.</div>
+                </button>
             </div>
 
         </div>
@@ -366,6 +372,21 @@
             </div>
         </div>
     </div>
+
+    <div id="event-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this && !window.gameState.autoBattleActive) { window.resolvePostBattleEvent(); /* Allow closing by clicking overlay if not auto-battling */ }">
+        <div class="modal-content">
+            <h2 id="event-modal-title">An Event Occurred!</h2>
+            <img id="event-modal-image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Event Image"
+                 style="max-width: 256px; max-height: 256px; width: auto; height: auto; image-rendering: pixelated; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto; background-color: rgba(255,255,255,0.05); border-radius: 8px; padding:10px;">
+            <p id="event-modal-message" style="margin-bottom: 20px; text-align: center;">Event details will appear here.</p>
+            <div class="modal-actions">
+                <button id="event-modal-claim-btn" class="btn" onclick="window.resolvePostBattleEvent()">
+                    Acknowledge
+                </button>
+            </div>
+        </div>
+    </div>
+
 
     <script type="module" src="scripts/config.js"></script>
     <script type="module" src="scripts/state.js"></script>

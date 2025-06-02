@@ -1,14 +1,14 @@
 // gameLogic.js
-import { gameState, routes, pokeballData, itemData, pokemonBaseStatsData } from './state.js';
+import { gameState, routes, pokeballData, itemData, pokemonBaseStatsData, eventDefinitions } from './state.js';
 import { Pokemon } from './pokemon.js';
 import { addBattleLog, getActivePokemon, findNextHealthyPokemon, formatNumberWithDots } from './utils.js';
-import { updateDisplay, updateWildPokemonDisplay, populateRouteSelector } from './ui.js';
+import { updateDisplay, updateWildPokemonDisplay, populateRouteSelector, showEventModal, closeEventModal } from './ui.js';
 import { AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG } from './config.js';
 
 let autoFightIntervalId = null;
 
 export async function manualBattle() {
-    if (gameState.battleInProgress || gameState.autoBattleActive) {
+    if (gameState.battleInProgress || gameState.autoBattleActive || gameState.eventModalActive) {
         if (gameState.autoBattleActive) addBattleLog("Disable Auto-Fight to fight manually.");
         return;
     }
@@ -142,7 +142,7 @@ export function spawnWildPokemon() {
 }
 
 export async function battle() {
-    let playerPokemon = getActivePokemon();
+    let playerPokemon = getActivePokemon(); // Ensure this is declared
     if (!playerPokemon || playerPokemon.currentHp <= 0) {
         const nextPokemon = findNextHealthyPokemon();
         if (!nextPokemon) {
@@ -155,7 +155,7 @@ export async function battle() {
     }
 
     if (!gameState.currentWildPokemon) {
-        addBattleLog("No wild Pokemon to battle!");
+        addBattleLog("No wild Pokémon to battle!");
         return;
     }
 
@@ -259,7 +259,11 @@ export async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlaye
 
         if (gameState.xpShareLevel > 0 && gameState.xpShareLevel <= XP_SHARE_CONFIG.length) {
             const currentXpShare = XP_SHARE_CONFIG[gameState.xpShareLevel - 1];
-            const sharedExpAmount = Math.floor(expGained * currentXpShare.percentage);
+            const rawSharedExp = expGained * currentXpShare.percentage;
+            let sharedExpAmount = Math.floor(rawSharedExp);
+            if (rawSharedExp > 0 && sharedExpAmount === 0) {
+                sharedExpAmount = 1; // Ensure at least 1 XP is shared if any fraction was calculated
+            }
             if (sharedExpAmount > 0) {
                 let sharedCount = 0;
                 gameState.party.forEach(p => {
@@ -272,11 +276,13 @@ export async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlaye
         }
         gameState.currentWildPokemon = null;
         populateRouteSelector(); // Level ups might unlock new routes
+        await checkAndTriggerPostBattleEvent(); // Check for event after wild Pokemon faints
     }
 }
 
 export function attemptCatch(ballId = 'pokeball') {
-    if (!gameState.currentWildPokemon) { addBattleLog("No wild Pokemon to catch!"); return; }
+    if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event first!"); return; }
+    if (!gameState.currentWildPokemon) { addBattleLog("No wild Pokémon to catch!"); return; }
 
     gameState.battleInProgress = true; updateDisplay();
     gameState.pokeballs[ballId]--;
@@ -307,6 +313,7 @@ export function attemptCatch(ballId = 'pokeball') {
             }
             gameState.currentWildPokemon = null;
             populateRouteSelector(); // New Pokemon might change avg level
+            await checkAndTriggerPostBattleEvent(); // Check for event after successful catch
         } else {
             addBattleLog(`${wildPokemon.name} broke free!`);
             const playerPokemon = getActivePokemon();
@@ -327,6 +334,7 @@ export function attemptCatch(ballId = 'pokeball') {
 }
 
 export function toggleAutoFight() {
+    if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event before changing auto-fight state."); return; }
     if (!gameState.autoFightUnlocked) { addBattleLog("Auto-Fight is still locked."); return; }
 
     // If trying to START auto-fight
@@ -360,7 +368,7 @@ export function toggleAutoFight() {
 }
 
 export async function autoBattleTick() {
-    if (!gameState.autoBattleActive || gameState.battleInProgress || gameState.currentRoute === null) return;
+    if (!gameState.autoBattleActive || gameState.battleInProgress || gameState.eventModalActive || gameState.currentRoute === null) return;
     let playerPokemon = getActivePokemon();
     if (!playerPokemon || playerPokemon.currentHp <= 0) {
         const nextPokemon = findNextHealthyPokemon();
@@ -441,6 +449,7 @@ export function releasePokemon(storageIndex) {
 }
 
 export function buyBall(ballId, amount = 1) {
+    if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event first!"); return; }
     const ballType = pokeballData[ballId];
     if (!ballType) { addBattleLog("Invalid item."); return; }
     let cost = (ballId === 'pokeball' && amount === 10 && ballType.cost10) ? ballType.cost10 : ballType.cost * amount;
@@ -451,6 +460,7 @@ export function buyBall(ballId, amount = 1) {
 }
 
 export function buyXpShareUpgrade() {
+    if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event first!"); return; }
     if (gameState.xpShareLevel >= XP_SHARE_CONFIG.length) { addBattleLog("XP Share is max level!"); return; }
     const nextLevelConfig = XP_SHARE_CONFIG[gameState.xpShareLevel];
     if (gameState.money >= nextLevelConfig.cost) {
@@ -461,6 +471,7 @@ export function buyXpShareUpgrade() {
 }
 
 export function buyItem(itemId, quantity = 1) { // Renamed from buyPotion, potionId to itemId
+    if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event first!"); return; }
     const itemInfo = itemData[itemId]; // Renamed from potionData, potionInfo to itemInfo
     if (!itemInfo) { addBattleLog("Invalid item."); return; }
     const cost = itemInfo.cost * quantity;
@@ -471,6 +482,7 @@ export function buyItem(itemId, quantity = 1) { // Renamed from buyPotion, potio
 }
 
 export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
+    if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event first!"); return; }
     const itemInfo = itemData[itemId]; // Renamed from potionData, potionInfo to itemInfo
     if (!itemInfo || !gameState.items[itemId] || gameState.items[itemId] <= 0) { // Renamed from gameState.potions
         addBattleLog(`No ${itemInfo ? itemInfo.name : 'items'} left or invalid type!`); return;
@@ -515,6 +527,16 @@ export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
             logged = true
         }
     }
+    // Handle Rare Candy
+    else if (itemInfo.effectType === 'level_up' && activePokemon) {
+        if (activePokemon.level < 100) {
+            activePokemon.gainLevels(itemInfo.effectValue || 1); // Use effectValue or default to 1 level
+            healedSomething = true; // To consume the item
+        } else {
+            addBattleLog(`${activePokemon.name} is already at the maximum level!`);
+            logged = true;
+        }
+    }
     if (healedSomething) {
         gameState.items[itemId]--; addBattleLog(`Used ${itemInfo.name}!`); // Renamed from gameState.potions
     } else if (!logged) { addBattleLog(`${itemInfo.name} had no effect.`); }
@@ -522,6 +544,7 @@ export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
 }
 
 export function freeFullHeal() {
+    if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event first!"); return; }
     const hasNoMoomooMilk = (gameState.items.moomoomilk || 0) === 0; // Renamed from gameState.potions
     const hasNoHyperPotion = (gameState.items.hyperpotion || 0) === 0; // Renamed from gameState.potions
 
@@ -583,4 +606,83 @@ export function cheatAddMoney(amount) {
     addBattleLog(`Cheated ${formatNumberWithDots(moneyToAdd)}₽! Current money: ${formatNumberWithDots(gameState.money)}₽.`);
     updateDisplay(); // Ensure the UI reflects the new money amount
     console.log(`Successfully added ${moneyToAdd}₽. Current money: ${gameState.money}`);
+}
+
+// --- Post-Battle Event Logic ---
+async function checkAndTriggerPostBattleEvent() {
+    if (gameState.eventModalActive) return; // Don't trigger if one is already active
+
+    if (Math.random() < eventDefinitions.globalEventChance) {
+        const availableEvents = eventDefinitions.events;
+        if (availableEvents.length === 0) return;
+
+        const totalWeight = availableEvents.reduce((sum, event) => sum + event.weight, 0);
+        let randomRoll = Math.random() * totalWeight;
+        let selectedEvent;
+
+        for (const event of availableEvents) {
+            if (randomRoll < event.weight) {
+                selectedEvent = event;
+                break;
+            }
+            randomRoll -= event.weight;
+        }
+
+        if (selectedEvent) {
+            await triggerPostBattleEvent(selectedEvent);
+        }
+    }
+}
+
+async function triggerPostBattleEvent(eventData) {
+    gameState.eventModalActive = true;
+    let processedEventData = { ...eventData }; // Clone to avoid modifying original definitions
+
+    // Pre-calculate quantity for display if it's a range
+    if (eventData.type === "give_item" && Array.isArray(eventData.quantity)) {
+        processedEventData.resolvedQuantity = Math.floor(Math.random() * (eventData.quantity[1] - eventData.quantity[0] + 1)) + eventData.quantity[0];
+    } else if (eventData.type === "give_item") {
+        processedEventData.resolvedQuantity = eventData.quantity;
+    }
+
+    gameState.currentPostBattleEvent = processedEventData;
+    showEventModal(processedEventData); // UI function
+
+    if (gameState.autoBattleActive) {
+        if (gameState.eventModalTimerId) clearTimeout(gameState.eventModalTimerId);
+        gameState.eventModalTimerId = setTimeout(resolvePostBattleEvent, 5000); // 5 seconds
+    }
+}
+
+export async function resolvePostBattleEvent() {
+    if (!gameState.eventModalActive || !gameState.currentPostBattleEvent) return;
+
+    if (gameState.eventModalTimerId) {
+        clearTimeout(gameState.eventModalTimerId);
+        gameState.eventModalTimerId = null;
+    }
+
+    const event = gameState.currentPostBattleEvent;
+    let outcomeMessage = event.message || event.description; // Default to description if no specific message
+
+    if (event.type === "heal_party") {
+        gameState.party.forEach(p => { if (p) p.heal(); });
+        // Message is usually defined in events.json
+    } else if (event.type === "give_item") {
+        const quantity = event.resolvedQuantity || (Array.isArray(event.quantity) ? (Math.floor(Math.random() * (event.quantity[1] - event.quantity[0] + 1)) + event.quantity[0]) : event.quantity);
+        const itemKey = event.item.toLowerCase(); // Ensure consistent key
+
+        if (pokeballData[itemKey]) { // It's a Pokéball
+            gameState.pokeballs[itemKey] = (gameState.pokeballs[itemKey] || 0) + quantity;
+        } else { // It's a regular item
+            gameState.items[itemKey] = (gameState.items[itemKey] || 0) + quantity;
+        }
+        outcomeMessage = outcomeMessage.replace("{quantity}", quantity);
+    }
+
+    addBattleLog(outcomeMessage);
+    gameState.eventModalActive = false;
+    gameState.currentPostBattleEvent = null;
+    closeEventModal(); // UI function
+    updateDisplay();
 }

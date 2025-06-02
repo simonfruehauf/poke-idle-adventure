@@ -17,8 +17,15 @@ export class Pokemon {
         this.baseStats = { ...statsData.base };
         this.growthRates = { ...statsData.growth };
         this.currentHp = this.maxHp;
-        this.exp = 0;
+        this.exp = 0; // Initialize exp to 0
         this.expToNext = this.getExpToNext();
+
+        // If Pokémon is created at or above level 100, cap level and set EXP to 0.
+        if (this.level >= 100) {
+            this.level = 100;
+            this.exp = 0;
+            this.expToNext = this.getExpToNext(); // Recalculate for Lvl 100
+        }
     }
 
     getStatsData(name) {
@@ -84,21 +91,45 @@ export class Pokemon {
     }
 
     gainExp(amount) {
+        if (this.level >= 100) {
+            // Optional: add a log or return a status if needed
+            // addBattleLog(`${this.name} is already max level and cannot gain more EXP.`);
+            return;
+        }
         this.exp += amount;
         while (this.exp >= this.expToNext && this.level < 100) {
             this.exp -= this.expToNext;
             this.levelUp();
         }
+        if (this.level >= 100) {
+            this.exp = 0; // Cap EXP at level 100
+        }
     }
 
     levelUp() {
+        if (this.level >= 100) return; // Already at max level
+
         const oldMaxHp = this.maxHp;
         this.level++;
         this.expToNext = this.getExpToNext();
         const hpRatio = this.currentHp / oldMaxHp;
         this.currentHp = Math.max(1, Math.floor(this.maxHp * hpRatio)); // Ensure HP is at least 1 if it was > 0
         addBattleLog(`${this.name} leveled up to Lvl. ${this.level}!`);
-        // populateRouteSelector(); // Removed: Game logic will handle UI updates
+        if (this.level >= 100) {
+            addBattleLog(`${this.name} has reached the maximum level of 100!`);
+            this.exp = 0; // Ensure EXP is 0 at max level
+        }
+    }
+
+    gainLevels(count = 1) {
+        for (let i = 0; i < count && this.level < 100; i++) {
+            this.levelUp();
+            // If leveled up by Rare Candy and not yet level 100, reset EXP for the new level.
+            // If levelUp resulted in level 100, levelUp itself already set exp to 0.
+            if (this.level < 100) {
+                this.exp = 0;
+            }
+        }
     }
 
     evolve() {

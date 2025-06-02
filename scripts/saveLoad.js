@@ -26,6 +26,12 @@ export function deserializePokemon(savedPkmnData) {
     pokemon.id = savedPkmnData.id || (Date.now() + Math.random());
     pokemon.currentHp = savedPkmnData.currentHp;
     pokemon.exp = savedPkmnData.exp;
+
+    // Ensure loaded Pokémon at Lvl 100 have their level capped and EXP zeroed.
+    if (pokemon.level >= 100) {
+        pokemon.level = 100;
+        pokemon.exp = 0;
+    }
     return pokemon;
 }
 

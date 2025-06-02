@@ -133,10 +133,9 @@
     },
     "rarecandy": {
         "name": "Rare Candy",
-        "cost": 5000,
         "description": "A candy that raises the level of a Pokémon by one.",
-        "effectType": "level_up_active_pokemon",
+        "effectType": "level_up",
         "effectValue": 1,
-        "shopVisible": false
+        "image": "sprites/items/rare-candy.png"
     }
 }
