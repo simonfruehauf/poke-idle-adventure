@@ -109,7 +109,13 @@ export function calculateMaxPartyLevel() {
     const maxLevel = activeParty.reduce((max, p) => Math.max(max, p.level), 0);
     return maxLevel;
 }
-
+export function calculateMinPartyLevel() {
+    const activeParty = gameState.party.filter(p => p !== null);
+    if (activeParty.length === 0) return 0;
+    const minLevel = activeParty.reduce((min, p) => Math.min(min, p.level), 100); 
+    return minLevel;
+}
+    
 export function spawnWildPokemon() {
     const route = routes[gameState.currentRoute];
     if (!route) {

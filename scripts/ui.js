@@ -3,7 +3,7 @@ import { gameState, pokemonBaseStatsData, pokeballData, itemData, routes } from 
 import { getActivePokemon, formatNumberWithDots, addBattleLog } from './utils.js';
 import { POKEMON_SPRITE_BASE_URL, AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, STARTER_POKEMON_NAMES, SHINY_CHANCE, TYPE_ICON_BASE_URL, TYPE_NAMES } from './config.js'; // SHINY_CHANCE might not be directly used here but good to keep track of config imports
 import { Pokemon } from './pokemon.js'; // Import logic functions
-import { calculateMaxPartyLevel, attemptEvolution, setActivePokemon, removeFromParty, confirmReleasePokemon as confirmReleasePokemonLogic, addToParty as addToPartyLogic } from './gameLogic.js'; // Changed import
+import { calculateMaxPartyLevel, calculateMinPartyLevel, attemptEvolution, setActivePokemon, removeFromParty, confirmReleasePokemon as confirmReleasePokemonLogic, addToParty as addToPartyLogic } from './gameLogic.js'; // Changed import
 
 // --- Utility functions for Pokémon data presentation ---
 function getTypeIconsHTML(pokemon) {
@@ -49,9 +49,11 @@ export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicat
         }
     }
     return `${caughtIndicatorHTML}${ballIconHTML}${pokemon.name}${shinySpan}`;}
+
 export function getPokemonSpritePath(pokemon, spriteType = 'front', baseSpriteUrl = POKEMON_SPRITE_BASE_URL) {
-    if (!pokemon || !pokemon.pokedexId) return "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="; // Placeholder
-    return `${baseSpriteUrl}${spriteType}/${pokemon.isShiny ? 'shiny/' : ''}${pokemon.pokedexId}.png`;
+    
+    if (!pokemon) return `${baseSpriteUrl}${spriteType}/000.png`; // Placeholder
+    else return `${baseSpriteUrl}${spriteType}/${pokemon.isShiny ? 'shiny/' : ''}${pokemon.pokedexId}.png`;
 }
 
 export function getPokemonLevelText(pokemon) { // Used for player/wild display (e.g., :L5)
@@ -792,7 +794,8 @@ export function populateRouteSelector() {
     const routeSelect = document.getElementById('route-select');
     if (!routeSelect) return;
 
-    const currentMaxLevel = calculateMaxPartyLevel(); // Changed from calculateAveragePartyLevel
+    const currentMinLevel = calculateMinPartyLevel();
+
     routeSelect.innerHTML = ''; 
 
     const defaultOption = document.createElement('option');
@@ -806,11 +809,10 @@ export function populateRouteSelector() {
         option.value = routeKey;
         let optionText = route.name;
 
-        // Using route.avgLevelRequirement as the property name for the required level,
-        // but the logic now checks against max level.
-        if (currentMaxLevel < route.avgLevelRequirement) { // Changed from currentAvgLevel
+
+        if (currentMinLevel < route.LevelRequirement) { // Changed from currentAvgLevel
             option.disabled = true;
-            optionText += ` (Max Lv. ${route.avgLevelRequirement} req.)`; // Changed text from "Avg Lv."
+            optionText = ` (Level  ${route.LevelRequirement} req.)`;
         }
         option.textContent = optionText;
         routeSelect.appendChild(option);

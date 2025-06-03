@@ -56,7 +56,7 @@
             "type": "give_item",
             "item": "rarecandy",
             "quantity": 1,
-            "weight": 115,
+            "weight": 5,
             "message": "You found a Rare Candy hidden on the route!",
             "image": "sprites/items/rare-candy.png"
         }
