@@ -49,7 +49,7 @@ body {
 }
 
 .container {
-    max-width: 1400px; 
+    max-width: 1400px;
     margin: 0 auto;
     padding: 20px;
 }
@@ -57,7 +57,7 @@ body {
 .header {
     text-align: center;
     margin-bottom: 30px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3); 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
 }
 
 .stat-horizontal {
@@ -89,40 +89,68 @@ body {
 
 .game-area {
     display: grid;
-    grid-template-areas: 
+    grid-template-areas:
         "items-bar battle-area party-area"
-        "items-bar battle-area party-area"
-        "items-bar battle-area party-area" 
-        "items-bar battle-area party-area" 
-        "items-bar shop-area shop-area"
         "items-bar shop-area shop-area";
-    grid-template-columns: 120px 1fr 1fr;    
-    grid-template-rows: 120px repeat(3, 1fr) repeat(2, 1fr);
+    grid-template-columns: 120px 1fr 1fr;
     gap: 20px;
-
 }
 
 .party-area {
+    display: grid;
     grid-area: party-area;
-    
     gap: 20px;
 }
+
+.party-slots {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.party-slot {
+    background: var(--interactive-bg);
+    border: 2px dashed var(--interactive-border);
+    border-radius: 10px;
+    padding: 15px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.party-slot.filled {
+    border: 2px solid var(--success-color);
+    background: var(--success-bg-lighter);
+}
+
+.party-slot.active-pokemon-slot {
+    border: 2px solid var(--accent-color);
+    box-shadow: 0 0 10px var(--accent-color), inset 0 0 12px rgba(255, 215, 0, 0.25);
+    background-color: var(--panel-bg-light);
+}
+
 .items-bar {
     grid-area: items-bar;
     background: var(--panel-bg);
     border-radius: 15px;
     padding: 20px;
     backdrop-filter: blur(10px);
-
     display: flex;
     flex-direction: column;
     align-items: stretch;
     gap: 20px;
     overflow: visible;
 }
+
 .battle-area {
     grid-area: battle-area;
+    display: flex;
+    flex-direction: column;
 }
+
 .shop-panel {
     grid-area: shop-area;
 }
@@ -152,7 +180,7 @@ body {
     box-sizing: border-box;
     width: 100%;
     margin-bottom: 15px;
-    border: 1px solid var(--interactive-border); 
+    border: 1px solid var(--interactive-border);
 }
 
 #export-save-modal .modal-actions,
@@ -164,10 +192,12 @@ body {
 #import-save-modal .modal-actions button {
     margin-left: 10px;
 }
+
 #export-save-modal .modal-actions button:first-child,
 #import-save-modal .modal-actions button:first-child {
     margin-left: 0;
 }
+
 #copy-feedback-message {
     font-size: 0.9em;
     text-align: center;
@@ -196,12 +226,13 @@ body {
     filter: grayscale(100%);
     transition: filter 0.3s ease;
 }
+
 .type-icon {
-    height: 14px; 
+    height: 14px;
     width: 32px;
     vertical-align: middle;
     margin-right: 4px;
-    image-rendering: pixelated; 
+    image-rendering: pixelated;
 }
 
 .pokemon-name .type-icon {
@@ -240,8 +271,10 @@ footer {
 }
 
 .item-bar-icon {
-    width: 24px; /* Or your preferred size */
-    height: 24px; /* Or your preferred size */
+    width: 24px;
+    /* Or your preferred size */
+    height: 24px;
+    /* Or your preferred size */
     margin-right: 8px;
     vertical-align: middle;
 }
@@ -259,8 +292,8 @@ footer {
     border: 1px solid var(--interactive-border);
     color: var(--text-color);
     cursor: pointer;
-    text-align: left; 
-    align-items: center; 
+    text-align: left;
+    align-items: center;
 }
 
 .item-display.item-button:hover:not(:disabled) {
@@ -277,13 +310,23 @@ footer {
 }
 
 .item-display.item-button:disabled {
-    background-color: var(--panel-bg-lighter); 
+    background-color: var(--panel-bg-lighter);
     color: var(--text-color-lighter);
     cursor: not-allowed;
     opacity: 0.6;
     border-color: var(--interactive-starter-border);
 }
 
+.party-header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.heal-button {
+    background: #2ecc71;
+}
 
 .inline-ball-icon {
     width: 1.2em;
@@ -291,14 +334,13 @@ footer {
     vertical-align: -0.20em;
     margin-right: 0.0em;
     image-rendering: pixelated;
-}
+} 
 
 .battle-field {
     display: flex;
+    flex-grow: 1;
     flex-direction: column;
-    justify-content: space-between;    
-    align-items: stretch;
-    min-height: 280px;
+    justify-content: space-around;
     background: var(--panel-bg-lightest);
     border-radius: 10px;
     padding: 10px;
@@ -307,19 +349,26 @@ footer {
 
 .pokemon-battle {
     display: flex;
+    margin: 10px;
     align-items: center;
     padding: 10px;
+    height: 35%;
     background: var(--interactive-starter-bg);
     border-radius: 8px;
     width: fit-content;
-}
+    padding-right: 20px;
 
-.pokemon-battle.wild {
-    text-align: left;
-    align-self: flex-end;
-}
-.pokemon-battle.player {
-    align-self: flex-start;
+    &.wild {
+        padding-left: 20px;
+        padding-right: 0px;
+        text-align: left;
+        align-self: flex-end;
+    }
+
+    &.player {
+        align-self: flex-start;
+    }
+
 }
 
 .pokemon-sprite {
@@ -336,23 +385,23 @@ footer {
 }
 
 .pokemon-sprite.zoomable-sprite:hover {
-    transform: scale(2.35) translateY(-10px);    
-    transition: transform 0.25s ease-in-out;    
+    transform: scale(2.35) translateY(-10px);
+    transition: transform 0.25s ease-in-out;
     z-index: 1000;
     position: relative;
 }
 
 .pokemon-battle.player .pokemon-sprite {
-    margin-right: 10px;    
+    margin-right: 10px;
 }
 
 .pokemon-battle.wild .pokemon-sprite {
-    order: 2;    
+    order: 2;
     margin-left: 10px;
 }
 
 .pokemon-info {
-    flex-grow: 1;    
+    flex-grow: 1;
 }
 
 .pokemon-battle.player .pokemon-info {
@@ -381,7 +430,7 @@ footer {
     height: 15px;
     border-radius: 8px;
     margin: 5px 0px;
-    border: 1px solid rgba(0,0,0,0.3); 
+    border: 1px solid rgba(0, 0, 0, 0.3);
     overflow: hidden;
 }
 
@@ -395,21 +444,25 @@ footer {
     margin-bottom: 15px;
 }
 
-.route-btn {
+.leave-route {
     background: var(--interactive-bg-hover);
     border: 1px solid var(--interactive-border);
     color: var(--text-color);
-    padding: 8px 15px;
-    margin: 5px;
     border-radius: 20px;
     cursor: pointer;
     transition: all 0.3s;
+    position: absolute;
+    top: 0px;
+    left: 0px;
 }
 
 .route-btn:hover {
-    background: var(--interactive-border);    
+    background: var(--interactive-border);
 }
 
+#route-controls-wrapper {
+    position: relative;
+}
 
 
 .pokemon-card {
@@ -418,7 +471,7 @@ footer {
     padding: 12px;
     margin: 8px 0;
     cursor: pointer;
-    border: 1px solid var(--interactive-starter-border); 
+    border: 1px solid var(--interactive-starter-border);
     transition: all 0.3s;
 }
 
@@ -455,7 +508,7 @@ footer {
     height: 6px;
     border-radius: 3px;
     margin-top: 5px;
-    border: 1px solid rgba(0,0,0,0.3); 
+    border: 1px solid rgba(0, 0, 0, 0.3);
     overflow: hidden;
 }
 
@@ -475,26 +528,29 @@ footer {
 
 .btn {
     background: var(--button-primary-gradient);
-    border: 1px solid rgba(0,0,0,0.3); 
-    border-top-color: rgba(255,255,255,0.15); 
-    border-left-color: rgba(255,255,255,0.1);   
+    border: 1px solid rgba(0, 0, 0, 0.3);
+    border-top-color: rgba(255, 255, 255, 0.15);
+    border-left-color: rgba(255, 255, 255, 0.1);
     color: var(--text-color);
     padding: 10px 20px;
     border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
     transition: transform 0.2s, box-shadow 0.2s;
-    text-shadow: 1px 1px 0px rgba(0,0,0,0.25); 
+    text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.25);
     font-size: 12px;
 }
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px var(--panel-bg-light); 
+    box-shadow: 0 4px 8px var(--panel-bg-light);
 }
+
 .btn:active {
-    transform: translateY(1px); /* Slight press down effect */
-    box-shadow: inset 0 1px 2px rgba(0,0,0,0.2); /* Inset shadow for pressed feel */
+    transform: translateY(1px);
+    /* Slight press down effect */
+    box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+    /* Inset shadow for pressed feel */
 }
 
 
@@ -517,10 +573,6 @@ footer {
     font-size: 15px;
 }
 
-.leave-route {
-    padding-top: 21px;
-    padding-bottom: 20px;    
-}
 
 .shop {
     background: var(--panel-bg-light);
@@ -537,18 +589,18 @@ footer {
 
 .shop-sections-container {
     display: flex;
-    gap: 20px;    
+    gap: 20px;
     flex-wrap: wrap;
 }
 
 .shop-section {
-    flex: 1;    
+    flex: 1;
     min-width: 200px;
 }
 
 .shop-item {
     display: flex;
-    position: relative;    
+    position: relative;
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
@@ -558,36 +610,36 @@ footer {
 }
 
 .custom-tooltip {
-    visibility: hidden;    
-    opacity: 0;    
+    visibility: hidden;
+    opacity: 0;
     position: absolute;
-    bottom: 125%;    
+    bottom: 125%;
     left: 50%;
-    transform: translateX(-50%);    
-    background-color: #2c3e50;    
+    transform: translateX(-50%);
+    background-color: #2c3e50;
     color: var(--text-color-light);
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 0.85em;
-    white-space: normal;    
-    width: max-content;    
-    max-width: 250px;    
-    z-index: 1001;    
+    white-space: normal;
+    width: max-content;
+    max-width: 250px;
+    z-index: 1001;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-    pointer-events: none;    
+    pointer-events: none;
     text-align: left;
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;    
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
 }
 
 .custom-tooltip::after {
     content: "";
     position: absolute;
-    top: 100%;    
+    top: 100%;
     left: 50%;
     transform: translateX(-50%);
     border-width: 6px;
     border-style: solid;
-    border-color: #2c3e50 transparent transparent transparent;    
+    border-color: #2c3e50 transparent transparent transparent;
 }
 
 .shop-item:hover .custom-tooltip {
@@ -616,48 +668,8 @@ footer {
     opacity: 0.8;
 }
 
-.party-slots {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.party-slot {
-    background: var(--interactive-bg);
-    border: 2px dashed var(--interactive-border);
-    border-radius: 10px;
-    padding: 15px;
-    text-align: center;
-    min-height: 80px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-
-.party-slot.filled {
-    border: 2px solid var(--success-color);
-    background: var(--success-bg-lighter);
-}
-
-.party-slot.active-pokemon-slot {
-    border: 2px solid var(--accent-color); 
-    box-shadow: 0 0 10px var(--accent-color), inset 0 0 12px rgba(255, 215, 0, 0.25); 
-    background-color: var(--panel-bg-light); 
-}
-
 
 .auto-battle-indicator {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: var(--success-bg-dark);
-    color: var(--text-color);
-    padding: 10px 15px;
-    border-radius: 20px;
-    font-weight: bold;
-    font-size: 14px;
-    z-index: 1000;
     animation: pulse 2s infinite;
 }
 
@@ -669,12 +681,13 @@ footer {
     }
 
     50% {
-        opacity: 0.7;
+        opacity: 0.9;
     }
 }
 
 .route-info {
     background: var(--panel-bg-lighter);
+    min-height: 60px;
     padding: 10px;
     border-radius: 8px;
     border: 1px solid var(--interactive-border);
@@ -688,27 +701,27 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--modal-overlay-bg);    
+    background: var(--modal-overlay-bg);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000;    
+    z-index: 2000;
     backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    background: var(--modal-bg);    
+    background: var(--modal-bg);
     padding: 30px 40px;
     border-radius: 15px;
     text-align: center;
     color: var(--text-color);
     box-shadow: 0 8px 30px var(--panel-bg);
-    border: 2px solid var(--interactive-border); 
+    border: 2px solid var(--interactive-border);
 }
 
 .modal-content h2 {
     margin-bottom: 25px;
-    color: var(--accent-color);    
+    color: var(--accent-color);
     font-size: 24px;
 }
 
@@ -746,39 +759,41 @@ footer {
     margin-right: -100px;
 }
 
-.team-area { 
+.team-area {
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 70vh; 
-    max-height: 480px; 
-    background: var(--modal-bg); 
+    height: 70vh;
+    max-height: 480px;
+    background: var(--modal-bg);
     border-top: 2px solid var(--accent-color);
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.3); 
-    transform: translateY(100%); 
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+    transform: translateY(100%);
     transition: transform 0.3s ease-in-out;
-    z-index: 1500; 
+    z-index: 1500;
     display: flex;
     flex-direction: column;
 }
 
 .team-area.open {
-    transform: translateY(0); 
+    transform: translateY(0);
 }
 
 .team-area .drawer-header {
+    border-radius: 10px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+
     padding: 10px 20px;
-    background: var(--panel-bg-light); 
+    background: var(--panel-bg-light);
     border-bottom: 1px solid var(--interactive-border);
-    flex-shrink: 0; 
+    flex-shrink: 0;
 }
 
 .team-area .drawer-header h2 {
-    margin: 0; 
+    margin: 0;
     font-size: 1.2em;
     color: var(--accent-color);
 }
@@ -786,45 +801,38 @@ footer {
 
 /* This is the scrollable content area within the drawer */
 #team-list {
-    flex-grow: 1; 
-    overflow-y: auto; 
-padding: 15px;
-    display: grid; 
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
-    gap: 15px; 
+    flex-grow: 1;
+    overflow-y: auto;
+    padding: 15px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 15px;
 }
 
 #team-list .pokemon-card {
-    background: var(--interactive-bg); 
-    border-radius: 10px; 
-    padding: 12px; 
-    cursor: default; 
-    transition: all 0.3s; 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    text-align: center; 
+    background: var(--interactive-bg);
+    border-radius: 10px;
+    padding: 12px;
+    cursor: default;
+    transition: all 0.3s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
 }
 
 #team-list .pokemon-card:hover {
-    background: var(--interactive-bg-hover); 
-    transform: translateY(-2px); 
+    background: var(--interactive-bg-hover);
+    transform: translateY(-2px);
 }
 
 #team-list .pokemon-card .pokemon-sprite {
-    width: 80px; 
-    height: 80px; 
-    margin-bottom: 10px; 
+    width: 80px;
+    height: 80px;
+    margin-bottom: 10px;
 }
 
 #team-list .pokemon-card .controls {
-    justify-content: center; 
-    width: 100%; 
-}
-
-#floating-pc-btn {
-    position: fixed;
-    top: 20px; 
-    right: 20px; 
-    z-index: 1010; 
+    justify-content: center;
+    width: 100%;
 }

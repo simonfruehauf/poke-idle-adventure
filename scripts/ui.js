@@ -36,8 +36,8 @@ export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicat
     if (checkCaughtStatus && pokemon.pokedexId) {
         // Determine if the player has caught this species
         const isCaught = gameState.party.some(p => p && p.pokedexId === pokemon.pokedexId) ||
-                         gameState.allPokemon.some(p => p && p.pokedexId === pokemon.pokedexId);
-        
+            gameState.allPokemon.some(p => p && p.pokedexId === pokemon.pokedexId);
+
         const pokeballImageSrc = pokeballData.pokeball?.image; // Use the standard Pokeball image for the indicator
         const titleText = isCaught ? 'Caught' : 'Not Caught';
 
@@ -53,10 +53,11 @@ export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicat
             if (isCaught) caughtIndicatorHTML = `<span class="caught-indicator-text" title="Caught">(C)</span> `;
         }
     }
-    return `${caughtIndicatorHTML}${ballIconHTML}${pokemon.name}${shinySpan}`;}
+    return `${caughtIndicatorHTML}${ballIconHTML}${pokemon.name}${shinySpan}`;
+}
 
 export function getPokemonSpritePath(pokemon, spriteType = 'front', baseSpriteUrl = POKEMON_SPRITE_BASE_URL) {
-    
+
     if (!pokemon) return `${baseSpriteUrl}${spriteType}/000.png`; // Placeholder
     else return `${baseSpriteUrl}${spriteType}/${pokemon.isShiny ? 'shiny/' : ''}${pokemon.pokedexId}.png`;
 }
@@ -180,8 +181,8 @@ function _updatePlayerStatsDisplay() {
                         itemSpecificCondition = activePokemon.currentHp < activePokemon.maxHp && activePokemon.currentHp > 0; // Cannot use on fainted for these
                         if (itemInfo.canRevive && activePokemon.currentHp <= 0) itemSpecificCondition = true; // Allow if item can revive
                     } else if (itemInfo.effectType === 'evolution_item') {
-                    itemSpecificCondition = itemInfo.evolutionTargets?.some(target => target.pokemon === activePokemon.name);
-                } else if (itemInfo.effectType === 'level_up') {
+                        itemSpecificCondition = itemInfo.evolutionTargets?.some(target => target.pokemon === activePokemon.name);
+                    } else if (itemInfo.effectType === 'level_up') {
                         itemSpecificCondition = itemInfo.evolutionTargets?.some(target => target.pokemon === activePokemon.name);
                     }
                 } else if (itemInfo && itemInfo.effectType === 'party_full') { // Moomoo Milk example
@@ -189,14 +190,14 @@ function _updatePlayerStatsDisplay() {
                 } else if (itemInfo && (itemInfo.effectType === 'active_pokemon_percentage' || itemInfo.effectType === 'active_pokemon_full' || itemInfo.effectType === 'evolution_item') && !activePokemon) {
                     itemSpecificCondition = false; // Cannot use on active Pokemon if no active Pokemon
                 }
-            // For Rare Candy, specific condition is active Pokemon exists and is not level 100
-            if (itemInfo && itemInfo.effectType === 'level_up') {
-                itemSpecificCondition = activePokemon && activePokemon.level < 100;
-            }
+                // For Rare Candy, specific condition is active Pokemon exists and is not level 100
+                if (itemInfo && itemInfo.effectType === 'level_up') {
+                    itemSpecificCondition = activePokemon && activePokemon.level < 100;
+                }
 
-                itemButton.disabled = !canUseItemGenerally || 
-                    count <= 0 || 
-                    !itemSpecificCondition || 
+                itemButton.disabled = !canUseItemGenerally ||
+                    count <= 0 ||
+                    !itemSpecificCondition ||
                     gameState.eventModalActive;
             }
         }
@@ -256,14 +257,14 @@ function _updateMainActionButtonsState() {
     if (gameState.currentRoute === null) {
         fightBtn.textContent = "Select a Route";
         fightBtn.disabled = true;
-        if (routeSelectContainer) routeSelectContainer.style.display = '';
-        if (leaveRouteBtn) leaveRouteBtn.style.display = 'none';
+        if (routeSelectContainer) routeSelectContainer.style.removeProperty('visibility');
+        if (leaveRouteBtn) leaveRouteBtn.style.visibility = 'hidden';
     } else if (!gameState.eventModalActive) { // Only enable if not in event modal
         fightBtn.textContent = gameState.currentWildPokemon ? "Fight!" : "Find Pokémon";
         fightBtn.disabled = gameState.battleInProgress || gameState.autoBattleActive || !playerCanInitiateAction;
-        if (routeSelectContainer) routeSelectContainer.style.display = 'none';
+        if (routeSelectContainer) routeSelectContainer.style.visibility = 'hidden';
         if (leaveRouteBtn) {
-            leaveRouteBtn.style.display = '';
+            leaveRouteBtn.style.removeProperty('visibility');
             leaveRouteBtn.disabled = gameState.battleInProgress || gameState.autoBattleActive;
         }
     } else { // Event modal is active
@@ -273,7 +274,7 @@ function _updateMainActionButtonsState() {
 
 
     const canCatch = gameState.currentWildPokemon && gameState.currentWildPokemon.currentHp > 0 && !gameState.battleInProgress && !gameState.autoBattleActive;
-    
+
     if (catchPokeballBtn) {
         catchPokeballBtn.disabled = !canCatch || gameState.pokeballs.pokeball <= 0;
         catchPokeballBtn.style.display = gameState.pokeballs.pokeball > 0 ? '' : 'none';
@@ -322,29 +323,29 @@ function _updateMainActionButtonsState() {
             // 2. No route is selected OR
             // 3. A battle is currently in progress (can't start a new auto-fight then).
             autoFightBtn.textContent = 'Start Auto-Fight';
-            autoFightBtn.disabled = !gameState.autoFightUnlocked || 
-                                       gameState.currentRoute === null || 
-                                       gameState.battleInProgress ||
-                                       gameState.eventModalActive;
+            autoFightBtn.disabled = !gameState.autoFightUnlocked ||
+                gameState.currentRoute === null ||
+                gameState.battleInProgress ||
+                gameState.eventModalActive;
         }
     }
     // Free Heal Button
     if (freeHealBtn) {
         const hasNoMoomooMilk = (gameState.items.moomoomilk || 0) === 0; // Renamed from gameState.potions
         const hasNoHyperPotion = (gameState.items.hyperpotion || 0) === 0; // Renamed from gameState.potions
-        const canShowFreeHeal = gameState.money < 800 && 
-            (hasNoMoomooMilk && hasNoHyperPotion) && 
-            !gameState.battleInProgress && 
-            !gameState.eventModalActive && 
+        const canShowFreeHeal = gameState.money < 800 &&
+            (hasNoMoomooMilk && hasNoHyperPotion) &&
+            !gameState.battleInProgress &&
+            !gameState.eventModalActive &&
             gameState.currentRoute === null;
 
         if (canShowFreeHeal) {
-            freeHealBtn.style.display = ''; // Or 'inline-block' or 'block' depending on layout
+            freeHealBtn.style.removeProperty('visibility');
             freeHealBtn.disabled = false;
         } else {
-            freeHealBtn.style.display = 'none';
+            freeHealBtn.style.visibility = 'hidden';
             freeHealBtn.disabled = true;
-        } 
+        }
     }
 }
 
@@ -352,6 +353,7 @@ function _updateMainActionButtonsState() {
 function _updateShopInterface() {
     const xpShareShopItemEl = document.getElementById('exp-share-shop-item');
     const xpShareTooltipEl = document.getElementById('tooltip-exp-share-shop-item');
+    const xpShareText = document.getElementById('exp-share-text');
     if (xpShareShopItemEl && xpShareTooltipEl) {
         const xpShareButton = document.getElementById('exp-share-buy-btn');
         if (gameState.xpShareLevel >= XP_SHARE_CONFIG.length) {
@@ -363,7 +365,8 @@ function _updateShopInterface() {
         } else {
             const nextLevelConfig = XP_SHARE_CONFIG[gameState.xpShareLevel];
             if (xpShareButton) {
-                xpShareButton.textContent = `Buy ${nextLevelConfig.name} - ${formatNumberWithDots(nextLevelConfig.cost)}₽`;
+                xpShareButton.textContent = `Buy - ${formatNumberWithDots(nextLevelConfig.cost)}₽`;
+                xpShareText.textContent = `${nextLevelConfig.name}`
                 xpShareButton.disabled = false;
             }
             xpShareTooltipEl.textContent = `${nextLevelConfig.name}: Increases EXP gained by benched Pokémon by ${nextLevelConfig.percentage * 100}%.`;
@@ -375,19 +378,19 @@ function _updateShopInterface() {
         const shopItemEl = document.getElementById(`shop-item-${ballId}`);
         if (shopItemEl && ballInfo) {
             const nameSpan = shopItemEl.querySelector('span');
-            if (nameSpan) nameSpan.textContent = `${ballInfo.name} (x1)`;
+            if (nameSpan) nameSpan.textContent = `${ballInfo.name}`;
             const buyButton = shopItemEl.querySelector(`button[onclick="buyBall('${ballId}', 1)"]`);
             if (buyButton && typeof ballInfo.cost === 'number') buyButton.textContent = `Buy - ${formatNumberWithDots(ballInfo.cost)}₽`;
             const tooltipEl = document.getElementById(`tooltip-shop-item-${ballId}`);
             if (tooltipEl) tooltipEl.textContent = ballInfo.description || ballInfo.name;
         }
     }
-    for (const itemId in itemData) { 
-        const itemInfo = itemData[itemId]; 
+    for (const itemId in itemData) {
+        const itemInfo = itemData[itemId];
         const shopItemEl = document.getElementById(`shop-item-${itemId}`);
         if (shopItemEl && itemInfo) {
             const nameSpan = shopItemEl.querySelector('span');
-            if (nameSpan) nameSpan.textContent = `${itemInfo.name} (x1)`;
+            if (nameSpan) nameSpan.textContent = `${itemInfo.name}`;
             const buyButton = shopItemEl.querySelector(`button[onclick="buyItem('${itemId}', 1)"]`); // Renamed buyPotion to buyItem
             if (buyButton && typeof itemInfo.cost === 'number') buyButton.textContent = `Buy - ${formatNumberWithDots(itemInfo.cost)}₽`;
             const tooltipEl = document.getElementById(`tooltip-shop-item-${itemId}`);
@@ -518,11 +521,11 @@ export function generatePokemonListItemHTML(pokemon, index, locationType) {
 
     const shinyClass = pokemon.isShiny ? 'shiny-pokemon' : '';
     const spritePath = getPokemonSpritePath(pokemon, 'front');
-    
+
     let evolveButtonHtml = '';
     if (pokemon.evolutionTargetName && pokemon.evolveLevel && pokemon.level >= pokemon.evolveLevel) {
-        const onclickAction = locationType === 'party' 
-            ? `window.attemptEvolution(${index}, 'party')` 
+        const onclickAction = locationType === 'party'
+            ? `window.attemptEvolution(${index}, 'party')`
             : `event.stopPropagation(); window.attemptEvolution(${index}, 'storage')`;
         evolveButtonHtml = `<button class="btn small" onclick="${onclickAction}" style="background: #ffc107; color: #333;">Evolve</button>`;
     }
@@ -622,7 +625,7 @@ export async function showStarterSelectionModal() {
     return new Promise((resolve) => {
         const modal = document.getElementById('starter-modal');
         const optionsContainer = modal.querySelector('.starter-options');
-        optionsContainer.innerHTML = ''; 
+        optionsContainer.innerHTML = '';
 
         STARTER_POKEMON_NAMES.forEach(name => {
             const pkmnData = pokemonBaseStatsData[name];
@@ -801,14 +804,14 @@ export function populateRouteSelector() {
 
     const currentMinLevel = calculateMinPartyLevel();
 
-    routeSelect.innerHTML = ''; 
+    routeSelect.innerHTML = '';
 
     const defaultOption = document.createElement('option');
     defaultOption.value = "";
     defaultOption.textContent = "-- Select a Route --";
     routeSelect.appendChild(defaultOption);
 
-    Object.keys(routes).sort((a,b) => parseInt(a) - parseInt(b)).forEach(routeKey => {
+    Object.keys(routes).sort((a, b) => parseInt(a) - parseInt(b)).forEach(routeKey => {
         const route = routes[routeKey];
         const option = document.createElement('option');
         option.value = routeKey;
@@ -836,7 +839,7 @@ export function showEventModal(eventData) {
         titleEl.textContent = eventData.name || "An Event Occurred!";
         imageEl.src = eventData.image || "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=";
         imageEl.alt = eventData.name || "Event Image";
-        
+
         let displayMessage = eventData.message || eventData.description;
         if (eventData.type === "give_item" && eventData.resolvedQuantity !== undefined) {
             displayMessage = displayMessage.replace("{quantity}", eventData.resolvedQuantity);
