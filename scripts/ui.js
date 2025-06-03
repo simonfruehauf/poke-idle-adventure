@@ -16,6 +16,7 @@ function getTypeIconsHTML(pokemon) {
             iconsHTML += `<img src="${TYPE_ICON_BASE_URL}${type}.png" alt="${type}" title="${type}" class="type-icon">`;
         }
         else {
+            console.log(type);
             iconsHTML += `<img src="${TYPE_ICON_BASE_URL}null.png" alt="null" title="Null" class="type-icon">`;
         }
     });
