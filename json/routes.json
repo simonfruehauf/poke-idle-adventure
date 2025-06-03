@@ -15,7 +15,7 @@
         "description": "A grassy path connecting New Bark Town to Cherrygrove City. (Lv.2-5)",
         "pokemon": [
             { "name": "Sentret",  "chance": 40, "levelRange": [2, 4] },
-            { "name": "Hoothoot", "chance": 40, "levelRange": [2, 5], "notes": "More common at night" },
+            { "name": "Hoothoot", "chance": 40, "levelRange": [2, 5] },
             { "name": "Pidgey",   "chance": 10, "levelRange": [2, 3] },
             { "name": "Rattata",  "chance": 10, "levelRange": [2, 3] }
         ],
@@ -29,7 +29,7 @@
             { "name": "Rattata",   "chance": 31, "levelRange": [2, 5] },
             { "name": "Nidoran♀",  "chance": 31, "levelRange": [2, 4] },
             { "name": "Nidoran♂",  "chance": 31, "levelRange": [2, 4] },
-            { "name": "Hoothoot",  "chance": 7, "levelRange": [2, 4], "notes": "Nocturnal" }
+            { "name": "Hoothoot",  "chance": 7, "levelRange": [2, 4] }
         ],
         "moneyMultiplier": 1.1,
         "LevelRequirement": 3
@@ -41,7 +41,7 @@
             { "name": "Pidgey",   "chance": 25, "levelRange": [3, 5] },
             { "name": "Rattata",  "chance": 25, "levelRange": [3, 5] },
             { "name": "Caterpie", "chance": 20, "levelRange": [3, 5] },
-            { "name": "Ledyba",   "chance": 5,  "levelRange": [3, 4], "notes": "Morning" },
+            { "name": "Ledyba",   "chance": 5,  "levelRange": [3, 4] },
             { "name": "Weedle",   "chance": 25, "levelRange": [3, 5] }
         ],
         "moneyMultiplier": 1.2,
@@ -51,9 +51,9 @@
         "name": "Sprout Tower (Johto)",
         "description": "A tall, swaying tower in Violet City, training ground for monks and their Bellsprout. (Lv.3-7)",
         "pokemon": [
-            { "name": "Rattata",    "chance": 50, "levelRange": [3, 6] },
-            { "name": "Bellsprout", "chance": 40, "levelRange": [3, 7], "notes": "Tower's main inhabitant" },
-            { "name": "Gastly",     "chance": 10, "levelRange": [5, 7], "notes": "Appears at night" }
+            { "name": "Rattata",    "chance": 30, "levelRange": [3, 6] },
+            { "name": "Bellsprout", "chance": 60, "levelRange": [3, 7] },
+            { "name": "Gastly",     "chance": 10, "levelRange": [5, 7] }
         ],
         "moneyMultiplier": 1.2,
         "LevelRequirement": 5
@@ -66,8 +66,8 @@
             { "name": "Metapod",  "chance": 20, "levelRange": [4, 6] },
             { "name": "Weedle",   "chance": 30, "levelRange": [3, 6] },
             { "name": "Kakuna",   "chance": 15, "levelRange": [4, 6] },
-            { "name": "Pikachu",  "chance": 4,  "levelRange": [3, 5], "notes": "Rare" },
-            { "name": "Spinarak", "chance": 1,  "levelRange": [3, 5], "notes": "Rare, night" }
+            { "name": "Pikachu",  "chance": 4,  "levelRange": [3, 5] },
+            { "name": "Spinarak", "chance": 1,  "levelRange": [3, 5] }
         ],
         "moneyMultiplier": 1.3,
         "LevelRequirement": 7
@@ -107,8 +107,8 @@
             { "name": "Kakuna",   "chance": 10, "levelRange": [6, 9] },
             { "name": "Paras",    "chance": 20, "levelRange": [5, 10] },
             { "name": "Oddish",   "chance": 15, "levelRange": [6, 9] },
-            { "name": "Hoothoot", "chance": 4,  "levelRange": [7, 10], "notes": "Nocturnal" },
-            { "name": "Celebi",   "chance": 1,  "levelRange": [10, 10], "notes": "Mythical Guardian?!" }
+            { "name": "Hoothoot", "chance": 4,  "levelRange": [7, 10] },
+            { "name": "Celebi",   "chance": 1,  "levelRange": [10, 10] }
         ],
         "moneyMultiplier": 1.8,
         "LevelRequirement": 12
@@ -120,7 +120,7 @@
             { "name": "Zubat",    "chance": 40, "levelRange": [6, 10] },
             { "name": "Geodude",  "chance": 30, "levelRange": [7, 11] },
             { "name": "Paras",    "chance": 20, "levelRange": [8, 10] },
-            { "name": "Clefairy", "chance": 10, "levelRange": [8, 12], "notes": "Rare" }
+            { "name": "Clefairy", "chance": 10, "levelRange": [8, 12] }
         ],
         "moneyMultiplier": 1.6,
         "LevelRequirement": 14
@@ -134,7 +134,7 @@
             { "name": "Weedle",     "chance": 15, "levelRange": [7, 10] },
             { "name": "Kakuna",     "chance": 10, "levelRange": [8, 11] },
             { "name": "Pidgey",     "chance": 15, "levelRange": [9, 12] },
-            { "name": "Abra",       "chance": 10, "levelRange": [7, 9], "notes": "Teleports?" },
+            { "name": "Abra",       "chance": 10, "levelRange": [7, 9] },
             { "name": "Oddish",     "chance": 12.5, "levelRange": [10, 12] },
             { "name": "Bellsprout", "chance": 12.5, "levelRange": [10, 12] }
         ],
@@ -148,7 +148,7 @@
             { "name": "Caterpie",   "chance": 10, "levelRange": [8, 11] },
             { "name": "Weedle",     "chance": 10, "levelRange": [8, 11] },
             { "name": "Pidgey",     "chance": 20, "levelRange": [10, 13] },
-            { "name": "Abra",       "chance": 10, "levelRange": [8, 10], "notes": "Teleports!" },
+            { "name": "Abra",       "chance": 10, "levelRange": [8, 10] },
             { "name": "Oddish",     "chance": 25, "levelRange": [10, 13] },
             { "name": "Bellsprout", "chance": 25, "levelRange": [10, 13] }
         ],
@@ -160,7 +160,7 @@
         "description": "Diglett's Cave - A long tunnel dug by Diglett and Dugtrio. (Lv.15-22)",
         "pokemon": [
             { "name": "Diglett", "chance": 95, "levelRange": [15, 22] },
-            { "name": "Dugtrio", "chance": 5,  "levelRange": [20, 22], "notes": "Rare" }
+            { "name": "Dugtrio", "chance": 5,  "levelRange": [20, 22] }
         ],
         "moneyMultiplier": 2.0,
         "LevelRequirement": 25
@@ -183,7 +183,7 @@
         "pokemon": [
             { "name": "Gastly",  "chance": 70, "levelRange": [18, 25] },
             { "name": "Haunter", "chance": 25, "levelRange": [20, 25] },
-            { "name": "Cubone",  "chance": 5,  "levelRange": [18, 22], "notes": "Not a ghost, but found here" }
+            { "name": "Cubone",  "chance": 5,  "levelRange": [18, 22] }
         ],
         "moneyMultiplier": 2.5,
         "LevelRequirement": 30
@@ -214,8 +214,8 @@
             { "name": "Golbat",   "chance": 15, "levelRange": [30, 38] },
             { "name": "Graveler", "chance": 10, "levelRange": [30, 38] },
             { "name": "Marill",   "chance": 10, "levelRange": [25, 32] },
-            { "name": "Tyrogue",  "chance": 5,  "levelRange": [30, 35], "notes": "Rare Fighting type" },
-            { "name": "Ursaring", "chance": 5,  "levelRange": [35, 40], "notes": "Powerful Bear" }
+            { "name": "Tyrogue",  "chance": 5,  "levelRange": [30, 35] },
+            { "name": "Ursaring", "chance": 5,  "levelRange": [35, 40] }
         ],
         "moneyMultiplier": 3.5,
         "LevelRequirement": 35
@@ -229,7 +229,7 @@
             { "name": "Slowpoke", "chance": 20, "levelRange": [45, 50] },
             { "name": "Slowbro",  "chance": 15, "levelRange": [48, 52] },
             { "name": "Jynx",     "chance": 9,  "levelRange": [50, 55] },
-            { "name": "Articuno", "chance": 1,  "levelRange": [50, 50], "notes": "Legendary Bird of Ice!" }
+            { "name": "Articuno", "chance": 1,  "levelRange": [50, 50] }
         ],
         "moneyMultiplier": 5.0,
         "LevelRequirement": 50
@@ -244,7 +244,7 @@
             { "name": "Electrode", "chance": 20, "levelRange": [48, 52] },
             { "name": "Magnemite", "chance": 10, "levelRange": [45, 50] },
             { "name": "Magneton",  "chance": 9,  "levelRange": [50, 55] },
-            { "name": "Zapdos",    "chance": 1,  "levelRange": [50, 50], "notes": "Legendary Bird of Lightning!" }
+            { "name": "Zapdos",    "chance": 1,  "levelRange": [50, 50] }
         ],
         "moneyMultiplier": 5.0,
         "LevelRequirement": 50
@@ -259,7 +259,7 @@
             { "name": "Tentacruel","chance":15, "levelRange": [45, 52] },
             { "name": "Kingler",  "chance": 10, "levelRange": [45, 52] },
             { "name": "Seadra",   "chance": 9,  "levelRange": [48, 55] },
-            { "name": "Lugia",    "chance": 1,  "levelRange": [55, 55], "notes": "Guardian of the Whirl Islands!" }
+            { "name": "Lugia",    "chance": 1,  "levelRange": [55, 55] }
         ],
         "moneyMultiplier": 6.5,
         "LevelRequirement": 50
@@ -275,7 +275,7 @@
             { "name": "Machop",  "chance": 10, "levelRange": [50, 55] },
             { "name": "Machoke", "chance": 15, "levelRange": [52, 58] },
             { "name": "Onix",    "chance": 14, "levelRange": [55, 60] },
-            { "name": "Moltres", "chance": 1,  "levelRange": [50, 50], "notes": "Legendary Bird of Fire!" }
+            { "name": "Moltres", "chance": 1,  "levelRange": [50, 50] }
         ],
         "moneyMultiplier": 6.0,
         "LevelRequirement": 55
@@ -293,8 +293,8 @@
             { "name": "Ditto",    "chance": 10,    "levelRange": [55, 60] },
             { "name": "Parasect", "chance": 9.9,   "levelRange": [55, 60] },
             { "name": "Wobbuffet","chance": 4,     "levelRange": [60, 65], "notes": "Powerful if provoked" },
-            { "name": "Mewtwo",   "chance": 1,     "levelRange": [70, 70], "notes": "The Strongest Pokémon!" },
-            { "name": "Mew",      "chance": 0.1,   "levelRange": [30, 30], "notes": "Mythical Pokémon?!" }
+            { "name": "Mewtwo",   "chance": 1,     "levelRange": [70, 70] },
+            { "name": "Mew",      "chance": 0.1,   "levelRange": [30, 30] }
         ],
         "moneyMultiplier": 7.0,
         "LevelRequirement": 65
@@ -306,10 +306,10 @@
             { "name": "Dragonair",  "chance": 30, "levelRange": [70, 80] },
             { "name": "Gyarados",   "chance": 20, "levelRange": [75, 85] },
             { "name": "Aerodactyl", "chance": 20, "levelRange": [75, 85] },
-            { "name": "Crobat",     "chance": 10, "levelRange": [72, 82], "notes": "Evolved Golbat" },
-            { "name": "Skarmory",   "chance": 5,  "levelRange": [70, 80], "notes": "Steel bird" },
+            { "name": "Crobat",     "chance": 10, "levelRange": [72, 82] },
+            { "name": "Skarmory",   "chance": 5,  "levelRange": [70, 80] },
             { "name": "Seadra",     "chance": 10, "levelRange": [70, 78] },
-            { "name": "Dragonite",  "chance": 5,  "levelRange": [80, 85], "notes": "Apex Predator" }
+            { "name": "Dragonite",  "chance": 5,  "levelRange": [80, 85] }
         ],
         "moneyMultiplier": 8.0,
         "LevelRequirement": 75
@@ -323,8 +323,8 @@
             { "name": "Rapidash",  "chance": 20, "levelRange": [75, 85] },
             { "name": "Golem",     "chance": 15, "levelRange": [80, 90] },
             { "name": "Rhydon",    "chance": 5, "levelRange": [80, 90] },
-            { "name": "Magcargo",  "chance": 10, "levelRange": [78, 88], "notes": "Molten snail" },
-            { "name": "Onix",      "chance": 5,  "levelRange": [75, 85], "notes": "Ancient Guardian" }
+            { "name": "Magcargo",  "chance": 10, "levelRange": [78, 88] },
+            { "name": "Onix",      "chance": 5,  "levelRange": [75, 85] }
         ],
         "moneyMultiplier": 9.0,
         "LevelRequirement": 80
@@ -334,13 +334,13 @@
         "description": "Deeper than Cerulean Cave, these lightless passages host Kanto's most formidable non-legendary Pokémon. (Lv.80-95)",
         "pokemon": [
             { "name": "Rhydon",    "chance": 20, "levelRange": [80, 92] },
-            { "name": "Steelix",   "chance": 10, "levelRange": [85, 95], "notes": "Evolved Onix" },
+            { "name": "Steelix",   "chance": 10, "levelRange": [85, 95] },
             { "name": "Machamp",   "chance": 20, "levelRange": [80, 92] },
             { "name": "Alakazam",  "chance": 10, "levelRange": [85, 95] },
             { "name": "Gengar",    "chance": 10, "levelRange": [85, 95] },
-            { "name": "Blissey",   "chance": 5,  "levelRange": [85, 95], "notes": "Ultimate Healer" },
-            { "name": "Snorlax",   "chance": 5,  "levelRange": [85, 95], "notes": "Immovable Force" },
-            { "name": "Forretress","chance": 5,  "levelRange": [82, 92], "notes": "Armored Bug" },
+            { "name": "Blissey",   "chance": 5,  "levelRange": [85, 95] },
+            { "name": "Snorlax",   "chance": 5,  "levelRange": [85, 95] },
+            { "name": "Forretress","chance": 5,  "levelRange": [82, 92] },
             { "name": "Magneton",  "chance": 5,  "levelRange": [82, 92] }
         ],
         "moneyMultiplier": 10.0,
@@ -351,19 +351,19 @@
         "description": "The ultimate training gauntlet, where only the strongest Pokémon of Kanto roam, pushing trainers to their limits. (Lv.90-99)",
         "pokemon": [
             { "name": "Dragonite",  "chance": 15, "levelRange": [90, 99] },
-            { "name": "Tyranitar",  "chance": 10, "levelRange": [92, 99], "notes": "Pseudo-Legendary" },
+            { "name": "Tyranitar",  "chance": 10, "levelRange": [92, 99] },
             { "name": "Alakazam",   "chance": 10, "levelRange": [90, 99] },
             { "name": "Gengar",     "chance": 10, "levelRange": [90, 99] },
             { "name": "Gyarados",   "chance": 10, "levelRange": [90, 99] },
             { "name": "Arcanine",   "chance": 10, "levelRange": [90, 99] },
             { "name": "Snorlax",    "chance": 8,  "levelRange": [90, 99] },
-            { "name": "Kingdra",    "chance": 7,  "levelRange": [92, 99], "notes": "Water Dragon" },
-            { "name": "Scizor",     "chance": 5,  "levelRange": [92, 99], "notes": "Steel Bug" },
-            { "name": "Venusaur",   "chance": 3,  "levelRange": [95, 99], "notes": "Kanto Starter" },
-            { "name": "Charizard",  "chance": 3,  "levelRange": [95, 99], "notes": "Kanto Starter" },
-            { "name": "Blastoise",  "chance": 4,  "levelRange": [95, 99], "notes": "Kanto Starter" },
-            { "name": "Lugia",      "chance": 0.5,   "levelRange": [99, 99], "notes": "Guardian of the Seas!" },
-            { "name": "Ho-Oh",      "chance": 0.5,   "levelRange": [99, 99], "notes": "Guardian of the Skies!" }
+            { "name": "Kingdra",    "chance": 7,  "levelRange": [92, 99] },
+            { "name": "Scizor",     "chance": 5,  "levelRange": [92, 99] },
+            { "name": "Venusaur",   "chance": 3,  "levelRange": [95, 99] },
+            { "name": "Charizard",  "chance": 3,  "levelRange": [95, 99] },
+            { "name": "Blastoise",  "chance": 4,  "levelRange": [95, 99] },
+            { "name": "Lugia",      "chance": 0.5,   "levelRange": [99, 99] },
+            { "name": "Ho-Oh",      "chance": 0.5,   "levelRange": [99, 99] }
         ],
         "moneyMultiplier": 11.0,
         "LevelRequirement": 90
@@ -378,12 +378,12 @@
             { "name": "Misdreavus","chance": 10, "levelRange": [75, 85] },
             { "name": "Houndoom",  "chance": 10, "levelRange": [75, 85] },
             { "name": "Sneasel",   "chance": 10, "levelRange": [78, 88] },
-            { "name": "Pupitar",   "chance": 5,  "levelRange": [70, 75], "notes": "Evolves into Tyranitar" },
-            { "name": "Larvitar",  "chance": 5,  "levelRange": [65, 70], "notes": "Rare find" },
-            { "name": "Raikou",    "chance": 1,  "levelRange": [80, 80], "notes": "Legendary Beast!" },
-            { "name": "Entei",     "chance": 1,  "levelRange": [80, 80], "notes": "Legendary Beast!" },
-            { "name": "Suicune",   "chance": 1,  "levelRange": [80, 80], "notes": "Legendary Beast!" },
-            { "name": "Tyranitar", "chance": 2,  "levelRange": [85, 90], "notes": "Apex Predator" }
+            { "name": "Pupitar",   "chance": 5,  "levelRange": [70, 75] },
+            { "name": "Larvitar",  "chance": 5,  "levelRange": [65, 70] },
+            { "name": "Raikou",    "chance": 1,  "levelRange": [80, 80] },
+            { "name": "Entei",     "chance": 1,  "levelRange": [80, 80] },
+            { "name": "Suicune",   "chance": 1,  "levelRange": [80, 80] },
+            { "name": "Tyranitar", "chance": 2,  "levelRange": [85, 90] }
         ],
         "moneyMultiplier": 11.0,
         "LevelRequirement": 90

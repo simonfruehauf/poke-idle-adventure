@@ -73,6 +73,7 @@ export function loadGame() {
         gameState.items = data.items || data.potions || { potion: 0, hyperpotion: 0, moomoomilk: 0 };
         gameState.battleWins = data.battleWins || 0;
         gameState.currentRoute = data.currentRoute !== undefined ? data.currentRoute : 1; // Default to route 1 if not set
+        document.getElementById('route-info').textContent = routes[gameState.currentRoute].description;
         gameState.autoFightUnlocked = data.autoFightUnlocked || false;
         gameState.autoBattleActive = false; // Always start with auto-battle off
         gameState.xpShareLevel = data.xpShareLevel || 0;
