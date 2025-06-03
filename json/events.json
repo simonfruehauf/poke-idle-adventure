@@ -1,12 +1,12 @@
 {
-    "globalEventChance": 0.05,
+    "globalEventChance": 0.04,
     "events": [
         {
             "id": "nurse_joy_heal",
             "name": "Nurse Joy's Visit",
             "description": "Nurse Joy appeared and healed your Pokémon!",
             "type": "heal_party",
-            "weight": 30,
+            "weight": 20,
             "message": "A kind Nurse Joy offered to heal your Pokémon! Your party is now fully healed.",
             "image": "sprites/events/nursejoy.png"
         },
