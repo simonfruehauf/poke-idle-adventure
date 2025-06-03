@@ -649,6 +649,36 @@ export function cheatAddMoney(amount) {
     console.log(`Successfully added ${moneyToAdd}₽. Current money: ${gameState.money}`);
 }
 
+export function cheatAddItem(itemId, quantity = 1) {
+    const numQuantity = parseInt(quantity, 10);
+
+    if (typeof itemId !== 'string' || itemId.trim() === '') {
+        const errorMessage = `Cheat Error: Invalid item ID. Please provide a valid string ID.`;
+        console.error(errorMessage);
+        addBattleLog(errorMessage);
+        return;
+    }
+    if (isNaN(numQuantity) || numQuantity <= 0) {
+        const errorMessage = `Cheat Error: Invalid quantity "${quantity}". Please provide a positive number.`;
+        console.error(errorMessage);
+        addBattleLog(errorMessage);
+        return;
+    }
+
+    let itemNameForLog = itemId;
+    if (pokeballData[itemId]) {
+        gameState.pokeballs[itemId] = (gameState.pokeballs[itemId] || 0) + numQuantity;
+        itemNameForLog = pokeballData[itemId].name;
+    } else if (itemData[itemId]) {
+        gameState.items[itemId] = (gameState.items[itemId] || 0) + numQuantity;
+        itemNameForLog = itemData[itemId].name;
+    } else {
+        addBattleLog(`Cheat Error: Item ID "${itemId}" not found in pokeballData or itemData.`);
+        return;
+    }
+    addBattleLog(`Cheated ${numQuantity}x ${itemNameForLog}!`);
+    updateDisplay();
+}
 // --- Post-Battle Event Logic ---
 async function checkAndTriggerPostBattleEvent() {
     if (gameState.eventModalActive) return; // Don't trigger if one is already active

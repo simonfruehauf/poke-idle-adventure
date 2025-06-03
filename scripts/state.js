@@ -6,7 +6,17 @@ export let gameState = {
         pokeball: 5, // Standard ball
         greatball: 0, // Better chance
         ultraball: 0, // Even better chance
-        masterball: 0 // Guaranteed catch
+        masterball: 0, // Guaranteed catch
+        safariball: 0,
+        sportball: 0,
+        fastball: 0,
+        friendball: 0,
+        heavyball: 0,
+        levelball: 0,
+        loveball: 0,
+        lureball: 0,
+        moonball: 0,
+        premierball: 0
     },
     items: { // Renamed from potions
         potion: 0,

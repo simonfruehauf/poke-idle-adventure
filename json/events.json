@@ -17,7 +17,7 @@
             "type": "give_item",
             "item": "pokeball",
             "quantity": 1,
-            "weight": 30,
+            "weight": 15,
             "message": "A passing trainer gave you a Poké Ball!",
             "image": "sprites/events/trainer1.png"
         },        
@@ -45,9 +45,23 @@
                 1,
                 3
             ],
-            "weight": 10,
+            "weight": 8,
             "message": "An experienced trainer noticed your journey and gifted you {quantity} Great Balls!",
             "image": "sprites/events/trainer2.png"
+        },
+        {
+            "id": "trainer_gift_safariballs",
+            "name": "Safari Warden",
+            "description": "A Safari Zone Warden gave you some Safari Balls!",
+            "type": "give_item",
+            "item": "safariball",
+            "quantity": [
+                2,
+                3
+            ],
+            "weight": 8,
+            "message": "A Safari Zone Warden, impressed by your adventurous spirit, gifted you {quantity} Safari Balls!",
+            "image": "sprites/events/warden.png"
         },
         {
             "id": "found_rare_candy",
@@ -59,6 +73,115 @@
             "weight": 5,
             "message": "You found a Rare Candy hidden on the route!",
             "image": "sprites/items/rare-candy.png"
+        },
+        {
+            "id": "trainer_gift_loveball",
+            "name": "Kind Collector",
+            "description": "A kind collector shared a Love Ball with you.",
+            "type": "give_item",
+            "item": "loveball",
+            "quantity": [
+                1,
+                2
+            ],
+            "weight": 7,
+            "message": "A collector with a penchant for unique Poké Balls gave you {quantity} Love Ball(s)!",
+            "image": "sprites/events/trainer1.png"
+        },
+        {
+            "id": "trainer_gift_heavyball",
+            "name": "Ball Artisan",
+            "description": "A ball artisan gifted you a Heavy Ball.",
+            "type": "give_item",
+            "item": "heavyball",
+            "quantity": [
+                1,
+                2
+            ],
+            "weight": 7,
+            "message": "A craftsman who makes special Poké Balls gave you {quantity} Heavy Ball(s)!",
+            "image": "sprites/events/trainer2.png"
+        },
+        {
+            "id": "trainer_gift_levelball",
+            "name": "Aspiring Champion",
+            "description": "An aspiring champion shared a Level Ball.",
+            "type": "give_item",
+            "item": "levelball",
+            "quantity": [
+                1,
+                2
+            ],
+            "weight": 6,
+            "message": "An aspiring champion training nearby shared {quantity} Level Ball(s) with you!",
+            "image": "sprites/events/trainer2.png"
+        },
+        {
+            "id": "trainer_gift_lureball",
+            "name": "Angler",
+            "description": "An angler gave you a Lure Ball.",
+            "type": "give_item",
+            "item": "lureball",
+            "quantity": [
+                1,
+                2
+            ],
+            "weight": 7,
+            "message": "A friendly angler by the water gifted you {quantity} Lure Ball(s)!",
+            "image": "sprites/events/star.png"
+        },
+        {
+            "id": "trainer_gift_moonball",
+            "name": "Stargazer",
+            "description": "A stargazer gave you a Moon Ball.",
+            "type": "give_item",
+            "item": "moonball",
+            "quantity": [
+                1,
+                2
+            ],
+            "weight": 6,
+            "message": "A trainer who loves observing the night sky gave you {quantity} Moon Ball(s)!",
+            "image": "sprites/events/trainer1.png"
+        },
+        {
+            "id": "trainer_gift_friendball",
+            "name": "Pokémon Fan Club Member",
+            "description": "A Pokémon Fan Club member gave you a Friend Ball.",
+            "type": "give_item",
+            "item": "friendball",
+            "quantity": [
+                1,
+                2
+            ],
+            "weight": 8,
+            "message": "A member of the Pokémon Fan Club shared {quantity} Friend Ball(s) to help you bond with your Pokémon!",
+            "image": "sprites/events/fan.png"
+        },
+        {
+            "id": "trainer_gift_fastball",
+            "name": "Runner",
+            "description": "A runner gave you a Fast Ball.",
+            "type": "give_item",
+            "item": "fastball",
+            "quantity": [
+                1,
+                2
+            ],
+            "weight": 6,
+            "message": "A speedy runner on their daily jog gave you {quantity} Fast Ball(s)!",
+            "image": "sprites/events/runner.png"
+        },
+        {
+            "id": "trainer_gift_premierball",
+            "name": "Poké Ball Enthusiast",
+            "description": "A Poké Ball enthusiast gave you a Premier Ball.",
+            "type": "give_item",
+            "item": "premierball",
+            "quantity": 1,
+            "weight": 1,
+            "message": "A collector of rare Poké Balls proudly gave you a Premier Ball!",
+            "image": "sprites/events/gentleman.png"
         }
     ]
 }

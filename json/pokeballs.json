@@ -4,7 +4,7 @@
         "name": "Poké Ball",
         "modifier": 1.0,
         "cost": 50,
-        "image": "sprites/items/poke-ball.png",
+        "image": "sprites/pokeballs/poke-ball.png",
         "description": "A tool for catching wild Pokémon."
     },
     "greatball": {
@@ -12,7 +12,7 @@
         "name": "Great Ball",
         "modifier": 1.6,
         "cost": 250,
-        "image": "sprites/items/great-ball.png",
+        "image": "sprites/pokeballs/great-ball.png",
         "description": "A ball with a decent catch rate."
     },
     "ultraball": {
@@ -20,15 +20,95 @@
         "name": "Ultra Ball",
         "modifier": 2.2,
         "cost": 600,
-        "image": "sprites/items/ultra-ball.png",
+        "image": "sprites/pokeballs/ultra-ball.png",
         "description": "A ball with a high rate of success."
     },
     "masterball": {
         "id": "masterball",
         "name": "Master Ball",
-        "modifier": 0,
+        "modifier": 255,
         "cost": 0,
-        "image": "sprites/items/master-ball.png",
+        "image": "sprites/pokeballs/master-ball.png",
         "description": "The best Poké Ball with the ultimate performance. It will catch any wild Pokémon without fail."
+    },
+    "safariball": {
+        "id": "safariball",
+        "name": "Safari Ball",
+        "modifier": 1.5,
+        "cost": 0,
+        "image": "sprites/pokeballs/safari-ball.png",
+        "description": "A special Poké Ball that is used only in the Safari Zone."
+    },
+    "sportball": {
+        "id": "sportball",
+        "name": "Sport Ball",
+        "modifier": 1.5,
+        "cost": 0,
+        "image": "sprites/pokeballs/sport-ball.png",
+        "description": "A special Poké Ball that is used in Catching Contests."
+    },
+    "fastball": {
+        "id": "fastball",
+        "name": "Fast Ball",
+        "modifier": 1.8,
+        "cost": 0,
+        "image": "sprites/pokeballs/fast-ball.png",
+        "description": "A Poké Ball that has a higher catch rate on fast Pokémon or those likely to flee."
+    },
+    "friendball": {
+        "id": "friendball",
+        "name": "Friend Ball",
+        "modifier": 1.0,
+        "cost": 0,
+        "image": "sprites/pokeballs/friend-ball.png",
+        "description": "A special Poké Ball that makes a wild Pokémon friendly when caught. Has a standard catch rate."
+    },
+    "heavyball": {
+        "id": "heavyball",
+        "name": "Heavy Ball",
+        "modifier": 1.9,
+        "cost": 0,
+        "image": "sprites/pokeballs/heavy-ball.png",
+        "description": "A Poké Ball that is more effective on very heavy Pokémon."
+    },
+    "levelball": {
+        "id": "levelball",
+        "name": "Level Ball",
+        "modifier": 2.0,
+        "cost": 0,
+        "image": "sprites/pokeballs/level-ball.png",
+        "description": "A Poké Ball that is more effective against Pokémon of a lower level than your own."
+    },
+    "loveball": {
+        "id": "loveball",
+        "name": "Love Ball",
+        "modifier": 1.6,
+        "cost": 0,
+        "image": "sprites/pokeballs/love-ball.png",
+        "description": "A Poké Ball that works best on Pokémon of the opposite gender but the same species as your active Pokémon."
+    },
+    "lureball": {
+        "id": "lureball",
+        "name": "Lure Ball",
+        "modifier": 1.7,
+        "cost": 0,
+        "image": "sprites/pokeballs/lure-ball.png",
+        "description": "A Poké Ball that is more effective on Pokémon hooked by a fishing rod."
+    },
+    "moonball": {
+        "id": "moonball",
+        "name": "Moon Ball",
+        "modifier": 1.7,
+        "cost": 0,
+        "image": "sprites/pokeballs/moon-ball.png",
+        "description": "A Poké Ball that is more effective on Pokémon that evolve using a Moon Stone."
+    },
+    "premierball": {
+        "id": "premierball",
+        "name": "Premier Ball",
+        "modifier": 1.7,
+        "cost": 0,
+        "image": "sprites/pokeballs/premier-ball.png",
+        "description": "A rare ball made in commemoration of some event."
     }
 }

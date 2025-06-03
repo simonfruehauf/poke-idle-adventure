@@ -6,8 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokemon Idle Game</title>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="icon" type="image/png" href="sprites/items/poke-ball.png">
-    <link rel="favicon" type="image/png" href="sprites/items/poke-ball.png">
+    <link rel="icon" type="image/png" href="sprites/pokeballs/poke-ball.png">
+    <link rel="favicon" type="image/png" href="sprites/pokeballs/poke-ball.png">
 
 </head>
 
@@ -142,19 +142,19 @@
                     <div class="shop-section">
                         <h3>Poké Balls</h3>
                         <div class="shop-item" id="shop-item-pokeball">
-                            <img src="sprites/items/poke-ball.png" alt="Pokeball" class="shop-item-icon">
+                            <img src="sprites/pokeballs/poke-ball.png" alt="Pokeball" class="shop-item-icon">
                             <span>Pokeball (x1)</span>
                             <button class="btn small" onclick="buyBall('pokeball', 1)">Buy - 200₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-pokeball"></div>
                         </div>
                         <div class="shop-item" id="shop-item-greatball">
-                            <img src="sprites/items/great-ball.png" alt="Great Ball" class="shop-item-icon">
+                            <img src="sprites/pokeballs/great-ball.png" alt="Great Ball" class="shop-item-icon">
                             <span>Great Ball (x1)</span>
                             <button class="btn small" onclick="buyBall('greatball', 1)">Buy - 600₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-greatball"></div>
                         </div>
                         <div class="shop-item" id="shop-item-ultraball">
-                            <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="shop-item-icon">
+                            <img src="sprites/pokeballs/ultra-ball.png" alt="Ultra Ball" class="shop-item-icon">
                             <span>Ultra Ball (x1)</span>
                             <button class="btn small" onclick="buyBall('ultraball', 1)">Buy - 1.200₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-ultraball"></div>
@@ -269,26 +269,79 @@
             <div class="items-bar">
                 <!-- Poké Balls -->
                 <button class="item-display item-button" id="item-display-pokeball" onclick="window.attemptCatch('pokeball')" title="Poké Ball" style="display: none;" data-item-id="pokeball">
-                    <img src="sprites/items/poke-ball.png" alt="Poké Ball" class="item-bar-icon">
+                    <img src="sprites/pokeballs/poke-ball.png" alt="Poké Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-pokeball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-pokeball">A device for catching wild Pokémon.</div>
                 </button>
                 <button class="item-display item-button" id="item-display-greatball" onclick="window.attemptCatch('greatball')" title="Great Ball" style="display: none;" data-item-id="greatball">
-                    <img src="sprites/items/great-ball.png" alt="Great Ball" class="item-bar-icon">
+                    <img src="sprites/pokeballs/great-ball.png" alt="Great Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-greatball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-greatball">A good, high-performance Ball that provides a higher catch rate than a Poké Ball.</div>
                 </button>
                 <button class="item-display item-button" id="item-display-ultraball" onclick="window.attemptCatch('ultraball')" title="Ultra Ball" style="display: none;" data-item-id="ultraball">
-                    <img src="sprites/items/ultra-ball.png" alt="Ultra Ball" class="item-bar-icon">
+                    <img src="sprites/pokeballs/ultra-ball.png" alt="Ultra Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-ultraball">0</span>
-                    <div class="custom-tooltip" id="tooltip-itembar-ultraball">An ultra-high-performance Ball that provides a higher catch rate than a Great Ball.</div>
+                    <div class="custom-tooltip" id="tooltip-itembar-ultraball">An ultra-high-performance Ball.</div>
                 </button>
                 <button class="item-display item-button" id="item-display-masterball" onclick="window.attemptCatch('masterball')" title="Master Ball" style="display: none;" data-item-id="masterball">
-                    <img src="sprites/items/master-ball.png" alt="Master Ball" class="item-bar-icon">
+                    <img src="sprites/pokeballs/master-ball.png" alt="Master Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-masterball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-masterball">The best Ball with the ultimate performance. It will catch any wild Pokémon without fail.</div>
                 </button>
 
+                <!-- Special/Event Balls -->
+                <button class="item-display item-button" id="item-display-safariball" onclick="window.attemptCatch('safariball')" title="Safari Ball" style="display: none;" data-item-id="safariball">
+                    <img src="sprites/pokeballs/safari-ball.png" alt="Safari Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-safariball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-safariball">A special Poké Ball for use in the Safari Zone.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-sportball" onclick="window.attemptCatch('sportball')" title="Sport Ball" style="display: none;" data-item-id="sportball">
+                    <img src="sprites/pokeballs/sport-ball.png" alt="Sport Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-sportball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-sportball">A special Poké Ball for use in Catching Contests.</div>
+                </button>
+
+                <!-- Apricorn Balls -->
+                <button class="item-display item-button" id="item-display-fastball" onclick="window.attemptCatch('fastball')" title="Fast Ball" style="display: none;" data-item-id="fastball">
+                    <img src="sprites/pokeballs/fast-ball.png" alt="Fast Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-fastball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-fastball">Good for catching fast Pokémon.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-friendball" onclick="window.attemptCatch('friendball')" title="Friend Ball" style="display: none;" data-item-id="friendball">
+                    <img src="sprites/pokeballs/friend-ball.png" alt="Friend Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-friendball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-friendball">Makes caught Pokémon more friendly.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-heavyball" onclick="window.attemptCatch('heavyball')" title="Heavy Ball" style="display: none;" data-item-id="heavyball">
+                    <img src="sprites/pokeballs/heavy-ball.png" alt="Heavy Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-heavyball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-heavyball">Good for catching heavy Pokémon.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-levelball" onclick="window.attemptCatch('levelball')" title="Level Ball" style="display: none;" data-item-id="levelball">
+                    <img src="sprites/pokeballs/level-ball.png" alt="Level Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-levelball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-levelball">Better if your Pokémon's level is higher.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-loveball" onclick="window.attemptCatch('loveball')" title="Love Ball" style="display: none;" data-item-id="loveball">
+                    <img src="sprites/pokeballs/love-ball.png" alt="Love Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-loveball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-loveball">Better for Pokémon of the opposite gender.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-lureball" onclick="window.attemptCatch('lureball')" title="Lure Ball" style="display: none;" data-item-id="lureball">
+                    <img src="sprites/pokeballs/lure-ball.png" alt="Lure Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-lureball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-lureball">Good for Pokémon hooked by a rod.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-moonball" onclick="window.attemptCatch('moonball')" title="Moon Ball" style="display: none;" data-item-id="moonball">
+                    <img src="sprites/pokeballs/moon-ball.png" alt="Moon Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-moonball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-moonball">Good for Pokémon that evolve with a Moon Stone.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-premierball" onclick="window.attemptCatch('premierball')" title="Premier Ball" style="display: none;" data-item-id="premierball">
+                    <img src="sprites/pokeballs/premier-ball.png" alt="Moon Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-premierball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-premierball">Good for Pokémon that evolve with a Moon Stone.</div>
+                </button>
                 <!-- Healing Items -->
                 <button class="item-display item-button" id="item-display-potion" onclick="window.useItem('potion')" title="Potion" style="display: none;" data-item-id="potion">
                     <img src="./sprites/items/potion.png" alt="Potion" class="item-bar-icon">

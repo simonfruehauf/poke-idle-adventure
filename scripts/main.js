@@ -3,7 +3,7 @@ import { gameState, routes } from './state.js'; // routes might be needed if ini
 import { loadGameData } from './dataService.js';
 import { loadGame, saveGame, manualSaveGame, confirmClearSave, exportSaveData, importSaveData, handlePastedImportData } from './saveLoad.js';
 import { showStarterSelectionModal, updateDisplay, populateRouteSelector, addToPartyDialog, confirmReleasePokemon as confirmReleasePokemonUI, showExportModal, closeExportModal, copyExportDataToClipboard, showImportModal, closeImportModal, processImportDataFromModal, handlePokemonSpriteClick, closePokemonImageModal, togglePcDrawer, showEventModal, closeEventModal } from './ui.js';
-import { manualBattle, attemptCatch, toggleAutoFight, buyBall, buyXpShareUpgrade, buyItem, useItem, handleRouteChange, leaveCurrentRoute, setActivePokemon, removeFromParty, attemptEvolution, freeFullHeal, cheatAddPokemon, cheatAddMoney, resolvePostBattleEvent } from './gameLogic.js';
+import { manualBattle, attemptCatch, toggleAutoFight, buyBall, buyXpShareUpgrade, buyItem, useItem, handleRouteChange, leaveCurrentRoute, setActivePokemon, removeFromParty, attemptEvolution, freeFullHeal, cheatAddPokemon, cheatAddMoney, cheatAddItem, resolvePostBattleEvent } from './gameLogic.js';
 import { addBattleLog } from './utils.js';
 
 async function initGame() {
@@ -110,6 +110,7 @@ window.freeFullHeal = freeFullHeal;
 window.togglePcDrawer = togglePcDrawer; // For the new PC Drawer
 window.cheatAddPokemon = cheatAddPokemon; // Expose cheat function
 window.cheatAddMoney = cheatAddMoney; // Expose money cheat function
+window.cheatAddItem = cheatAddItem; // Expose item cheat function
 window.resolvePostBattleEvent = resolvePostBattleEvent; // For the event modal
 
 // Specific UI handlers that might not be in gameLogic

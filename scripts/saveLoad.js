@@ -62,18 +62,33 @@ export function loadGame() {
     const saveDataString = localStorage.getItem('pokemonIdleGameV2');
     if (saveDataString) {
         const data = JSON.parse(saveDataString);
-        gameState.money = data.money || 100;
-        gameState.pokeballs = {
-            pokeball: (data.pokeballs && data.pokeballs.pokeball !== undefined) ? data.pokeballs.pokeball : 5,
-            greatball: (data.pokeballs && data.pokeballs.greatball) || 0,
-            ultraball: (data.pokeballs && data.pokeballs.ultraball) || 0,
-            masterball: (data.pokeballs && data.pokeballs.masterball) || 0,
+        // Default structure for pokeballs, including new ones
+        const defaultPokeballsState = {
+            pokeball: 5, greatball: 0, ultraball: 0, masterball: 0,
+            safariball: 0, sportball: 0, fastball: 0, friendball: 0,
+            heavyball: 0, levelball: 0, loveball: 0, lureball: 0, moonball: 0
         };
+
+        gameState.money = data.money || 100;
+        gameState.pokeballs = {};
+
+        for (const ballId in defaultPokeballsState) {
+            if (data.pokeballs && data.pokeballs[ballId] !== undefined) {
+                gameState.pokeballs[ballId] = data.pokeballs[ballId];
+            } else {
+                gameState.pokeballs[ballId] = defaultPokeballsState[ballId];
+            }
+        }
+        // Ensure 'pokeball' specifically defaults to 5 if not in save, overriding the loop's 0 default if necessary
+        if (!(data.pokeballs && data.pokeballs.pokeball !== undefined)) {
+            gameState.pokeballs.pokeball = 5;
+        }
+
         // Handle loading old saves with 'potions' key, then migrate to 'items'
         gameState.items = data.items || data.potions || { potion: 0, hyperpotion: 0, moomoomilk: 0 };
         gameState.battleWins = data.battleWins || 0;
         gameState.currentRoute = data.currentRoute !== undefined ? data.currentRoute : 1; // Default to route 1 if not set
-        document.getElementById('route-info').textContent = routes[gameState.currentRoute].description;
+        if (routes[gameState.currentRoute]) document.getElementById('route-info').textContent = routes[gameState.currentRoute].description;
         gameState.autoFightUnlocked = data.autoFightUnlocked || false;
         gameState.autoBattleActive = false; // Always start with auto-battle off
         gameState.xpShareLevel = data.xpShareLevel || 0;
