@@ -5,7 +5,7 @@
         "pokemon": [
             { "name": "Pidgey",  "chance": 50, "levelRange": [2, 5] },
             { "name": "Rattata", "chance": 40, "levelRange": [2, 4] },
-            { "name": "Sentret", "chance": 10, "levelRange": [2, 3] }
+            { "name": "Sentret", "chance": 10, "levelRange": [2, 3] } 
         ],
         "moneyMultiplier": 1,
         "LevelRequirement": 0
@@ -14,51 +14,68 @@
         "name": "Johto Route 29",
         "description": "A grassy path connecting New Bark Town to Cherrygrove City. (Lv.2-5)",
         "pokemon": [
-            { "name": "Sentret",  "chance": 40, "levelRange": [2, 4] },
-            { "name": "Hoothoot", "chance": 40, "levelRange": [2, 5] },
+            { "name": "Sentret",  "chance": 30, "levelRange": [2, 4] },
+            { "name": "Hoothoot", "chance": 30, "levelRange": [2, 5] },
             { "name": "Pidgey",   "chance": 10, "levelRange": [2, 3] },
-            { "name": "Rattata",  "chance": 10, "levelRange": [2, 3] }
+            { "name": "Rattata",  "chance": 10, "levelRange": [2, 3] },
+            { "name": "Sunkern",  "chance": 20, "levelRange": [2, 4] }
         ],
         "moneyMultiplier": 1.0,
         "LevelRequirement": 0
     },
     "3": {
+        "name": "Johto Route 30",
+        "description": "A secluded patch off Johto Route 30 where starter Pokémon and other young Pokémon gather. (Lv.3-5)",
+        "pokemon": [
+            { "name": "Chikorita", "chance": 25, "levelRange": [3, 5] },
+            { "name": "Cyndaquil", "chance": 25, "levelRange": [3, 5] },
+            { "name": "Totodile",  "chance": 25, "levelRange": [3, 5] },
+            { "name": "Hoppip",    "chance": 25, "levelRange": [3, 5] }
+        ],
+        "moneyMultiplier": 1.0,
+        "LevelRequirement": 60
+    },
+    "4": {
         "name": "Kanto Route 22",
         "description": "Kanto Route 22 - West of Viridian, path to Victory Road (Lv.2-5)",
         "pokemon": [ 
-            { "name": "Rattata",   "chance": 31, "levelRange": [2, 5] },
-            { "name": "Nidoran♀",  "chance": 31, "levelRange": [2, 4] },
-            { "name": "Nidoran♂",  "chance": 31, "levelRange": [2, 4] },
-            { "name": "Hoothoot",  "chance": 7, "levelRange": [2, 4] }
+            { "name": "Rattata",   "chance": 25, "levelRange": [2, 5] },
+            { "name": "Nidoran♀",  "chance": 25, "levelRange": [2, 4] },
+            { "name": "Nidoran♂",  "chance": 25, "levelRange": [2, 4] },
+            { "name": "Hoothoot",  "chance": 5,  "levelRange": [2, 4] },
+            { "name": "Doduo",     "chance": 20, "levelRange": [3, 5] }
         ],
         "moneyMultiplier": 1.1,
         "LevelRequirement": 3
     },
-    "4": {
+    "5": {
         "name": "Kanto Route 2",
         "description": "Kanto Route 2 - South of Pewter, near Viridian Forest entrance (Lv.3-5)",
         "pokemon": [
-            { "name": "Pidgey",   "chance": 25, "levelRange": [3, 5] },
-            { "name": "Rattata",  "chance": 25, "levelRange": [3, 5] },
-            { "name": "Caterpie", "chance": 20, "levelRange": [3, 5] },
-            { "name": "Ledyba",   "chance": 5,  "levelRange": [3, 4] },
-            { "name": "Weedle",   "chance": 25, "levelRange": [3, 5] }
-        ],
-        "moneyMultiplier": 1.2,
-        "LevelRequirement": 5
-    },
-    "5": {
-        "name": "Sprout Tower (Johto)",
-        "description": "A tall, swaying tower in Violet City, training ground for monks and their Bellsprout. (Lv.3-7)",
-        "pokemon": [
-            { "name": "Rattata",    "chance": 30, "levelRange": [3, 6] },
-            { "name": "Bellsprout", "chance": 60, "levelRange": [3, 7] },
-            { "name": "Gastly",     "chance": 10, "levelRange": [5, 7] }
+            { "name": "Pidgey",    "chance": 15, "levelRange": [3, 5] },
+            { "name": "Rattata",   "chance": 15, "levelRange": [3, 5] },
+            { "name": "Caterpie",  "chance": 15, "levelRange": [3, 5] },
+            { "name": "Weedle",    "chance": 15, "levelRange": [3, 5] },
+            { "name": "Ledyba",    "chance": 5,  "levelRange": [3, 4] },
+            { "name": "Venonat",   "chance": 20, "levelRange": [3, 5] },
+            { "name": "Farfetch'd","chance": 15, "levelRange": [4, 5] }
         ],
         "moneyMultiplier": 1.2,
         "LevelRequirement": 5
     },
     "6": {
+        "name": "Sprout Tower (Johto)",
+        "description": "A tall, swaying tower in Violet City, training ground for monks and their Bellsprout. (Lv.3-7)",
+        "pokemon": [
+            { "name": "Rattata",    "chance": 25, "levelRange": [3, 6] },
+            { "name": "Bellsprout", "chance": 50, "levelRange": [3, 7] },
+            { "name": "Gastly",     "chance": 10, "levelRange": [5, 7] },
+            { "name": "Aipom",      "chance": 15, "levelRange": [4, 6] }
+        ],
+        "moneyMultiplier": 1.2,
+        "LevelRequirement": 5
+    },
+    "7": {
         "name": "Viridian Forest",
         "description": "Viridian Forest - A maze of trees teeming with Bug Pokémon (Lv.3-6)",
         "pokemon": [
@@ -72,48 +89,102 @@
         "moneyMultiplier": 1.3,
         "LevelRequirement": 7
     },
-    "7": {
+    "8": {
+        "name": "Ruins of Alph (Outer Circle)",
+        "description": "The mysterious outer grounds of the Ruins of Alph, where strange Pokémon and writings are found. (Lv.5-10)",
+        "pokemon": [
+            { "name": "Unown",    "chance": 60, "levelRange": [5, 10] },
+            { "name": "Smeargle", "chance": 25, "levelRange": [8, 10] },
+            { "name": "Natu",     "chance": 15, "levelRange": [5, 8] }
+        ],
+        "moneyMultiplier": 1.5,
+        "LevelRequirement": 8
+    },
+    "9": {
         "name": "Kanto Route 3",
         "description": "Kanto Route 3 - East of Pewter, leading to Mt. Moon (Lv.3-8)",
         "pokemon": [
-            { "name": "Pidgey",    "chance": 25, "levelRange": [5, 8] },
-            { "name": "Spearow",   "chance": 25, "levelRange": [3, 8] },
-            { "name": "Jigglypuff","chance": 20, "levelRange": [3, 7] },
-            { "name": "Nidoran♀",  "chance": 15, "levelRange": [6, 7] },
-            { "name": "Nidoran♂",  "chance": 15, "levelRange": [6, 7] }
+            { "name": "Pidgey",    "chance": 20, "levelRange": [5, 8] },
+            { "name": "Spearow",   "chance": 20, "levelRange": [3, 8] },
+            { "name": "Jigglypuff","chance": 15, "levelRange": [3, 7] },
+            { "name": "Nidoran♀",  "chance": 10, "levelRange": [6, 7] },
+            { "name": "Nidoran♂",  "chance": 10, "levelRange": [6, 7] },
+            { "name": "Meowth",    "chance": 15, "levelRange": [4, 7] },
+            { "name": "Growlithe", "chance": 10, "levelRange": [5, 8] }
         ],
         "moneyMultiplier": 1.4,
         "LevelRequirement": 10
     },
-    "8": {
+    "10": {
+        "name": "Union Cave B1F",
+        "description": "The lower levels of Union Cave, connecting parts of Johto. (Lv.7-12)",
+        "pokemon": [
+            { "name": "Dunsparce", "chance": 30, "levelRange": [7, 12] },
+            { "name": "Geodude",   "chance": 30, "levelRange": [7, 11] },
+            { "name": "Zubat",     "chance": 30, "levelRange": [7, 11] },
+            { "name": "Onix",      "chance": 10, "levelRange": [8, 12], "notes": "Rare" }
+        ],
+        "moneyMultiplier": 1.6,
+        "LevelRequirement": 10
+    },
+    "11": {
+        "name": "Dark Cave (Violet Entrance)",
+        "description": "The entrance to Dark Cave near Violet City, home to sturdy and sometimes ursine Pokémon. (Lv.8-13)",
+        "pokemon": [
+            { "name": "Teddiursa", "chance": 30, "levelRange": [8, 13] },
+            { "name": "Geodude",   "chance": 30, "levelRange": [8, 12] },
+            { "name": "Zubat",     "chance": 30, "levelRange": [8, 12] },
+            { "name": "Wobbuffet", "chance": 10, "levelRange": [10, 13], "notes": "Rare" }
+        ],
+        "moneyMultiplier": 1.6,
+        "LevelRequirement": 11
+    },
+    "12": {
         "name": "Kanto Route 4 (West)",
         "description": "Kanto Route 4 - Before Mt. Moon, near the Pokémon Center (Lv.5-10)",
         "pokemon": [
-            { "name": "Rattata",   "chance": 30, "levelRange": [5, 10] },
-            { "name": "Spearow",   "chance": 30, "levelRange": [5, 10] },
-            { "name": "Ekans",     "chance": 20, "levelRange": [6, 10] },
-            { "name": "Sandshrew", "chance": 20, "levelRange": [6, 10] }
+            { "name": "Rattata",   "chance": 20, "levelRange": [5, 10] },
+            { "name": "Spearow",   "chance": 20, "levelRange": [5, 10] },
+            { "name": "Ekans",     "chance": 15, "levelRange": [6, 10] },
+            { "name": "Sandshrew", "chance": 15, "levelRange": [6, 10] },
+            { "name": "Mankey",    "chance": 15, "levelRange": [6, 9] },
+            { "name": "Vulpix",    "chance": 15, "levelRange": [6, 9] }
         ],
         "moneyMultiplier": 1.5,
         "LevelRequirement": 12
     },
-    "9": {
+    "13": {
         "name": "Ilex Forest (Johto)",
         "description": "A dark and mysterious forest that houses the shrine of the Forest's protector. (Lv.5-10)",
         "pokemon": [
-            { "name": "Caterpie", "chance": 20, "levelRange": [5, 8] },
-            { "name": "Weedle",   "chance": 20, "levelRange": [5, 8] },
-            { "name": "Metapod",  "chance": 10, "levelRange": [6, 9] },
-            { "name": "Kakuna",   "chance": 10, "levelRange": [6, 9] },
-            { "name": "Paras",    "chance": 20, "levelRange": [5, 10] },
-            { "name": "Oddish",   "chance": 15, "levelRange": [6, 9] },
-            { "name": "Hoothoot", "chance": 4,  "levelRange": [7, 10] },
-            { "name": "Celebi",   "chance": 1,  "levelRange": [10, 10] }
+            { "name": "Caterpie",  "chance": 10, "levelRange": [5, 8] },
+            { "name": "Weedle",    "chance": 10, "levelRange": [5, 8] },
+            { "name": "Metapod",   "chance": 5,  "levelRange": [6, 9] },
+            { "name": "Kakuna",    "chance": 5,  "levelRange": [6, 9] },
+            { "name": "Paras",     "chance": 15, "levelRange": [5, 10] },
+            { "name": "Oddish",    "chance": 10, "levelRange": [6, 9] },
+            { "name": "Hoothoot",  "chance": 3,  "levelRange": [7, 10] },
+            { "name": "Murkrow",   "chance": 15, "levelRange": [8, 10] },
+            { "name": "Heracross", "chance": 13, "levelRange": [8, 10] },
+            { "name": "Stantler",  "chance": 13, "levelRange": [8, 10] },
+            { "name": "Celebi",    "chance": 1,  "levelRange": [10, 10] }
         ],
         "moneyMultiplier": 1.8,
         "LevelRequirement": 12
     },
-    "10": {
+    "14": {
+        "name": "Johto Route 34 (Bug Forest Edge)",
+        "description": "The edge of a forest on Route 34, teeming with Bug-type Pokémon. (Lv.9-15)",
+        "pokemon": [
+            { "name": "Yanma",    "chance": 30, "levelRange": [9, 15] },
+            { "name": "Pineco",   "chance": 25, "levelRange": [9, 14] },
+            { "name": "Ledyba",   "chance": 25, "levelRange": [9, 14] },
+            { "name": "Spinarak", "chance": 20, "levelRange": [9, 14] }
+        ],
+        "moneyMultiplier": 1.7,
+        "LevelRequirement": 13
+    },
+    "15": {
         "name": "Mt. Moon B1F",
         "description": "Mt. Moon B1F - A dark cave system between Pewter and Cerulean. (Lv.6-12)",
         "pokemon": [
@@ -125,37 +196,115 @@
         "moneyMultiplier": 1.6,
         "LevelRequirement": 14
     },
-    "11": {
+    "16": {
+        "name": "Kanto Route 9 (Power Path)",
+        "description": "The rocky terrain near Kanto's Power Plant, small Electric-types are sometimes found. (Lv.13-19)",
+        "pokemon": [
+            { "name": "Elekid",    "chance": 25, "levelRange": [13, 19] },
+            { "name": "Pikachu",   "chance": 25, "levelRange": [13, 18] },
+            { "name": "Spearow",   "chance": 25, "levelRange": [13, 18] },
+            { "name": "Sandshrew", "chance": 25, "levelRange": [13, 18] }
+        ],
+        "moneyMultiplier": 1.9,
+        "LevelRequirement": 14
+    },
+    "17": {
+        "name": "Celadon City West (Industrial)",
+        "description": "An industrial alley west of Celadon, where certain Pokémon thrive in the urban environment. (Lv.10-16)",
+        "pokemon": [
+            { "name": "Grimer",    "chance": 30, "levelRange": [10, 16] },
+            { "name": "Koffing",   "chance": 30, "levelRange": [10, 16] },
+            { "name": "Voltorb",   "chance": 20, "levelRange": [10, 15] },
+            { "name": "Magnemite", "chance": 20, "levelRange": [10, 15] }
+        ],
+        "moneyMultiplier": 1.8,
+        "LevelRequirement": 15
+    },
+    "18": {
         "name": "Kanto Route 24 (Nugget Bridge)",
         "description": "Kanto Route 24 - North of Cerulean, famous Nugget Bridge. (Lv.7-12)",
         "pokemon": [
-            { "name": "Caterpie",   "chance": 15, "levelRange": [7, 10] },
-            { "name": "Metapod",    "chance": 10, "levelRange": [8, 11] },
-            { "name": "Weedle",     "chance": 15, "levelRange": [7, 10] },
-            { "name": "Kakuna",     "chance": 10, "levelRange": [8, 11] },
-            { "name": "Pidgey",     "chance": 15, "levelRange": [9, 12] },
+            { "name": "Caterpie",   "chance": 10, "levelRange": [7, 10] },
+            { "name": "Metapod",    "chance": 5,  "levelRange": [8, 11] },
+            { "name": "Weedle",     "chance": 10, "levelRange": [7, 10] },
+            { "name": "Kakuna",     "chance": 5,  "levelRange": [8, 11] },
+            { "name": "Pidgey",     "chance": 10, "levelRange": [9, 12] },
             { "name": "Abra",       "chance": 10, "levelRange": [7, 9] },
-            { "name": "Oddish",     "chance": 12.5, "levelRange": [10, 12] },
-            { "name": "Bellsprout", "chance": 12.5, "levelRange": [10, 12] }
+            { "name": "Oddish",     "chance": 10, "levelRange": [10, 12] },
+            { "name": "Bellsprout", "chance": 10, "levelRange": [10, 12] },
+            { "name": "Psyduck",    "chance": 20, "levelRange": [8, 11] },
+            { "name": "Mr. Mime",   "chance": 10, "levelRange": [9, 12] }
         ],
         "moneyMultiplier": 1.7,
         "LevelRequirement": 16
     },
-    "12": {
+    "19": {
+        "name": "Celadon City Park",
+        "description": "A small, peaceful park in Celadon City, a haven for rare and gift Pokémon. (Lv.12-18)",
+        "pokemon": [
+            { "name": "Eevee",      "chance": 30, "levelRange": [12, 18] },
+            { "name": "Porygon",    "chance": 20, "levelRange": [12, 18] },
+            { "name": "Oddish",     "chance": 25, "levelRange": [12, 17] },
+            { "name": "Bellsprout", "chance": 25, "levelRange": [12, 17] }
+        ],
+        "moneyMultiplier": 1.9,
+        "LevelRequirement": 16
+    },
+    "20": {
         "name": "Kanto Route 25 (Bill's Cape)",
         "description": "Kanto Route 25 - East of Nugget Bridge, leading to Bill's house. (Lv.8-13)",
         "pokemon": [
             { "name": "Caterpie",   "chance": 10, "levelRange": [8, 11] },
             { "name": "Weedle",     "chance": 10, "levelRange": [8, 11] },
             { "name": "Pidgey",     "chance": 20, "levelRange": [10, 13] },
-            { "name": "Abra",       "chance": 10, "levelRange": [8, 10] },
-            { "name": "Oddish",     "chance": 25, "levelRange": [10, 13] },
-            { "name": "Bellsprout", "chance": 25, "levelRange": [10, 13] }
+            { "name": "Abra",       "chance": 15, "levelRange": [8, 10] },
+            { "name": "Oddish",     "chance": 15, "levelRange": [10, 13] },
+            { "name": "Bellsprout", "chance": 15, "levelRange": [10, 13] },
+            { "name": "Tangela",    "chance": 15, "levelRange": [10, 13] }
         ],
         "moneyMultiplier": 1.8,
         "LevelRequirement": 18
     },
-    "13": {
+    "21": {
+        "name": "Johto Route 35 (National Park Gate)",
+        "description": "The path leading to the National Park, frequented by various Pokémon. (Lv.14-20)",
+        "pokemon": [
+            { "name": "Snubbull",  "chance": 25, "levelRange": [14, 20] },
+            { "name": "Nidoran♀",  "chance": 20, "levelRange": [14, 19] },
+            { "name": "Nidoran♂",  "chance": 20, "levelRange": [14, 19] },
+            { "name": "Pidgey",    "chance": 20, "levelRange": [14, 18] },
+            { "name": "Drowzee",   "chance": 15, "levelRange": [14, 18] }
+        ],
+        "moneyMultiplier": 2.0,
+        "LevelRequirement": 19
+    },
+    "22": {
+        "name": "Johto Route 39 (Moomoo Farm)",
+        "description": "The lush pastures of Moomoo Farm, north of Olivine City, known for Miltank and Tauros. (Lv.15-22)",
+        "pokemon": [
+            { "name": "Miltank", "chance": 30, "levelRange": [15, 22] },
+            { "name": "Tauros",  "chance": 15, "levelRange": [16, 22] },
+            { "name": "Mareep",  "chance": 25, "levelRange": [15, 20] },
+            { "name": "Rattata", "chance": 15, "levelRange": [15, 20] },
+            { "name": "Pidgey",  "chance": 15, "levelRange": [15, 20] }
+        ],
+        "moneyMultiplier": 2.1,
+        "LevelRequirement": 20
+    },
+    "23": {
+        "name": "Kanto Route 19 (Shoreline)",
+        "description": "A calm shoreline south of Fuchsia City, popular for fishing and spotting Kanto Water Pokémon. (Lv.18-26)",
+        "pokemon": [
+            { "name": "Tentacool", "chance": 30, "levelRange": [18, 26] },
+            { "name": "Staryu",    "chance": 25, "levelRange": [18, 25] },
+            { "name": "Shellder",  "chance": 20, "levelRange": [18, 24] },
+            { "name": "Horsea",    "chance": 15, "levelRange": [18, 24] },
+            { "name": "Lapras",    "chance": 10, "levelRange": [20, 26], "notes": "Rare" }
+        ],
+        "moneyMultiplier": 2.3,
+        "LevelRequirement": 22
+    },
+    "24": {
         "name": "Diglett's Cave",
         "description": "Diglett's Cave - A long tunnel dug by Diglett and Dugtrio. (Lv.15-22)",
         "pokemon": [
@@ -165,7 +314,20 @@
         "moneyMultiplier": 2.0,
         "LevelRequirement": 25
     },
-    "14": {
+    "25": {
+        "name": "Mt. Mortar (Mid Caves)",
+        "description": "The middle sections of Mt. Mortar, with rugged terrain and strong Pokémon. (Lv.20-28)",
+        "pokemon": [
+            { "name": "Gligar",   "chance": 25, "levelRange": [20, 28] },
+            { "name": "Machop",   "chance": 20, "levelRange": [20, 27] },
+            { "name": "Graveler", "chance": 20, "levelRange": [22, 28] },
+            { "name": "Golbat",   "chance": 20, "levelRange": [22, 28] },
+            { "name": "Marill",   "chance": 15, "levelRange": [20, 26] }
+        ],
+        "moneyMultiplier": 2.8,
+        "LevelRequirement": 26
+    },
+    "26": {
         "name": "Rock Tunnel 1F",
         "description": "Rock Tunnel 1F - A pitch-black tunnel connecting Route 10 to Lavender Town. (Lv.15-20)",
         "pokemon": [
@@ -177,7 +339,7 @@
         "moneyMultiplier": 2.2,
         "LevelRequirement": 28
     },
-    "15": {
+    "27": {
         "name": "Pokémon Tower 3F",
         "description": "Pokémon Tower 3F - A resting place for departed Pokémon, haunted by ghosts. (Lv.18-25)",
         "pokemon": [
@@ -188,23 +350,52 @@
         "moneyMultiplier": 2.5,
         "LevelRequirement": 30
     },
-    "16": {
+    "28": {
+        "name": "Johto Route 41 (Cianwood Coast)",
+        "description": "The coastal waters near Cianwood City, home to various Johto Water Pokémon. (Lv.22-30)",
+        "pokemon": [
+            { "name": "Qwilfish",  "chance": 20, "levelRange": [22, 30] },
+            { "name": "Corsola",   "chance": 20, "levelRange": [22, 28] },
+            { "name": "Remoraid",  "chance": 20, "levelRange": [22, 28] },
+            { "name": "Mantine",   "chance": 20, "levelRange": [24, 30] },
+            { "name": "Chinchou",  "chance": 20, "levelRange": [22, 28] }
+        ],
+        "moneyMultiplier": 3.0,
+        "LevelRequirement": 30
+    },
+    "29": {
+        "name": "Ice Path (Upper Levels)",
+        "description": "The slippery upper levels of a frigid cave leading towards Blackthorn City. (Lv.24-32)",
+        "pokemon": [
+            { "name": "Swinub",   "chance": 25, "levelRange": [24, 32] },
+            { "name": "Delibird", "chance": 20, "levelRange": [25, 32] },
+            { "name": "Smoochum", "chance": 20, "levelRange": [24, 30] },
+            { "name": "Sneasel",  "chance": 20, "levelRange": [26, 32] },
+            { "name": "Zubat",    "chance": 15, "levelRange": [24, 30] }
+        ],
+        "moneyMultiplier": 3.2,
+        "LevelRequirement": 32
+    },
+    "30": {
         "name": "Safari Zone - Area 1",
         "description": "Safari Zone - Area 1 - Catch rare Pokémon with Safari Balls! (Lv.20-30)",
         "pokemon": [
-            { "name": "Nidoran♀", "chance": 20, "levelRange": [22, 28] },
-            { "name": "Nidorina", "chance": 10, "levelRange": [25, 30] },
-            { "name": "Nidoran♂", "chance": 20, "levelRange": [22, 28] },
-            { "name": "Nidorino", "chance": 10, "levelRange": [25, 30] },
-            { "name": "Exeggcute","chance": 15, "levelRange": [20, 25] },
-            { "name": "Parasect", "chance": 10, "levelRange": [24, 28] },
-            { "name": "Rhyhorn",  "chance": 10, "levelRange": [25, 30] },
-            { "name": "Chansey",  "chance": 5,  "levelRange": [23, 28] }
+            { "name": "Nidoran♀",  "chance": 15, "levelRange": [22, 28] },
+            { "name": "Nidorina",  "chance": 5,  "levelRange": [25, 30] },
+            { "name": "Nidoran♂",  "chance": 15, "levelRange": [22, 28] },
+            { "name": "Nidorino",  "chance": 5,  "levelRange": [25, 30] },
+            { "name": "Exeggcute", "chance": 10, "levelRange": [20, 25] },
+            { "name": "Parasect",  "chance": 10, "levelRange": [24, 28] },
+            { "name": "Rhyhorn",   "chance": 10, "levelRange": [25, 30] },
+            { "name": "Chansey",   "chance": 5,  "levelRange": [23, 28] },
+            { "name": "Lickitung", "chance": 10, "levelRange": [22, 27] },
+            { "name": "Kangaskhan","chance": 5,  "levelRange": [25, 30] },
+            { "name": "Tauros",    "chance": 10, "levelRange": [24, 29] }
         ],
         "moneyMultiplier": 3.0,
         "LevelRequirement": 35
     },
-    "17": {
+    "31": {
         "name": "Mt. Mortar - Inner Caves (Johto)",
         "description": "A vast cave system with multiple entrances and complex tunnels. Strong Pokémon dwell deep within. (Lv.25-40)",
         "pokemon": [
@@ -220,7 +411,7 @@
         "moneyMultiplier": 3.5,
         "LevelRequirement": 35
     },
-    "18": {
+    "32": {
         "name": "Seafoam Islands B4F",
         "description": "Seafoam Islands B4F - The deepest, frozen chamber where Articuno resides. (Lv.45-55)",
         "pokemon": [
@@ -234,7 +425,7 @@
         "moneyMultiplier": 5.0,
         "LevelRequirement": 50
     },
-    "19": {
+    "33": {
         "name": "Power Plant",
         "description": "Power Plant - An abandoned Kanto Power Plant, home to Electric-type Pokémon. (Lv.45-55)",
         "pokemon": [
@@ -249,7 +440,7 @@
         "moneyMultiplier": 5.0,
         "LevelRequirement": 50
     },
-    "20": {
+    "34": {
         "name": "Whirl Islands - Depths (Johto)",
         "description": "A set of four islands between Olivine and Cianwood. Deep within its caves, a legendary Pokémon is said to reside. (Lv.40-55)",
         "pokemon": [
@@ -264,7 +455,7 @@
         "moneyMultiplier": 6.5,
         "LevelRequirement": 50
     },
-    "21": {
+    "35": {
         "name": "Victory Road - 2F",
         "description": "Victory Road - 2F - A treacherous cave, the final challenge before the Pokémon League. (Lv.50-60)",
         "pokemon": [
@@ -280,7 +471,21 @@
         "moneyMultiplier": 6.0,
         "LevelRequirement": 55
     },
-    "22": {
+    "36": {
+        "name": "Safari Zone - Ancient Grove",
+        "description": "A secluded grove where ancient Pokémon, some revived from fossils, roam freely. (Lv.10-20)",
+        "pokemon": [
+            { "name": "Omanyte",    "chance": 20, "levelRange": [10, 15] },
+            { "name": "Kabuto",     "chance": 20, "levelRange": [10, 15] },
+            { "name": "Sudowoodo",  "chance": 20, "levelRange": [10, 18] },
+            { "name": "Shuckle",    "chance": 20, "levelRange": [10, 18] },
+            { "name": "Onix",       "chance": 15, "levelRange": [15, 20] },
+            { "name": "Aerodactyl", "chance": 5,  "levelRange": [10, 15] }
+        ],
+        "moneyMultiplier": 0.1,
+        "LevelRequirement": 60
+    },
+    "37": {
         "name": "Cerulean Cave 1F",
         "description": "Cerulean Cave 1F - A mysterious cave for strong trainers, home to powerful Pokémon. (Lv.55-70)",
         "pokemon": [
@@ -299,7 +504,21 @@
         "moneyMultiplier": 7.0,
         "LevelRequirement": 65
     },
-    "23": {
+    "38": {
+        "name": "Safari Zone - Ethereal Meadow",
+        "description": "A tranquil meadow where elusive Ghost and Psychic Pokémon gather under the pale moonlight. (Lv.8-18)",
+        "pokemon": [
+            { "name": "Natu",       "chance": 25, "levelRange": [8, 12] },
+            { "name": "Gastly",     "chance": 20, "levelRange": [8, 14] },
+            { "name": "Drowzee",    "chance": 20, "levelRange": [8, 14] },
+            { "name": "Misdreavus", "chance": 15, "levelRange": [10, 16] },
+            { "name": "Abra",       "chance": 15, "levelRange": [8, 12] },
+            { "name": "Girafarig",  "chance": 5,  "levelRange": [12, 18] }
+        ],
+        "moneyMultiplier": 0.1,
+        "LevelRequirement": 65
+    },
+    "39": {
         "name": "Dragon's Den Peak",
         "description": "A treacherous peak, rumored to be a nesting ground for powerful Dragon-type Pokémon and their kin. (Lv.70-85)",
         "pokemon": [
@@ -314,7 +533,21 @@
         "moneyMultiplier": 8.0,
         "LevelRequirement": 75
     },
-    "24": {
+    "40": {
+        "name": "Safari Zone - Volcanic Rim",
+        "description": "The heated edge of a dormant volcano, where resilient Fire and Rock Pokémon thrive. (Lv.12-22)",
+        "pokemon": [
+            { "name": "Slugma",   "chance": 25, "levelRange": [12, 18] },
+            { "name": "Ponyta",   "chance": 25, "levelRange": [12, 18] },
+            { "name": "Houndour", "chance": 20, "levelRange": [14, 20] },
+            { "name": "Geodude",  "chance": 15, "levelRange": [12, 20] },
+            { "name": "Magmar",   "chance": 10, "levelRange": [15, 22] },
+            { "name": "Magby",    "chance": 5,  "levelRange": [12, 16] }
+        ],
+        "moneyMultiplier": 0.1,
+        "LevelRequirement": 75
+    },
+    "41": {
         "name": "Cinnabar Volcano Summit",
         "description": "The searing summit of Cinnabar's volcano, reformed after its eruption, now home to resilient Fire and Rock Pokémon. (Lv.75-90)",
         "pokemon": [
@@ -329,7 +562,7 @@
         "moneyMultiplier": 9.0,
         "LevelRequirement": 80
     },
-    "25": {
+    "42": {
         "name": "Unknown Dungeon Depths",
         "description": "Deeper than Cerulean Cave, these lightless passages host Kanto's most formidable non-legendary Pokémon. (Lv.80-95)",
         "pokemon": [
@@ -346,7 +579,7 @@
         "moneyMultiplier": 10.0,
         "LevelRequirement": 85
     },
-    "26": {
+    "43": {
         "name": "Champion's Path",
         "description": "The ultimate training gauntlet, where only the strongest Pokémon of Kanto roam, pushing trainers to their limits. (Lv.90-99)",
         "pokemon": [
@@ -368,7 +601,7 @@
         "moneyMultiplier": 11.0,
         "LevelRequirement": 90
     },
-    "27": {
+    "44": {
         "name": "Mt. Silver Peak (Johto/Kanto Border)",
         "description": "The highest point of Mt. Silver, accessible only to those who have conquered the Indigo League. Extremely powerful Pokémon live here. (Lv.70-90)",
         "pokemon": [
@@ -387,5 +620,19 @@
         ],
         "moneyMultiplier": 11.0,
         "LevelRequirement": 90
+    },
+    "45": {
+        "name": "Safari Zone - Dragon's Cradle",
+        "description": "A protected safari zone where young, rare Pokémon, including the elusive Dratini, are nurtured. Only for accomplished trainers. (Lv.5-15)",
+        "pokemon": [
+            { "name": "Dratini",  "chance": 10, "levelRange": [5, 10] },
+            { "name": "Magikarp", "chance": 40, "levelRange": [5, 15] },
+            { "name": "Horsea",   "chance": 20, "levelRange": [5, 10] },
+            { "name": "Scyther",  "chance": 15, "levelRange": [10, 15] },
+            { "name": "Pinsir",   "chance": 10, "levelRange": [10, 15] },
+            { "name": "Chansey",  "chance": 2,  "levelRange": [5, 10] }
+        ],
+        "moneyMultiplier": 0.1,
+        "LevelRequirement": 70
     }
 }
