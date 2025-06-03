@@ -17,7 +17,6 @@ function getTypeIconsHTML(pokemon) {
     });
     return iconsHTML;
 }
-
 export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicator', showBallIcon = false, checkCaughtStatus = false) {
     if (!pokemon) return '';
     let ballIconHTML = '';
@@ -50,7 +49,6 @@ export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicat
         }
     }
     return `${caughtIndicatorHTML}${ballIconHTML}${pokemon.name}${shinySpan}`;}
-
 export function getPokemonSpritePath(pokemon, spriteType = 'front', baseSpriteUrl = POKEMON_SPRITE_BASE_URL) {
     if (!pokemon || !pokemon.pokedexId) return "data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs="; // Placeholder
     return `${baseSpriteUrl}${spriteType}/${pokemon.isShiny ? 'shiny/' : ''}${pokemon.pokedexId}.png`;
