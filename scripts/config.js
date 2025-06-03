@@ -33,7 +33,8 @@ export const TYPE_CHART = {
     Ghost:    { Normal: 0, Psychic: 2, Ghost: 2, Steel: 0.5 },
     Dragon:   { Dragon: 2, Steel: 0.5, Fairy: 0 },
     Steel:    { Fire: 0.5, Water: 0.5, Electric: 0.5, Ice: 2, Rock: 2, Steel: 0.5, Fairy: 2 },
-    Fairy:    { Fire: 0.5, Fighting: 2, Poison: 0.5, Dragon: 2, Steel: 0.5 }
+    Fairy:    { Fire: 0.5, Fighting: 2, Poison: 0.5, Dragon: 2, Steel: 0.5 },
+    Null: {}
 };
 
 // Helper function to get type effectiveness

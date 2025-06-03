@@ -12,7 +12,11 @@ function getTypeIconsHTML(pokemon) {
     pokemon.types.forEach(type => {
         if (type && TYPE_NAMES.includes(type)) { // Ensure type is valid and exists
             type = type.toLowerCase();
+            
             iconsHTML += `<img src="${TYPE_ICON_BASE_URL}${type}.png" alt="${type}" title="${type}" class="type-icon">`;
+        }
+        else {
+            iconsHTML += `<img src="${TYPE_ICON_BASE_URL}null.png" alt="null" title="Null" class="type-icon">`;
         }
     });
     return iconsHTML;
