@@ -42,7 +42,7 @@ export class Pokemon {
             if (hasAllBase && hasAllGrowth) {
                 return {
                     pokedexId: speciesData.pokedexId,
-                    types: Array.isArray(speciesData.type) && speciesData.type.length > 0 ? speciesData.type : ["Normal"], // Default to Normal if no type
+                    types: Array.isArray(speciesData.type) && speciesData.type.length > 0 ? speciesData.type : ["Normal"], // Default to Normal if no type                     
                     evolution: speciesData.evolution,
                     evolveLevel: speciesData.evolveLevel,
                     base: { ...speciesData.base },
