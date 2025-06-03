@@ -1,9 +1,9 @@
-export const STARTER_POKEMON_NAMES = ["Bulbasaur", "Charmander", "Squirtle", "Pikachu"]; 
+export const STARTER_POKEMON_NAMES = ["Bulbasaur", "Charmander", "Squirtle"]; 
 
 export const POKEMON_SPRITE_BASE_URL = "./sprites/pokemon/";
 export const TYPE_ICON_BASE_URL = "./sprites/types/";
-export const AUTO_FIGHT_UNLOCK_WINS = 10;
-export const SHINY_CHANCE = 1 / 100;
+export const AUTO_FIGHT_UNLOCK_WINS = 15;
+export const SHINY_CHANCE = 1 / 200;
 
 export const XP_SHARE_CONFIG = [
     { cost: 5000, percentage: 0.05, name: "EXP Share (5%)" },
