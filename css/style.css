@@ -1,4 +1,3 @@
-/* CSS Variables */
 :root {
     --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     --text-color: white;
@@ -14,7 +13,6 @@
     --button-primary-gradient: linear-gradient(45deg, #ff6b6b, #ee5a52);
     --button-secondary-gradient: linear-gradient(45deg, #4ecdc4, #44a08d);
     --button-active-gradient: linear-gradient(45deg, #4ecdc4, #44a08d);
-    /* Same as secondary for now */
 
     --hp-bar-bg: #333;
     --hp-fill-gradient: linear-gradient(90deg, #4caf50, #8bc34a);
@@ -51,8 +49,6 @@ body {
 }
 
 .container {
-    /* Max width can be adjusted based on desired game feel, 1400px is quite wide.
-       For a more classic game feel, something like 1000px or 1200px might be considered. */
     max-width: 1400px; 
     margin: 0 auto;
     padding: 20px;
@@ -61,7 +57,7 @@ body {
 .header {
     text-align: center;
     margin-bottom: 30px;
-    text-shadow: 2px 2px 4px rgba(0,0,0,0.3); /* Game title like shadow */
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.3); 
 }
 
 .stat-horizontal {
@@ -69,7 +65,6 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    /* Centers the group of items within the .stat div */
 }
 
 .stats-bar {
@@ -97,8 +92,8 @@ body {
     grid-template-areas: 
         "items-bar battle-area party-area"
         "items-bar battle-area party-area"
-        "items-bar battle-area party-area" /* party-area now spans 4 rows */
-        "items-bar battle-area party-area" /* party-area now spans 4 rows */
+        "items-bar battle-area party-area" 
+        "items-bar battle-area party-area" 
         "items-bar shop-area shop-area"
         "items-bar shop-area shop-area";
     grid-template-columns: 120px 1fr 1fr;    
@@ -141,51 +136,39 @@ body {
 }
 
 
-/* Add these styles to your css/style.css file */
-/* Styles for Export and Import Save Modals */
 #export-save-modal .modal-content,
 #import-save-modal .modal-content {
     max-width: 500px;
-    /* Or your preferred width */
     text-align: left;
-    /* Align text to the left for better readability of instructions */
 }
 
 #export-save-modal textarea,
 #import-save-modal textarea {
     font-family: monospace;
-    /* Good for code-like strings */
     background-color: #222;
-    /* Darker background for textarea */
     color: var(--text-color-lighter);
-    /* Lighter text */
     border: 1px solid #444;
     padding: 10px;
     box-sizing: border-box;
     width: 100%;
-    /* Make textarea take full width of its container */
     margin-bottom: 15px;
-    border: 1px solid var(--interactive-border); /* Consistent border */
+    border: 1px solid var(--interactive-border); 
 }
 
 #export-save-modal .modal-actions,
 #import-save-modal .modal-actions {
     text-align: right;
-    /* Align buttons to the right */
 }
 
 #export-save-modal .modal-actions button,
 #import-save-modal .modal-actions button {
     margin-left: 10px;
 }
-
 #export-save-modal .modal-actions button:first-child,
 #import-save-modal .modal-actions button:first-child {
     margin-left: 0;
 }
-
 #copy-feedback-message {
-    /* Specific to export modal for now */
     font-size: 0.9em;
     text-align: center;
 }
@@ -193,44 +176,34 @@ body {
 /* Styles for Pokemon Image Modal */
 #pokemon-image-modal .modal-content {
     max-width: 420px;
-    /* Increased to fit 384px image + padding/title */
     min-width: 300px;
-    /* Adjusted min-width slightly */
 }
 
 #pokemon-image-modal-sprite {
-    /* Styles are mostly inline in HTML for simplicity here, but can be moved */
     border: 1px solid var(--interactive-border);
-    /* Optional border */
 }
 
 #pokemon-image-modal .modal-actions {
     text-align: center;
-    /* Center the close button */
 }
 
-/* Add this to your main CSS file */
 .caught-indicator-icon {
     width: 1.0em;
     height: 1.0em;
     vertical-align: middle;
-    /* Aligns the icon nicely with text */
     margin-right: 5px;
     image-rendering: pixelated;
-    /* Keeps pixel art crisp if your sprites are pixelated */
     filter: grayscale(100%);
-    /* Default to grayscale */
     transition: filter 0.3s ease;
 }
 .type-icon {
-    height: 14px; /* Adjust size as needed */
+    height: 14px; 
     width: 32px;
     vertical-align: middle;
     margin-right: 4px;
-    image-rendering: pixelated; /* For crisp pixel art if your icons are small */
+    image-rendering: pixelated; 
 }
 
-/* In pokemon name displays, ensure icons don't cause too much jump */
 .pokemon-name .type-icon {
     margin-left: 3px;
 }
@@ -238,7 +211,6 @@ body {
 
 .caught-indicator-icon.is-caught {
     filter: none;
-    /* Remove grayscale if caught */
 }
 
 #game-version {
@@ -246,7 +218,6 @@ body {
     text-align: right;
     padding: 10px 10px;
     color: #afafaf;
-    /* A muted color */
 }
 
 footer {
@@ -258,16 +229,13 @@ footer {
 .item-display {
     display: flex;
     position: relative;
-    /* Ensure this is set for custom tooltip positioning */
     align-items: center;
     padding: 5px 10px;
     background-color: #34495e;
-    /* Background for each item */
     border-radius: 4px;
     color: white;
     font-size: 0.9em;
     min-width: 80px;
-    /* Ensure items don't get too squished */
     justify-content: center;
 }
 
@@ -286,14 +254,13 @@ footer {
     font-weight: bold;
 }
 
-/* Styles for item buttons in the item bar */
 .item-display.item-button {
     background-color: var(--interactive-bg);
     border: 1px solid var(--interactive-border);
     color: var(--text-color);
     cursor: pointer;
-    text-align: left; /* Align text to left if it wraps */
-    align-items: center; /* Vertically align content if display is flex */
+    text-align: left; 
+    align-items: center; 
 }
 
 .item-display.item-button:hover:not(:disabled) {
@@ -305,14 +272,12 @@ footer {
 }
 
 .item-controls .btn {
-    /* Style for the potion use buttons */
     font-size: 0.85em;
-    /* Slightly smaller text for these buttons */
     padding: 8px 10px;
 }
 
 .item-display.item-button:disabled {
-    background-color: var(--panel-bg-lighter); /* More subtle disabled state */
+    background-color: var(--panel-bg-lighter); 
     color: var(--text-color-lighter);
     cursor: not-allowed;
     opacity: 0.6;
@@ -321,7 +286,6 @@ footer {
 
 
 .inline-ball-icon {
-    /* Styles for the ball icon next to a Pokemon's name in party/storage */
     width: 1.2em;
     height: 1.2em;
     vertical-align: -0.20em;
@@ -332,14 +296,10 @@ footer {
 .battle-field {
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    /* Pushes wild to top, player to bottom */
+    justify-content: space-between;    
     align-items: stretch;
-    /* Make children take full width for alignment */
     min-height: 280px;
-    /* Adjust as needed to create space */
     background: var(--panel-bg-lightest);
-    /* Optional: to visualize the field */
     border-radius: 10px;
     padding: 10px;
     margin-bottom: 15px;
@@ -347,76 +307,52 @@ footer {
 
 .pokemon-battle {
     display: flex;
-
     align-items: center;
-    /* Vertically align sprite and info box */
-    /* margin: 15px 0; */
-    /* Handled by battle-field */
     padding: 10px;
     background: var(--interactive-starter-bg);
-    /* Using a similar very light bg */
     border-radius: 8px;
-    /* width: fit-content; */
-    /* Removed */
-    width: 100%;
-    /* Make each battle box take up almost half the battle-field width */
+    width: fit-content;
 }
 
 .pokemon-battle.wild {
+    text-align: left;
     align-self: flex-end;
-    /* Pushes wild Pokemon to the right */
 }
-
 .pokemon-battle.player {
     align-self: flex-start;
-    /* Pushes player Pokemon to the left */
-    flex-direction: row;
-    /* Sprite on left, Info on right, matching HTML order */
 }
 
 .pokemon-sprite {
     width: 96px;
-    /* Standard sprite size */
     height: 96px;
     margin: -16px auto;
-    /* Reduced top/bottom margin */
     display: flex;
     align-items: center;
     justify-content: center;
     image-rendering: pixelated;
-    /* For crisp pixel art */
     color: var(--text-color);
     text-shadow: 2px 2px 4px var(--panel-bg);
-    /* Using panel-bg for shadow consistency */
     flex-shrink: 0;
-    /* Prevent sprite from shrinking */
 }
 
 .pokemon-sprite.zoomable-sprite:hover {
-    transform: scale(2.35) translateY(-10px);
-    /* Zoom effect */
-    transition: transform 0.25s ease-in-out;
-    /* Smooth transition */
+    transform: scale(2.35) translateY(-10px);    
+    transition: transform 0.25s ease-in-out;    
     z-index: 1000;
-    /* Ensure it's above nearby elements if they overlap */
     position: relative;
-    /* Needed for z-index to work reliably in some contexts */
 }
 
 .pokemon-battle.player .pokemon-sprite {
-    margin-right: 10px;
-    /* This provides space between the sprite and the info box */
+    margin-right: 10px;    
 }
 
 .pokemon-battle.wild .pokemon-sprite {
-    order: 2;
-    /* Sprite second */
+    order: 2;    
     margin-left: 10px;
 }
 
 .pokemon-info {
-    flex-grow: 1;
-    /* Allow info box to take remaining space */
+    flex-grow: 1;    
 }
 
 .pokemon-battle.player .pokemon-info {
@@ -431,18 +367,13 @@ footer {
     font-size: 16px;
     font-weight: bold;
     margin-top: 3px;
-    /* Space between HP bar and HP text */
     margin-bottom: 10px;
-    /* Space between HP text and other stats */
     color: var(--text-color-light);
 }
 
 .pokemon-stats {
     font-size: 12px;
-    /* margin: 3px 0; */
-    /* Margin handled by hp-text now or can be adjusted here */
     color: var(--text-color-lighter);
-    /* Lighter color for ATK/DEF stats */
 }
 
 .hp-bar {
@@ -450,7 +381,7 @@ footer {
     height: 15px;
     border-radius: 8px;
     margin: 5px 0px;
-    border: 1px solid rgba(0,0,0,0.3); /* Definition for the bar itself */
+    border: 1px solid rgba(0,0,0,0.3); 
     overflow: hidden;
 }
 
@@ -476,8 +407,7 @@ footer {
 }
 
 .route-btn:hover {
-    background: var(--interactive-border);
-    /* Using border color for hover for slight difference */
+    background: var(--interactive-border);    
 }
 
 
@@ -488,7 +418,7 @@ footer {
     padding: 12px;
     margin: 8px 0;
     cursor: pointer;
-    border: 1px solid var(--interactive-starter-border); /* Subtle border for card definition */
+    border: 1px solid var(--interactive-starter-border); 
     transition: all 0.3s;
 }
 
@@ -525,7 +455,7 @@ footer {
     height: 6px;
     border-radius: 3px;
     margin-top: 5px;
-    border: 1px solid rgba(0,0,0,0.3); /* Definition for the bar itself */
+    border: 1px solid rgba(0,0,0,0.3); 
     overflow: hidden;
 }
 
@@ -545,25 +475,23 @@ footer {
 
 .btn {
     background: var(--button-primary-gradient);
-    /* border: none; */
-    border: 1px solid rgba(0,0,0,0.3); /* Darker border for definition */
-    border-top-color: rgba(255,255,255,0.15); /* Subtle lighter top edge */
-    border-left-color: rgba(255,255,255,0.1);   /* Subtle lighter left edge */
+    border: 1px solid rgba(0,0,0,0.3); 
+    border-top-color: rgba(255,255,255,0.15); 
+    border-left-color: rgba(255,255,255,0.1);   
     color: var(--text-color);
     padding: 10px 20px;
     border-radius: 20px;
     cursor: pointer;
     font-weight: bold;
     transition: transform 0.2s, box-shadow 0.2s;
-    text-shadow: 1px 1px 0px rgba(0,0,0,0.25); /* Text pop */
+    text-shadow: 1px 1px 0px rgba(0,0,0,0.25); 
     font-size: 12px;
 }
 
 .btn:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px var(--panel-bg-light); /* Slightly reduced shadow for hover */
+    box-shadow: 0 4px 8px var(--panel-bg-light); 
 }
-
 .btn:active {
     transform: translateY(1px); /* Slight press down effect */
     box-shadow: inset 0 1px 2px rgba(0,0,0,0.2); /* Inset shadow for pressed feel */
@@ -591,8 +519,7 @@ footer {
 
 .leave-route {
     padding-top: 21px;
-    padding-bottom: 20px;
-    /* Adjusted padding for height */
+    padding-bottom: 20px;    
 }
 
 .shop {
@@ -604,84 +531,63 @@ footer {
 }
 
 .shop-panel h2 {
-    /* Ensure the main Poké Mart title is centered */
     text-align: center;
     margin-bottom: 15px;
 }
 
 .shop-sections-container {
     display: flex;
-    gap: 20px;
-    /* Space between the two shop sections */
+    gap: 20px;    
     flex-wrap: wrap;
-    /* Allow sections to wrap on smaller screens if needed */
 }
 
 .shop-section {
-    flex: 1;
-    /* Each section tries to take equal width */
+    flex: 1;    
     min-width: 200px;
-    /* Minimum width before wrapping */
 }
 
 .shop-item {
     display: flex;
-    position: relative;
-    /* Needed for absolute positioning of the tooltip */
+    position: relative;    
     justify-content: space-between;
     align-items: center;
     margin: 10px 0;
     padding: 8px;
     background: var(--interactive-bg);
     border-radius: 8px;
-    /* Consider adding: border: 1px solid var(--interactive-starter-border); if items need more definition */
 }
 
 .custom-tooltip {
-    visibility: hidden;
-    /* Hidden by default */
-    opacity: 0;
-    /* Start fully transparent */
+    visibility: hidden;    
+    opacity: 0;    
     position: absolute;
-    bottom: 125%;
-    /* Position above the parent item, with a small gap */
+    bottom: 125%;    
     left: 50%;
-    transform: translateX(-50%);
-    /* Center the tooltip */
-    background-color: #2c3e50;
-    /* Dark background, adjust as needed */
+    transform: translateX(-50%);    
+    background-color: #2c3e50;    
     color: var(--text-color-light);
     padding: 8px 12px;
     border-radius: 6px;
     font-size: 0.85em;
-    white-space: normal;
-    /* Allow text to wrap */
-    width: max-content;
-    /* Adjust width based on content */
-    max-width: 250px;
-    /* But not too wide */
-    z-index: 1001;
-    /* Ensure it's above many other elements but below modals (modal-overlay is 2000) */
+    white-space: normal;    
+    width: max-content;    
+    max-width: 250px;    
+    z-index: 1001;    
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
-    pointer-events: none;
-    /* Tooltip shouldn't interfere with mouse events on the item */
+    pointer-events: none;    
     text-align: left;
-    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
-    /* Smooth transition */
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;    
 }
 
-/* Optional: Arrow for the tooltip */
 .custom-tooltip::after {
     content: "";
     position: absolute;
-    top: 100%;
-    /* At the bottom of the tooltip */
+    top: 100%;    
     left: 50%;
     transform: translateX(-50%);
     border-width: 6px;
     border-style: solid;
-    border-color: #2c3e50 transparent transparent transparent;
-    /* Arrow pointing down */
+    border-color: #2c3e50 transparent transparent transparent;    
 }
 
 .shop-item:hover .custom-tooltip {
@@ -690,7 +596,6 @@ footer {
 }
 
 .item-display:hover .custom-tooltip {
-    /* Add this rule for the item bar */
     visibility: visible;
     opacity: 1;
 }
@@ -736,9 +641,9 @@ footer {
 }
 
 .party-slot.active-pokemon-slot {
-    border: 2px solid var(--accent-color); /* Gold border, distinct from 'filled' */
-    box-shadow: 0 0 10px var(--accent-color), inset 0 0 12px rgba(255, 215, 0, 0.25); /* Outer and subtle inner glow */
-    background-color: var(--panel-bg-light); /* Slightly different background */
+    border: 2px solid var(--accent-color); 
+    box-shadow: 0 0 10px var(--accent-color), inset 0 0 12px rgba(255, 215, 0, 0.25); 
+    background-color: var(--panel-bg-light); 
 }
 
 
@@ -777,38 +682,33 @@ footer {
     font-size: 12px;
 }
 
-/* Modal Styles */
 .modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background: var(--modal-overlay-bg);
-    /* Darker overlay */
+    background: var(--modal-overlay-bg);    
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 2000;
-    /* Ensure it's on top */
+    z-index: 2000;    
     backdrop-filter: blur(5px);
 }
 
 .modal-content {
-    background: var(--modal-bg);
-    /* Modal background */
+    background: var(--modal-bg);    
     padding: 30px 40px;
     border-radius: 15px;
     text-align: center;
     color: var(--text-color);
     box-shadow: 0 8px 30px var(--panel-bg);
-    border: 2px solid var(--interactive-border); /* More prominent border */
+    border: 2px solid var(--interactive-border); 
 }
 
 .modal-content h2 {
     margin-bottom: 25px;
-    color: var(--accent-color);
-    /* Gold color for heading */
+    color: var(--accent-color);    
     font-size: 24px;
 }
 
@@ -833,7 +733,6 @@ footer {
 }
 
 .starter-option img {
-    /* Styles for images within starter options, if you add them */
     width: 80px;
     height: 80px;
     margin-bottom: 10px;
@@ -841,32 +740,31 @@ footer {
 }
 
 .starter-option .pokemon-name {
-    /* If you display names */
     font-weight: bold;
     font-size: 16px;
+    margin-left: -100px;
+    margin-right: -100px;
 }
 
-/* PC Drawer Styles */
-.team-area { /* This is the main drawer container, id="pc-drawer" */
+.team-area { 
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: 70vh; /* Adjust as desired, e.g., 70% of viewport height */
-    max-height: 480px; /* Maximum height of the drawer */
-    background: var(--modal-bg); /* Consistent with other popups like starter selection */
+    height: 70vh; 
+    max-height: 480px; 
+    background: var(--modal-bg); 
     border-top: 2px solid var(--accent-color);
-    box-shadow: 0 -5px 15px rgba(0,0,0,0.3); /* Shadow at the top */
-    transform: translateY(100%); /* Initially hidden below the viewport */
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.3); 
+    transform: translateY(100%); 
     transition: transform 0.3s ease-in-out;
-    z-index: 1500; /* Below modals (z-index: 2000) but above most other content */
+    z-index: 1500; 
     display: flex;
     flex-direction: column;
-    /* padding: 0; Padding will be handled by inner elements if needed */
 }
 
 .team-area.open {
-    transform: translateY(0); /* Slide in to be visible */
+    transform: translateY(0); 
 }
 
 .team-area .drawer-header {
@@ -874,13 +772,13 @@ footer {
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background: var(--panel-bg-light); /* A slightly different background for the header */
+    background: var(--panel-bg-light); 
     border-bottom: 1px solid var(--interactive-border);
-    flex-shrink: 0; /* Prevent header from shrinking if content is too large */
+    flex-shrink: 0; 
 }
 
 .team-area .drawer-header h2 {
-    margin: 0; /* Remove default h2 margin */
+    margin: 0; 
     font-size: 1.2em;
     color: var(--accent-color);
 }
@@ -888,51 +786,45 @@ footer {
 
 /* This is the scrollable content area within the drawer */
 #team-list {
-    flex-grow: 1; /* Allows the list to take up available vertical space */
-    overflow-y: auto; /* Enables scrolling for the Pokémon list */
+    flex-grow: 1; 
+    overflow-y: auto; 
 padding: 15px;
-    display: grid; /* NEW: Use grid layout */
-    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); /* NEW: Responsive columns */
-    gap: 15px; /* NEW: Spacing between cards */
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+    gap: 15px; 
 }
 
-/* Styles for Pokémon cards specifically within the PC drawer (#team-list) */
 #team-list .pokemon-card {
-    background: var(--interactive-bg); /* Existing style from .pokemon-card */
-    border-radius: 10px; /* Existing style */
-    padding: 12px; /* Existing style */
-    /* margin: 8px 0; REMOVED - grid gap handles spacing */
-    cursor: default; /* Override general .pokemon-card cursor: pointer; as card itself isn't main action */
-    transition: all 0.3s; /* Existing style */
-    display: flex; /* NEW: For centering content within the card */
-    flex-direction: column; /* NEW: Stack content vertically */
-    align-items: center; /* NEW: Center content horizontally */
-    text-align: center; /* NEW: Center text elements */
+    background: var(--interactive-bg); 
+    border-radius: 10px; 
+    padding: 12px; 
+    cursor: default; 
+    transition: all 0.3s; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    text-align: center; 
 }
 
 #team-list .pokemon-card:hover {
-    background: var(--interactive-bg-hover); /* Existing style */
-    transform: translateY(-2px); /* Existing style */
+    background: var(--interactive-bg-hover); 
+    transform: translateY(-2px); 
 }
 
-/* Styles for Pokémon sprites specifically within cards in the PC drawer */
 #team-list .pokemon-card .pokemon-sprite {
-    width: 80px; /* NEW: Increased size */
-    height: 80px; /* NEW: Increased size */
-    margin-bottom: 10px; /* NEW: Space below sprite */
+    width: 80px; 
+    height: 80px; 
+    margin-bottom: 10px; 
 }
 
-/* Ensure controls within PC cards are also centered if they wrap */
 #team-list .pokemon-card .controls {
-    justify-content: center; /* Reinforce centering for buttons */
-    width: 100%; /* Ensure controls take full width to center properly */
+    justify-content: center; 
+    width: 100%; 
 }
 
-/* Floating PC Button */
 #floating-pc-btn {
     position: fixed;
-    top: 20px; /* Adjust as needed */
-    right: 20px; /* Adjust as needed */
-    z-index: 1010; /* Above most elements (like tooltips at 1001), below modals (1500+) */
-    /* .btn, .secondary, .small classes from existing styles will provide base styling */
+    top: 20px; 
+    right: 20px; 
+    z-index: 1010; 
 }

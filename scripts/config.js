@@ -12,7 +12,7 @@ export const XP_SHARE_CONFIG = [
     { cost: 100000, percentage: 0.25, name: "EXP Share (25%)" },
 ];
 
-export const XP_LEVEL_DIFF_FACTOR = 0.08; // 8% change per level difference from base 1.0x
+export const XP_LEVEL_DIFF_FACTOR = 0.08; // 8% change per level difference, up to min / max
 export const XP_MULTIPLIER_MIN = 0.15;     
 export const XP_MULTIPLIER_MAX = 2.75;    
 
@@ -38,14 +38,14 @@ export const TYPE_CHART = {
     Null: {}
 };
 
-// Helper function to get type effectiveness
+
 export function getTypeEffectiveness(attackingType, defendingType) {
     if (!attackingType || !defendingType) return 1;
     const chartEntry = TYPE_CHART[attackingType];
     if (chartEntry && chartEntry[defendingType] !== undefined) {
         return chartEntry[defendingType];
     }
-    return 1; // Default to neutral
+    return 1;
 }
 
 export const TYPE_NAMES = [
