@@ -5,6 +5,7 @@ import { addBattleLog, getActivePokemon, findNextHealthyPokemon, formatNumberWit
 import { updateDisplay, updateWildPokemonDisplay, populateRouteSelector, showEventModal, closeEventModal, displayPokemonData } from './ui.js';
 import { AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, XP_LEVEL_DIFF_FACTOR, XP_MULTIPLIER_MIN, XP_MULTIPLIER_MAX, getTypeEffectiveness } from './config.js';
 
+
 let autoFightIntervalId = null;
 
 export async function manualBattle() {
@@ -181,10 +182,10 @@ export async function battle() {
     addBattleLog(`${firstAttacker.name} attacks first!`);
     await new Promise(resolve => setTimeout(resolve, 300));
 
-    const damageByFirst = calculateDamage(firstAttacker, secondAttacker);
-    const secondAttackerFainted = secondAttacker.takeDamage(damageByFirst);
-    let effectivenessMessageFirst = getEffectivenessMessage(firstAttacker.primaryType, secondAttacker.primaryType);
-    addBattleLog(`${firstAttacker.name} deals ${damageByFirst} damage to ${secondAttacker.name}! ${effectivenessMessageFirst}`);
+    const damageResultFirst = calculateDamage(firstAttacker, secondAttacker);
+    const secondAttackerFainted = secondAttacker.takeDamage(damageResultFirst.damage);
+    let effectivenessMessageFirst = getEffectivenessMessage(firstAttacker, secondAttacker.primaryType, damageResultFirst.usedType);
+    addBattleLog(`${firstAttacker.name} deals ${damageResultFirst.damage} ${damageResultFirst.usedType} damage to ${secondAttacker.name}! ${effectivenessMessageFirst}`);
     updateDisplay();
 
     if (secondAttackerFainted) {
@@ -211,10 +212,10 @@ export async function battle() {
     if (secondAttacker.currentHp > 0 && firstAttacker.currentHp > 0) {
         addBattleLog(`${secondAttacker.name} attacks!`);
         await new Promise(resolve => setTimeout(resolve, 300));
-        const damageBySecond = calculateDamage(secondAttacker, firstAttacker);
-        let effectivenessMessageSecond = getEffectivenessMessage(secondAttacker.primaryType, firstAttacker.primaryType);
-        const firstAttackerFainted = firstAttacker.takeDamage(damageBySecond);
-        addBattleLog(`${secondAttacker.name} deals ${damageBySecond} damage to ${firstAttacker.name}! ${effectivenessMessageSecond}`);
+        const damageResultSecond = calculateDamage(secondAttacker, firstAttacker);
+        let effectivenessMessageSecond = getEffectivenessMessage(secondAttacker, firstAttacker.primaryType, damageResultSecond.usedType);
+        const firstAttackerFainted = firstAttacker.takeDamage(damageResultSecond.damage);
+        addBattleLog(`${secondAttacker.name} deals ${damageResultSecond.damage} ${damageResultSecond.usedType} damage to ${firstAttacker.name}! ${effectivenessMessageSecond}`);
         updateDisplay();
 
         if (firstAttackerFainted) {
@@ -226,11 +227,18 @@ export async function battle() {
     updateDisplay();
 }
 
-function getEffectivenessMessage(attackerType, defenderType) {
-    const effectiveness = getTypeEffectiveness(attackerType, defenderType);
+function getEffectivenessMessage(attacker, defenderType, usedAttackerType) {
+    const effectiveness = getTypeEffectiveness(usedAttackerType, defenderType);
+    let message = "";
+
+    if (attacker.types.length > 1 && usedAttackerType !== attacker.primaryType) {
+        // Capitalize the used type for the message
+        const formattedUsedType = usedAttackerType.charAt(0).toUpperCase() + usedAttackerType.slice(1);
+        message += `(using its ${formattedUsedType} type) `;
+    }
     if (effectiveness > 1) return "It's super effective!";
     if (effectiveness < 1 && effectiveness > 0) return "It's not very effective...";
-    if (effectiveness === 0) return `It had no effect on ${defenderType} type!`;
+    if (effectiveness === 0) return `${message}It had no effect on ${defenderType} type!`;
     return "";
 }
 
@@ -240,13 +248,20 @@ export function calculateDamage(attacker, defender) {
     let baseMultiplier = (getActivePokemon() && attacker.id === getActivePokemon().id) ? 0.3 : 0.2;
     let randomMultiplier = (getActivePokemon() && attacker.id === getActivePokemon().id) ? 0.5 : 0.4;
     
+    let usedAttackerType = attacker.primaryType;
+    // 25% chance to use secondary type if available
+    if (attacker.types.length > 1 && Math.random() < 0.25) {
+        usedAttackerType = attacker.types[1];
+    }
+    
+
     let damage = Math.floor(Math.random() * attacker.attack * randomMultiplier) + Math.floor(attacker.attack * baseMultiplier);
 
     // Apply type effectiveness
-    const effectiveness = getTypeEffectiveness(attacker.primaryType, defender.primaryType);
+    const effectiveness = getTypeEffectiveness(usedAttackerType, defender.primaryType);
     damage = Math.floor(damage * effectiveness);
 
-    return Math.max(1, damage); // Ensure at least 1 damage
+    return { damage: Math.max(1, damage), usedType: usedAttackerType }; // Ensure at least 1 damage, return used type
 }
 
 
