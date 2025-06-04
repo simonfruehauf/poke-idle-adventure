@@ -127,13 +127,24 @@ export function exportSaveData() {
         return;
     }
 
-    // Obfuscate the data using Base64
+    // Obfuscate the data
     let obfuscatedData;
     try {
-        obfuscatedData = btoa(saveDataString); // Encode to Base64
+        // Encode string to UTF-8 bytes, then to a binary string for btoa
+        const encoder = new TextEncoder();
+        const utf8Bytes = encoder.encode(saveDataString);
+        // Convert Uint8Array to binary string (each char code is a byte value)
+        // Process in chunks to avoid "RangeError: Maximum call stack size exceeded" for large strings
+        let binaryString = "";
+        const CHUNK_SIZE = 0x8000; 
+        for (let i = 0; i < utf8Bytes.length; i += CHUNK_SIZE) {
+            binaryString += String.fromCharCode.apply(null, utf8Bytes.subarray(i, i + CHUNK_SIZE));
+        }
+        obfuscatedData = btoa(binaryString);
     } catch (error) {
-        addBattleLog("Error obfuscating save data for export.");
-        alert("Error preparing save data for export. Could not encode data.");
+        console.error("Error encoding save data:", error);
+        addBattleLog("Error preparing save data for export: " + error.message);
+        alert("Error preparing save data for export. Could not encode data. " + error.message);
         return;
     }
 
@@ -151,9 +162,19 @@ export function handlePastedImportData(importedString) {
         // De-obfuscate the data using Base64
         let deobfuscatedString;
         try {
-            deobfuscatedString = atob(importedString); // Decode from Base64
+            // Decode from Base64 to binary string
+            const binaryString = atob(importedString);
+            // Convert binary string to Uint8Array
+            const utf8Bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                utf8Bytes[i] = binaryString.charCodeAt(i);
+            }
+            // Decode UTF-8 bytes to string
+            const decoder = new TextDecoder(); // Defaults to 'utf-8'
+            deobfuscatedString = decoder.decode(utf8Bytes);
         } catch (error) {
-            throw new Error("Invalid import format. Data does not appear to be a valid export.");
+            console.error("Error decoding import data:", error);
+            throw new Error("Invalid import format. Data could not be decoded. " + error.message);
         }
 
         // Basic validation: Try to parse and check for a key property
