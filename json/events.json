@@ -1,5 +1,5 @@
 {
-    "globalEventChance": 0.04,
+    "globalEventChance": 0.02,
     "events": [
         {
             "id": "nurse_joy_heal",
