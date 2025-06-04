@@ -115,6 +115,10 @@
             {
                 "pokemon": "Eevee",
                 "evolvesTo": "Umbreon"
+            },
+            {
+                "pokemon": "Haunter",
+                "evolvesTo": "Gengar"
             }
         ]
     },

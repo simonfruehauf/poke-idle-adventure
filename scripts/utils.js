@@ -22,8 +22,8 @@ export function addBattleLog(message) {
     log.appendChild(entry);
     log.scrollTop = log.scrollHeight;
 
-    // Keep only last 8 messages
-    while (log.children.length > 8) {
+    // Keep only last 20 messages
+    while (log.children.length > 20) {
         log.removeChild(log.firstChild);
     }
 }
