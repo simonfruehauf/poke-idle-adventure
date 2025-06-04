@@ -185,7 +185,9 @@ export async function battle() {
     const damageResultFirst = calculateDamage(firstAttacker, secondAttacker);
     const secondAttackerFainted = secondAttacker.takeDamage(damageResultFirst.damage);
     let effectivenessMessageFirst = getEffectivenessMessage(firstAttacker, secondAttacker.primaryType, damageResultFirst.usedType);
-    addBattleLog(`${firstAttacker.name} deals ${damageResultFirst.damage} ${damageResultFirst.usedType} damage to ${secondAttacker.name}! ${effectivenessMessageFirst}`);
+    if (damageResultFirst.damage == 0) {addBattleLog(`${firstAttacker.name} deals no damage to ${secondAttacker.name}! ${effectivenessMessageFirst}`);}
+    else { addBattleLog(`${firstAttacker.name} deals ${damageResultFirst.damage} ${damageResultFirst.usedType} damage to ${secondAttacker.name}! ${effectivenessMessageFirst}`);}
+   
     updateDisplay();
 
     if (secondAttackerFainted) {
@@ -215,14 +217,19 @@ export async function battle() {
         const damageResultSecond = calculateDamage(secondAttacker, firstAttacker);
         let effectivenessMessageSecond = getEffectivenessMessage(secondAttacker, firstAttacker.primaryType, damageResultSecond.usedType);
         const firstAttackerFainted = firstAttacker.takeDamage(damageResultSecond.damage);
-        addBattleLog(`${secondAttacker.name} deals ${damageResultSecond.damage} ${damageResultSecond.usedType} damage to ${firstAttacker.name}! ${effectivenessMessageSecond}`);
+        if (damageResultSecond.damage == 0) {addBattleLog(`${secondAttacker.name} deals no damage to ${firstAttacker.name}! ${effectivenessMessageSecond}`);}
+        else { addBattleLog(`${secondAttacker.name} deals ${damageResultSecond.damage} ${damageResultSecond.usedType} damage to ${firstAttacker.name}! ${effectivenessMessageSecond}`);}
+    
         updateDisplay();
 
         if (firstAttackerFainted) {
             await handleFaint(firstAttacker, secondAttacker, firstIsPlayer, currentRouteData);
             // If all player Pokemon fainted, handleFaint would call leaveCurrentRoute.
         }
+        console.log(damageResultFirst);
+        console.log(damageResultSecond);
     }
+
     gameState.battleInProgress = false;
     updateDisplay();
 }
@@ -245,23 +252,23 @@ function getEffectivenessMessage(attacker, defenderType, usedAttackerType) {
 export function calculateDamage(attacker, defender) {
     if (!attacker || !defender) return 0;
 
-    let baseMultiplier = (getActivePokemon() && attacker.id === getActivePokemon().id) ? 0.3 : 0.2;
-    let randomMultiplier = (getActivePokemon() && attacker.id === getActivePokemon().id) ? 0.5 : 0.4;
+
+    // Gen 1 Damage Formula Structure (ignoring Power, Critical=1, STAB as requested)
+    // Formula: ((2 × Level / 5 + 2) × Attack / Defense / 50 + 2) × Type1 × Type2 × random
     
-    let usedAttackerType = attacker.primaryType;
+    let usedAttackerType;
     // 25% chance to use secondary type if available
     if (attacker.types.length > 1 && Math.random() < 0.25) {
         usedAttackerType = attacker.types[1];
     }
-    
-
-    let damage = Math.floor(Math.random() * attacker.attack * randomMultiplier) + Math.floor(attacker.attack * baseMultiplier);
-
-    // Apply type effectiveness
+    else {
+        usedAttackerType = attacker.primaryType
+    }
     const effectiveness = getTypeEffectiveness(usedAttackerType, defender.primaryType);
-    damage = Math.floor(damage * effectiveness);
-
-    return { damage: Math.max(1, damage), usedType: usedAttackerType }; // Ensure at least 1 damage, return used type
+    const basePower = 60
+    let random = Math.random() * 0.15 + 0.85;
+    let damage = Math.floor(((2 * attacker.level / 5 + 2) * basePower * attacker.attack / defender.defense / 50 + 2) * effectiveness * random);
+    return { damage, usedType: usedAttackerType };
 }
 
 
@@ -377,7 +384,8 @@ export function attemptCatch(ballId = 'pokeball') {
                 addBattleLog(`${wildPokemon.name} attacks!`);
                 const wildDamage = calculateDamage(wildPokemon, playerPokemon);
                 const playerDefeated = playerPokemon.takeDamage(wildDamage);
-                addBattleLog(`${wildPokemon.name} deals ${wildDamage} damage to ${playerPokemon.name}!`);
+                if (wildDamage == 0) {addBattleLog(`${wildPokemon.name} deals no damage to ${playerPokemon.name}!`);}
+                else {addBattleLog(`${wildPokemon.name} deals ${wildDamage} damage to ${playerPokemon.name}!`);}
                 if (playerDefeated) {
                     // Call handleFaint to manage the player's Pokemon fainting.
                     // This will also handle the "all Pokemon fainted" scenario, including leaving the route.

@@ -86,8 +86,7 @@ export class Pokemon {
     }
 
     takeDamage(damage) {
-        const actualDamage = Math.max(1, damage - Math.floor(this.defense / 4 * 0.15)); // Multiplied because attack is also multiplied
-        this.currentHp = Math.max(0, this.currentHp - actualDamage);
+        this.currentHp = Math.max(0, this.currentHp - damage);
         return this.currentHp <= 0;
     }
 
