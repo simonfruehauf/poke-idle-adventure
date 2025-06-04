@@ -265,9 +265,9 @@ export function calculateDamage(attacker, defender) {
         usedAttackerType = attacker.primaryType
     }
     const effectiveness = getTypeEffectiveness(usedAttackerType, defender.primaryType);
-    const basePower = 60
+    const basePower = 50
     let random = Math.random() * 0.15 + 0.85;
-    let damage = Math.floor(((2 * attacker.level / 5 + 2) * basePower * attacker.attack / defender.defense / 50 + 2) * effectiveness * random);
+    let damage = Math.floor(((2 * attacker.level / 4.5 + 2) * basePower * attacker.attack / defender.defense / 50 + 2) * effectiveness * random);
     return { damage, usedType: usedAttackerType };
 }
 
