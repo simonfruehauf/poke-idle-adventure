@@ -87,6 +87,7 @@ export class Pokemon {
 
     takeDamage(damage) {
         this.currentHp = Math.max(0, this.currentHp - damage);
+        if (!this.currentHp) this.currentHp = 0;
         return this.currentHp <= 0;
     }
 
