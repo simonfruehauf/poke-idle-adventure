@@ -18,7 +18,7 @@
     "ultraball": {
         "id": "ultraball",
         "name": "Ultra Ball",
-        "modifier": 2.2,
+        "modifier": 2.4,
         "cost": 600,
         "image": "sprites/pokeballs/ultra-ball.png",
         "description": "A ball with a high rate of success."

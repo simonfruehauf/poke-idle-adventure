@@ -336,10 +336,10 @@ export function attemptCatch(ballId = 'pokeball') {
     if (ballId === 'masterball') {
         catchChance = 1.0; // 100% catch rate for Master Ball
     } else {
-        const healthMultiplier = 1 + (((wildPokemon.maxHp - wildPokemon.currentHp) / wildPokemon.maxHp) * 1.5);
-        const levelPenalty = Math.max(0.2, 1 - (wildPokemon.level / 75));
+        const healthMultiplier = Math.pow(1 + (((wildPokemon.maxHp - wildPokemon.currentHp) / wildPokemon.maxHp)), 2.0);
+        const levelPenalty = Math.max(0.15, 1 - (wildPokemon.level / 100));
         catchChance = 0.25 * healthMultiplier * levelPenalty * ballUsed.modifier;
-        catchChance = Math.max(0.05, Math.min(catchChance, 0.95)); // Cap for non-Master Balls
+        catchChance = Math.max(0.04, Math.min(catchChance, 0.99)); // Cap for non-Master Balls
     }
     
     setTimeout(async () => {
