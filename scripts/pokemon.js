@@ -1,6 +1,6 @@
 // pokemon.js
 import { pokemonBaseStatsData } from './state.js';
-import { SHINY_CHANCE } from './config.js';
+import { SHINY_CHANCE, SHINY_STAT_BONUSES } from './config.js';
 import { addBattleLog } from './utils.js';
 
 export class Pokemon {
@@ -17,6 +17,21 @@ export class Pokemon {
         this.evolveLevel = statsData.evolveLevel;
         this.baseStats = { ...statsData.base };
         this.growthRates = { ...statsData.growth };
+
+        // Apply shiny bonuses directly to baseStats and growthRates if the Pokémon is shiny
+        if (this.isShiny) {
+            for (const statName in this.baseStats) {
+                if (Object.hasOwnProperty.call(this.baseStats, statName)) {
+                    this.baseStats[statName] = Math.floor(this.baseStats[statName] * (1 + SHINY_STAT_BONUSES.base));
+                }
+            }
+            for (const statName in this.growthRates) {
+                if (Object.hasOwnProperty.call(this.growthRates, statName)) {
+                    this.growthRates[statName] = this.growthRates[statName] * (1 + SHINY_STAT_BONUSES.growth);
+                }
+            }
+        }
+
         this.currentHp = this.maxHp;
         this.exp = 0; // Initialize exp to 0
         this.expToNext = this.getExpToNext();

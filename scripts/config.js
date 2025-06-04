@@ -3,7 +3,12 @@ export const STARTER_POKEMON_NAMES = ["Bulbasaur", "Charmander", "Squirtle"];
 export const POKEMON_SPRITE_BASE_URL = "./sprites/pokemon/";
 export const TYPE_ICON_BASE_URL = "./sprites/types/";
 export const AUTO_FIGHT_UNLOCK_WINS = 15;
-export const SHINY_CHANCE = 1 / 256;
+export const SHINY_CHANCE = 1 / 256; // Default: 1/8192, common private server: 1/256 or 1/512
+
+export const SHINY_STAT_BONUSES = {
+    base: 0.20,   // 20% bonus to base stats 
+    growth: 0.05  // 5% bonus to growth rates
+};
 
 export const XP_SHARE_CONFIG = [
     { cost: 5000, percentage: 0.05, name: "Exp. Share (5%)" },
