@@ -119,6 +119,7 @@ body {
     display: flex;
     flex-direction: column;
     justify-content: center;
+
 }
 
 .party-slot.filled {
@@ -473,6 +474,8 @@ footer {
     cursor: pointer;
     border: 1px solid var(--interactive-starter-border);
     transition: all 0.3s;
+
+
 }
 
 .pokemon-card:hover {
@@ -506,6 +509,7 @@ footer {
 .pokemon-exp {
     background: var(--exp-bar-bg);
     height: 6px;
+    width: 100%;;
     border-radius: 3px;
     margin-top: 5px;
     border: 1px solid rgba(0, 0, 0, 0.3);

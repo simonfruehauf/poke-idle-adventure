@@ -90,24 +90,6 @@
         "cost": 3000,
         "description": "A peculiar stone that makes certain species of Pokémon evolve. It is as black as the night sky.",
         "effectType": "evolution_item",
-        "evolutionTargets": [
-            {
-                "pokemon": "Nidorina",
-                "evolvesTo": "Nidoqueen"
-            },
-            {
-                "pokemon": "Nidorino",
-                "evolvesTo": "Nidoking"
-            },
-            {
-                "pokemon": "Clefairy",
-                "evolvesTo": "Clefable"
-            },
-            {
-                "pokemon": "Jigglypuff",
-                "evolvesTo": "Wigglytuff"
-            }
-        ],
         "image": "sprites/items/moon-stone.png",
         "evolutionTargets": [
             {
@@ -117,6 +99,10 @@
             {
                 "pokemon": "Nidorino",
                 "evolvesTo": "Nidoking"
+            },
+            {
+                "pokemon": "Cleffa",
+                "evolvesTo": "Clefairy"
             },
             {
                 "pokemon": "Clefairy",

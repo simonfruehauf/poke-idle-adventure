@@ -100,7 +100,20 @@ export function getPokemonExpBarHTML(pokemon) {
     const titleText = `${pokemon.exp} / ${pokemon.expToNext} EXP`;
     return `<div class="pokemon-exp" title="${titleText}" style="height: 8px; margin: 5px 0;"><div class="exp-fill" style="width: ${expPercentage}%"></div></div>`;
 }
-// --- End of utility functions ---
+
+export function getPokemonHpBarHTML(pokemon, index) {
+    const barId = `party-hp-bar-${index}`; // ID for the fill element
+    if (!pokemon || pokemon.maxHp <= 0) {
+        const titleText = `HP: 0/0`;
+        // Ensure the div has the ID even if empty, for consistency, though width will be 0.
+        return `<div class="hp-bar" title="${titleText}" style="height: 12px; margin: 0px 0;"><div class="hp-fill" id="${barId}" style="width: 0%;"></div></div>`;
+    }
+    const hpPercentage = (pokemon.currentHp / pokemon.maxHp) * 100;
+    const titleText = getPokemonHpText(pokemon); // e.g., "HP: 50/100"
+    return `<div class="hp-bar" title="${titleText}" style="height: 12px; margin: 0px 0;"><div class="hp-fill" id="${barId}" style="width: ${hpPercentage}%;"></div></div>`;
+}
+
+
 
 // Helper function to update general player stats display
 function _updatePlayerStatsDisplay() {
@@ -569,7 +582,9 @@ export function generatePokemonListItemHTML(pokemon, index, locationType) {
             <span class="pokemon-level-text">${getPokemonFullLevelText(pokemon)}</span>
             ${getTypeIconsHTML(pokemon)}
         </div>
+        
         ${getPokemonDetailedStatsHTML(pokemon)}
+        ${getPokemonHpBarHTML(pokemon, index)}
         ${getPokemonExpBarHTML(pokemon)}
         ${controlsHtml}
     `;

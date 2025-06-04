@@ -6,14 +6,19 @@ export async function loadGameData() {
         const routesResponse = await fetch('json/routes.json');
         Object.assign(routes, await routesResponse.json());
 
-        const statsResponse = await fetch('json/pokemon.json');
-        Object.assign(pokemonBaseStatsData, await statsResponse.json());
+        // Load Pokémon data from multiple generation files
+        const statsGen1Response = await fetch('json/pokemon_1.json');
+        Object.assign(pokemonBaseStatsData, await statsGen1Response.json());
+        const statsGen2Response = await fetch('json/pokemon_2.json');
+        Object.assign(pokemonBaseStatsData, await statsGen2Response.json());
+        // const statsResponse = await fetch('json/pokemon_3.json');
+        // Object.assign(pokemonBaseStatsData, await statsResponse.json());
 
         const pokeballsResponse = await fetch('json/pokeballs.json');
         Object.assign(pokeballData, await pokeballsResponse.json());
 
-        const itemsResponse = await fetch('json/items.json'); // Renamed from potions.json
-        Object.assign(itemData, await itemsResponse.json()); // Renamed from potionData
+        const itemsResponse = await fetch('json/items.json'); 
+        Object.assign(itemData, await itemsResponse.json()); 
 
         const eventsResponse = await fetch('json/events.json');
         Object.assign(eventDefinitions, await eventsResponse.json());
