@@ -58,7 +58,7 @@
             { "name": "Weedle",    "chance": 15, "levelRange": [3, 5] },
             { "name": "Ledyba",    "chance": 5,  "levelRange": [3, 4] },
             { "name": "Venonat",   "chance": 20, "levelRange": [3, 5] },
-            { "name": "Farfetch'd","chance": 15, "levelRange": [4, 5] }
+            { "name": "Farfetchd","chance": 15, "levelRange": [4, 5] }
         ],
         "moneyMultiplier": 1.2,
         "LevelRequirement": 5

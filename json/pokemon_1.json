@@ -81,7 +81,7 @@
   "Slowbro": {"pokedexId":80,"type":["Water","Psychic"],"base":{"hp":95,"attack":75,"defense":110,"speed":30},"growth":{"hp":4.8,"attack":2.2,"defense":3.3,"speed":0.8}},
   "Magnemite": {"pokedexId":81,"type":["Electric","Steel"],"base":{"hp":25,"attack":35,"defense":70,"speed":45},"growth":{"hp":1.2,"attack":1.1,"defense":2.1,"speed":1.1},"evolution":"Magneton","evolveLevel":30},
   "Magneton": {"pokedexId":82,"type":["Electric","Steel"],"base":{"hp":50,"attack":60,"defense":95,"speed":70},"growth":{"hp":2.5,"attack":1.8,"defense":2.9,"speed":1.8},"evolution":"Magnezone"},
-  "Farfetchd": {"pokedexId":83,"type":["Normal","Flying"],"base":{"hp":52,"attack":90,"defense":55,"speed":60},"growth":{"hp":2.6,"attack":2.7,"defense":1.6,"speed":1.5},"evolution":"Sirfetchd"},
+  "Farfetch'd": {"pokedexId":83,"type":["Normal","Flying"],"base":{"hp":52,"attack":90,"defense":55,"speed":60},"growth":{"hp":2.6,"attack":2.7,"defense":1.6,"speed":1.5},"evolution":"Sirfetchd"},
   "Doduo": {"pokedexId":84,"type":["Normal","Flying"],"base":{"hp":35,"attack":85,"defense":45,"speed":75},"growth":{"hp":1.8,"attack":2.5,"defense":1.3,"speed":1.9},"evolution":"Dodrio","evolveLevel":31},
   "Dodrio": {"pokedexId":85,"type":["Normal","Flying"],"base":{"hp":60,"attack":110,"defense":70,"speed":110},"growth":{"hp":3.0,"attack":3.3,"defense":2.1,"speed":2.8}},
   "Seel": {"pokedexId":86,"type":["Water"],"base":{"hp":65,"attack":45,"defense":55,"speed":45},"growth":{"hp":3.2,"attack":1.3,"defense":1.6,"speed":1.1},"evolution":"Dewgong","evolveLevel":34},
