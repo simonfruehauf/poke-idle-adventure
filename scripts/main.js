@@ -2,8 +2,8 @@
 import { gameState, routes } from './state.js'; // routes might be needed if initGame directly manipulates it
 import { loadGameData } from './dataService.js';
 import { loadGame, saveGame, manualSaveGame, confirmClearSave, exportSaveData, importSaveData, handlePastedImportData } from './saveLoad.js';
-import { showStarterSelectionModal, updateDisplay, populateRouteSelector, addToPartyDialog, confirmReleasePokemon as confirmReleasePokemonUI, showExportModal, closeExportModal, copyExportDataToClipboard, showImportModal, closeImportModal, processImportDataFromModal, handlePokemonSpriteClick, closePokemonImageModal, togglePcDrawer, showEventModal, closeEventModal } from './ui.js';
-import { manualBattle, attemptCatch, toggleAutoFight, buyBall, buyXpShareUpgrade, buyItem, useItem, handleRouteChange, leaveCurrentRoute, setActivePokemon, removeFromParty, attemptEvolution, freeFullHeal, cheatAddPokemon, cheatAddMoney, cheatAddItem, resolvePostBattleEvent } from './gameLogic.js';
+import { showStarterSelectionModal, updateDisplay, populateRouteSelector, addToPartyDialog, confirmReleasePokemon as confirmReleasePokemonUI, showExportModal, closeExportModal, copyExportDataToClipboard, showImportModal, closeImportModal, processImportDataFromModal, handlePokemonSpriteClick, closePokemonImageModal, togglePcDrawer, showEventModal, closeEventModal, showSettingsModal, closeSettingsModal } from './ui.js';
+import { manualBattle, attemptCatch, toggleAutoFight, buyBall, buyXpShareUpgrade, buyItem, useItem, handleRouteChange, leaveCurrentRoute, setActivePokemon, removeFromParty, attemptEvolution, freeFullHeal, cheatAddPokemon, cheatAddMoney, cheatAddItem, resolvePostBattleEvent} from './gameLogic.js';
 import { addBattleLog } from './utils.js';
 
 async function initGame() {
@@ -112,7 +112,8 @@ window.cheatAddPokemon = cheatAddPokemon; // Expose cheat function
 window.cheatAddMoney = cheatAddMoney; // Expose money cheat function
 window.cheatAddItem = cheatAddItem; // Expose item cheat function
 window.resolvePostBattleEvent = resolvePostBattleEvent; // For the event modal
-
+window.showSettingsModal = showSettingsModal;
+window.closeSettingsModal = closeSettingsModal;
 // Specific UI handlers that might not be in gameLogic
 // window.showStarterSelectionModal = showStarterSelectionModal; // Already handled by initGame
 
@@ -124,7 +125,15 @@ document.addEventListener('DOMContentLoaded', () => {
         routeSelect.addEventListener('change', (event) => handleRouteChange(event.target.value));
     }
     document.addEventListener('keydown', handleKonamiCode);
+    const settingsBtn = document.getElementById('settings-btn');
+    if (settingsBtn) {
+        settingsBtn.addEventListener('click', window.showSettingsModal);
+    }
 
+    const closeSettingsModalBtn = document.getElementById('close-settings-modal-btn');
+    if (closeSettingsModalBtn) {
+        closeSettingsModalBtn.addEventListener('click', window.closeSettingsModal);
+    }
     // Initialize the game once the DOM is fully loaded
     initGame();
 });

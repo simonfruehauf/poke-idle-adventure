@@ -869,3 +869,18 @@ export function closeEventModal() {
     const modal = document.getElementById('event-modal');
     if (modal) modal.style.display = 'none';
 }
+
+// --- Settings Modal UI Functions ---
+export function showSettingsModal() {
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.style.display = 'flex'; // Use flex to center content as per typical modal styles
+    }
+}
+
+export function closeSettingsModal() {
+    const modal = document.getElementById('settings-modal');
+    if (modal) {
+        modal.style.display = 'none';
+    }
+}

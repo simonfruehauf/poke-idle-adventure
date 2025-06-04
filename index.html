@@ -12,18 +12,9 @@
 </head>
 
 <body>
+    <button id="settings-btn" class="btn secondary top-right">⚙️ Settings</button>
+
     <div class="container">
-        <div class="header">
-            <h1>Pokemon Idle Adventure</h1>
-            <div class="game-controls section" style="margin-top: 10px;">
-                <button class="btn" style="background: #2ecc71; margin-right: 5px;"
-                    onclick="window.manualSaveGame()">Save Game</button>
-                <button class="btn secondary" onclick="window.exportSaveData()">Export Save</button>
-                <button class="btn secondary" onclick="window.importSaveData()">Import Save</button>
-                <button class="btn" onclick="window.confirmClearSave()" style="background: #e74c3c;">Clear Save
-                    Data</button>
-            </div>
-        </div>
 
         <div class="stats-bar">
             <div class="stat">
@@ -429,7 +420,27 @@
             </div>
         </div>
     </div>
-
+    <div id="settings-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { window.closeSettingsModal(); }">
+        <div class="modal-content">
+            <span class="btn close-btn" id="close-settings-modal-btn">&times;</span>
+            <h2>Settings</h2>
+            <div class="settings-section">
+                <h3 style="margin-top:0; margin-bottom: 20px;">Game Data Management</h3>
+                <button class="btn" style="background: #2ecc71;" onclick="window.manualSaveGame()">Save Game</button>
+                <button class="btn secondary" onclick="window.exportSaveData()">Export Save</button>
+                <button class="btn secondary" style="margin-bottom: 5px;" onclick="window.importSaveData()">Import Save</button>
+                <button class="btn" onclick="window.confirmClearSave()">Clear Save Data</button>
+            </div>
+            <div class="settings-section">
+                <h3>Game Options</h3>
+                <p><em>(More settings coming soon!)</em></p>
+                <!--
+                <label for="volume-slider">Volume:</label>
+                <input type="range" id="volume-slider" name="volume-slider" min="0" max="100" value="50">
+                -->
+            </div>
+        </div>
+    </div>
     <div id="export-save-modal" class="modal-overlay" style="display: none;"
         onclick="if (event.target === this) { window.closeExportModal(); }">
         <div class="modal-content">
@@ -500,7 +511,7 @@
 </body>
 <footer>
     <div id="game-version">
-        v1.1.0
+        v1.2.0
     </div>
 </footer>
 </html>
