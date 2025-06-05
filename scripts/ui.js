@@ -5,20 +5,41 @@ import { POKEMON_SPRITE_BASE_URL, AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, START
 import { Pokemon } from './pokemon.js'; // Import logic functions
 import { calculateMaxPartyLevel, calculateMinPartyLevel, attemptEvolution, setActivePokemon, removeFromParty, confirmReleasePokemon as confirmReleasePokemonLogic, addToParty as addToPartyLogic } from './gameLogic.js'; // Changed import
 
+const useAPI = true;
+
 // --- Utility functions for Pokémon data presentation ---
 function getTypeIconsHTML(pokemon) {
     if (!pokemon || !pokemon.types || pokemon.types.length === 0) return '';
     let iconsHTML = '';
+    let url = "";
     pokemon.types.forEach(type => {
         if (type && TYPE_NAMES.includes(type)) { // Ensure type is valid and exists
-            type = type.toLowerCase();
+            
 
-            iconsHTML += `<img src="${TYPE_ICON_BASE_URL}${type}.png" alt="${type}" title="${type}" class="type-icon">`;
+            if (useAPI === true) {
+                //get the array position of type from TYPE_NAMES
+                const typeIndex = TYPE_NAMES.findIndex(t => t === type) + 1;
+                
+                if (typeIndex !== -1 && typeIndex < 18) {
+                    url = `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-iii/emerald/` + typeIndex + `.png`
+                }
+                else if (typeIndex === 18) { // Fairy does not exist for gen 3
+                    url = TYPE_ICON_BASE_URL + type + ".png"
+                }
+                    
+                else {
+                    url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/types/generation-iii/emerald/10001.png"
+                }
+            }
+            else { // Use local sprites if API is off
+                url = TYPE_ICON_BASE_URL + type + ".png"
+            }    
         }
         else {
-            console.log(type);
-            iconsHTML += `<img src="${TYPE_ICON_BASE_URL}null.png" alt="null" title="Null" class="type-icon">`;
+            iconsHTML += `<img src="${TYPE_ICON_BASE_URL}null.png" alt="null" title="Null" class="type-icon">`; //Null sprite
         }
+        iconsHTML += `<img src="${url}" alt="${type}" title="${type}" class="type-icon">`;
+
     });
     return iconsHTML;
 }
@@ -31,14 +52,14 @@ export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicat
         const ballInfo = pokeballData[ballId] || pokeballData.pokeball; // Use pokeballData
         ballIconHTML = `<img src="${ballInfo.image}" alt="${ballInfo.name}" title="${ballInfo.name}" class="inline-ball-icon"> `;
     }
-    const shinySpan = pokemon.isShiny ? ` <span class="${shinyIndicatorClass}">(Shiny)</span>` : '';
+    const shinySpan = pokemon.isShiny ? ` <span class="${shinyIndicatorClass}">✨</span>` : '';
     let caughtIndicatorHTML = '';
     if (checkCaughtStatus && pokemon.pokedexId) {
         // Determine if the player has caught this species
         const isCaught = gameState.party.some(p => p && p.pokedexId === pokemon.pokedexId) ||
             gameState.allPokemon.some(p => p && p.pokedexId === pokemon.pokedexId);
 
-        const pokeballImageSrc = pokeballData.pokeball?.image; // Use the standard Pokeball image for the indicator
+        const pokeballImageSrc = pokeballData.pokeball?.image; 
         const titleText = isCaught ? 'Caught' : 'Not Caught';
 
         if (pokeballImageSrc) {
@@ -57,9 +78,18 @@ export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicat
 }
 
 export function getPokemonSpritePath(pokemon, spriteType = 'front', baseSpriteUrl = POKEMON_SPRITE_BASE_URL) {
+    if (useAPI) {   
+         if (!pokemon) return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/0.png`
 
-    if (!pokemon) return `${baseSpriteUrl}${spriteType}/000.png`; // Placeholder
-    else return `${baseSpriteUrl}${spriteType}/${pokemon.isShiny ? 'shiny/' : ''}${pokemon.pokedexId}.png`;
+        const back = spriteType === 'back' ? 'back/' : '';
+        const shiny = pokemon.isShiny ? 'shiny/' : '';
+
+        return `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${back}${shiny}${pokemon.pokedexId}.png`;
+    }
+    else {
+        if (!pokemon) return `${baseSpriteUrl}${spriteType}/000.png`; // Placeholder
+        else return `${baseSpriteUrl}${spriteType}/${pokemon.isShiny ? 'shiny/' : ''}${pokemon.pokedexId}.png`;
+    }
 }
 
 export function getPokemonLevelText(pokemon) { // Used for player/wild display (e.g., :L5)
