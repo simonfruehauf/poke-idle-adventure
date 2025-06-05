@@ -132,7 +132,7 @@ class PokemonDataCollector:
         
         formatted_data = {
             "pokedexId": pokemon_data['id'],
-            "type": types,
+            "types": types, # Changed from "type" to "types" for consistency
             "base": base_stats,
             "growth": growth_rates
         }
