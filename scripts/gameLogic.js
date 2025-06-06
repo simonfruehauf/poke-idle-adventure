@@ -383,9 +383,11 @@ export function attemptCatch(ballId = 'pokeball') {
             if (playerPokemon && playerPokemon.currentHp > 0 && wildPokemon.currentHp > 0) {
                 addBattleLog(`${wildPokemon.name} attacks!`);
                 const wildDamage = calculateDamage(wildPokemon, playerPokemon);
-                const playerDefeated = playerPokemon.takeDamage(wildDamage);
-                if (wildDamage == 0) {addBattleLog(`${wildPokemon.name} deals no damage to ${playerPokemon.name}!`);}
-                else {addBattleLog(`${wildPokemon.name} deals ${wildDamage} damage to ${playerPokemon.name}!`);}
+                let effectivenessMessageFirst = getEffectivenessMessage(wildPokemon, playerPokemon.primaryType, wildDamage.usedType);
+
+                const playerDefeated = playerPokemon.takeDamage(wildDamage.damage);
+                if (wildDamage.danage == 0) {addBattleLog(`${wildPokemon.name} deals no damage to ${playerPokemon.name}!`);}
+                else {addBattleLog(`${wildPokemon.name} deals ${wildDamage.damage} ${wildDamage.usedType} damage to ${playerPokemon.name}! ${effectivenessMessageFirst}`);}
                 if (playerDefeated) {
                     // Call handleFaint to manage the player's Pokemon fainting.
                     // This will also handle the "all Pokemon fainted" scenario, including leaving the route.
