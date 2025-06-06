@@ -3,10 +3,10 @@
 export let gameState = {
     money: 100,
     pokeballs: {
-        pokeball: 5, // Standard ball
-        greatball: 0, // Better chance
-        ultraball: 0, // Even better chance
-        masterball: 0, // Guaranteed catch
+        pokeball: 5, 
+        greatball: 0, 
+        ultraball: 0, 
+        masterball: 0, 
         safariball: 0,
         sportball: 0,
         fastball: 0,
@@ -16,9 +16,10 @@ export let gameState = {
         loveball: 0,
         lureball: 0,
         moonball: 0,
-        premierball: 0
+        premierball: 0,
+        healball: 0
     },
-    items: { // Renamed from potions
+    items: { 
         potion: 0,
         hyperpotion: 0,
         moomoomilk: 0,
@@ -56,6 +57,6 @@ export let pokemonBaseStatsData = {};
 
 export let pokeballData = {}; // Data for different types of Pokeballs
 
-export let itemData = {}; // Renamed from potionData, holds data for usable items like potions
+export let itemData = {}; // Holds data for usable items like potions
 
 export let eventDefinitions = { globalEventChance: 0, events: [] }; // To store loaded events.json

@@ -226,8 +226,6 @@ export async function battle() {
             await handleFaint(firstAttacker, secondAttacker, firstIsPlayer, currentRouteData);
             // If all player Pokemon fainted, handleFaint would call leaveCurrentRoute.
         }
-        console.log(damageResultFirst);
-        console.log(damageResultSecond);
     }
 
     gameState.battleInProgress = false;
@@ -363,11 +361,12 @@ export function attemptCatch(ballId = 'pokeball') {
         catchChance = 0.25 * healthMultiplier * levelPenalty * ballUsed.modifier;
         catchChance = Math.max(0.04, Math.min(catchChance, 0.99)); // Cap for non-Master Balls
     }
-    
+    console.log("Catch chance: ", catchChance * 100, "%");
     setTimeout(async () => {
         if (Math.random() < catchChance) {
             const caughtPokemon = new Pokemon(wildPokemon.name, wildPokemon.level, wildPokemon.isShiny, ballId);
             caughtPokemon.currentHp = wildPokemon.currentHp;
+            if (ballId === 'healball') caughtPokemon.heal();
             const emptySlot = gameState.party.findIndex(slot => slot === null);
             if (emptySlot !== -1) {
                 gameState.party[emptySlot] = caughtPokemon; addBattleLog(`${wildPokemon.name} was added to your party!`);
@@ -675,7 +674,7 @@ export function cheatAddMoney(amount) {
 }
 
 export function cheatAddItem(itemId, quantity = 1) {
-    const numQuantity = parseInt(quantity, 10);
+    let numQuantity = parseInt(quantity, 10);
 
     if (typeof itemId !== 'string' || itemId.trim() === '') {
         const errorMessage = `Cheat Error: Invalid item ID. Please provide a valid string ID.`;

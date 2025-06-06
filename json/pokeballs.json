@@ -110,5 +110,13 @@
         "cost": 0,
         "image": "sprites/pokeballs/premier-ball.png",
         "description": "A rare ball made in commemoration of some event."
+    },
+    "healball": {
+        "id": "healball",
+        "name": "Heal Ball",
+        "modifier": 1.2,
+        "cost": 120,
+        "image": "sprites/pokeballs/heal-ball.png",
+        "description": "A a ball that heals the caught pokemon."
     }
 }

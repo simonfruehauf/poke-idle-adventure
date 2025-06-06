@@ -153,6 +153,12 @@
                             <button class="btn small" onclick="buyBall('ultraball', 1)">Buy - 1.200₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-ultraball"></div>
                         </div>
+                        <div class="shop-item" id="shop-item-healball">
+                            <img src="sprites/pokeballs/heal-ball.png" alt="Heal Ball" class="shop-item-icon">
+                            <span>Heal Ball (x1)</span>
+                            <button class="btn small" onclick="buyBall('healball', 1)">Buy - 1.200₽</button>
+                            <div class="custom-tooltip" id="tooltip-shop-item-healball"></div>
+                        </div>
                     </div>
                     <div class="shop-section">
                         <h3>Healing</h3>
@@ -326,9 +332,14 @@
                     <div class="custom-tooltip" id="tooltip-itembar-moonball">Good for Pokémon that evolve with a Moon Stone.</div>
                 </button>
                 <button class="item-display item-button" id="item-display-premierball" onclick="window.attemptCatch('premierball')" title="Premier Ball" style="display: none;" data-item-id="premierball">
-                    <img src="sprites/pokeballs/premier-ball.png" alt="Moon Ball" class="item-bar-icon">
+                    <img src="sprites/pokeballs/premier-ball.png" alt="Premier Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-premierball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-premierball">Good for Pokémon that evolve with a Moon Stone.</div>
+                </button>
+                <button class="item-display item-button" id="item-display-healball" onclick="window.attemptCatch('healball')" title="Heal Ball" style="display: none;" data-item-id="healball">
+                    <img src="sprites/pokeballs/heal-ball.png" alt="Heal Ball" class="item-bar-icon">
+                    <span class="item-bar-count-text" id="item-count-healball">0</span>
+                    <div class="custom-tooltip" id="tooltip-itembar-healball">Good for Pokémon that evolve with a Moon Stone.</div>
                 </button>
                 <!-- #endregion Poké Balls -->
                 <!-- #region Healing Items -->

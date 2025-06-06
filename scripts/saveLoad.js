@@ -66,7 +66,8 @@ export function loadGame() {
         const defaultPokeballsState = {
             pokeball: 5, greatball: 0, ultraball: 0, masterball: 0,
             safariball: 0, sportball: 0, fastball: 0, friendball: 0,
-            heavyball: 0, levelball: 0, loveball: 0, lureball: 0, moonball: 0
+            heavyball: 0, levelball: 0, loveball: 0, lureball: 0, moonball: 0,
+            healball: 0
         };
 
         gameState.money = data.money || 100;

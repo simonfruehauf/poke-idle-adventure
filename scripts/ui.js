@@ -151,55 +151,14 @@ function _updatePlayerStatsDisplay() {
 
     // Helper to manage visibility and count update for item bar items
     function setItemBarDisplay(itemId, count, alwaysShow = false) {
-        let containerElement;
         let countElementId;
         let itemTitleForQuery; // Used for items that don't have a direct container ID
 
-        switch (itemId) {
-            case 'pokeball':
-                itemTitleForQuery = 'Poké Balls';
-                countElementId = 'pokeballs-standard';
-                break;
-            case 'greatball':
-                itemTitleForQuery = 'Great Balls';
-                countElementId = 'pokeballs-great';
-                break;
-            case 'ultraball':
-                itemTitleForQuery = 'Ultra Balls';
-                countElementId = 'pokeballs-ultra';
-                break;
-            case 'masterball':
-                containerElement = document.getElementById('itembar-display-masterball');
-                countElementId = 'itembar-masterball-count';
-                break;
-            default: // For items like potion, firestone, etc.
-                // Ensure itemData is loaded and the item exists to get its name for the title attribute
-                itemTitleForQuery = itemData[itemId] ? itemData[itemId].name : itemId.charAt(0).toUpperCase() + itemId.slice(1);
-                countElementId = `item-count-${itemId}`;
-                break;
-        }
 
-        if (itemTitleForQuery && !containerElement) {
-            // Try to find container using title attribute if not already found (e.g. for masterball)
-            containerElement = document.querySelector(`.items-bar .item-display[title="${itemTitleForQuery}"]`);
-        }
+        itemTitleForQuery = itemData[itemId] ? itemData[itemId].name : itemId.charAt(0).toUpperCase() + itemId.slice(1);
+        countElementId = `item-count-${itemId}`;
 
-        if (!containerElement && countElementId) { // Fallback if title-based query fails, try via count span
-            const countSpan = document.getElementById(countElementId);
-            if (countSpan) containerElement = countSpan.closest('.item-display');
-        }
-
-        if (containerElement) {
-            const countSpan = document.getElementById(countElementId);
-            if (countSpan) {
-                countSpan.textContent = count; // This is the count for Pokeballs
-            }
-            if (alwaysShow || count > 0) {
-                containerElement.style.display = ''; // Reverts to CSS default (e.g., flex)
-            } else {
-                containerElement.style.display = 'none';
-            }
-        } else { // This 'else' handles non-Pokeball items which are now buttons
+        // This 'else' handles non-Pokeball items which are now buttons
             const itemButton = document.getElementById(`item-display-${itemId}`); // Assumes button ID is item-display-itemId
             if (itemButton) {
                 const countSpanInsideButton = itemButton.querySelector(`#item-count-${itemId}`);
@@ -217,8 +176,13 @@ function _updatePlayerStatsDisplay() {
                 const canUseItemGenerally = !gameState.battleInProgress;
                 let itemSpecificCondition = true;
                 const activePokemon = getActivePokemon();
+                const wildPokemon = gameState.currentWildPokemon;
                 const itemInfo = itemData[itemId];
+                const pokeballInfo = pokeballData[itemId];
 
+                if (pokeballInfo && !wildPokemon){
+                    itemSpecificCondition = false; //Can only use if there is pokemon
+                }
                 if (itemInfo && activePokemon) {
                     if (itemInfo.effectType === 'active_pokemon_percentage' || itemInfo.effectType === 'active_pokemon_full') {
                         itemSpecificCondition = activePokemon.currentHp < activePokemon.maxHp && activePokemon.currentHp > 0; // Cannot use on fainted for these
@@ -228,7 +192,7 @@ function _updatePlayerStatsDisplay() {
                     } else if (itemInfo.effectType === 'level_up') {
                         itemSpecificCondition = itemInfo.evolutionTargets?.some(target => target.pokemon === activePokemon.name);
                     }
-                } else if (itemInfo && itemInfo.effectType === 'party_full') { // Moomoo Milk example
+                } else if (itemInfo && itemInfo.effectType === 'party_full') { // Moomoo Milk 
                     itemSpecificCondition = gameState.party.some(p => p && p.currentHp < p.maxHp);
                 } else if (itemInfo && (itemInfo.effectType === 'active_pokemon_percentage' || itemInfo.effectType === 'active_pokemon_full' || itemInfo.effectType === 'evolution_item') && !activePokemon) {
                     itemSpecificCondition = false; // Cannot use on active Pokemon if no active Pokemon
@@ -243,7 +207,7 @@ function _updatePlayerStatsDisplay() {
                     !itemSpecificCondition ||
                     gameState.eventModalActive;
             }
-        }
+        
     }
     const uniqueShinySpecies = new Set();
     const allPlayerPokemon = [...gameState.party.filter(p => p), ...gameState.allPokemon.filter(p => p)];
@@ -284,10 +248,6 @@ function _updatePlayerStatsDisplay() {
 // Helper function to update main action buttons (Fight, Catch, Auto-Fight, Route)
 function _updateMainActionButtonsState() {
     const fightBtn = document.getElementById('fight-btn');
-    const catchPokeballBtn = document.getElementById('catch-pokeball-btn');
-    const catchGreatballBtn = document.getElementById('catch-greatball-btn');
-    const catchUltraballBtn = document.getElementById('catch-ultraball-btn');
-    const catchMasterballBtn = document.getElementById('catch-masterball-btn');
     const autoFightBtn = document.getElementById('auto-fight-btn');
     const freeHealBtn = document.getElementById('free-heal-btn');
 
@@ -318,37 +278,6 @@ function _updateMainActionButtonsState() {
 
     const canCatch = gameState.currentWildPokemon && gameState.currentWildPokemon.currentHp > 0 && !gameState.battleInProgress && !gameState.autoBattleActive;
 
-    if (catchPokeballBtn) {
-        catchPokeballBtn.disabled = !canCatch || gameState.pokeballs.pokeball <= 0;
-        catchPokeballBtn.style.display = gameState.pokeballs.pokeball > 0 ? '' : 'none';
-    }
-    if (catchGreatballBtn) {
-        catchGreatballBtn.disabled = !canCatch || gameState.pokeballs.greatball <= 0;
-        catchGreatballBtn.style.display = gameState.pokeballs.greatball > 0 ? '' : 'none';
-    }
-    if (catchUltraballBtn) {
-        catchUltraballBtn.disabled = !canCatch || gameState.pokeballs.ultraball <= 0;
-        catchUltraballBtn.style.display = gameState.pokeballs.ultraball > 0 ? '' : 'none';
-    }
-    if (catchMasterballBtn) {
-        catchMasterballBtn.disabled = !canCatch || gameState.pokeballs.masterball <= 0;
-        catchMasterballBtn.style.display = gameState.pokeballs.masterball > 0 ? '' : 'none';
-    }
-
-    if (pokeballData.pokeball && catchPokeballBtn && gameState.pokeballs.pokeball > 0) {
-        catchPokeballBtn.textContent = `Catch (${pokeballData.pokeball.name} - ${gameState.pokeballs.pokeball})`;
-    }
-    if (pokeballData.greatball && catchGreatballBtn && gameState.pokeballs.greatball > 0) {
-        catchGreatballBtn.textContent = `Catch (${pokeballData.greatball.name} - ${gameState.pokeballs.greatball})`;
-    }
-    if (pokeballData.ultraball && catchUltraballBtn && gameState.pokeballs.ultraball > 0) {
-        catchUltraballBtn.textContent = `Catch (${pokeballData.ultraball.name} - ${gameState.pokeballs.ultraball})`;
-    }
-    if (pokeballData.masterball && catchMasterballBtn) {
-        if (gameState.pokeballs.masterball > 0) {
-            catchMasterballBtn.textContent = `Catch (${pokeballData.masterball.name} - ${gameState.pokeballs.masterball})`;
-        }
-    }
 
     if (!gameState.autoFightUnlocked) {
         autoFightBtn.textContent = `Auto-Fight (LOCKED - ${AUTO_FIGHT_UNLOCK_WINS} wins)`;
@@ -374,8 +303,8 @@ function _updateMainActionButtonsState() {
     }
     // Free Heal Button
     if (freeHealBtn) {
-        const hasNoMoomooMilk = (gameState.items.moomoomilk || 0) === 0; // Renamed from gameState.potions
-        const hasNoHyperPotion = (gameState.items.hyperpotion || 0) === 0; // Renamed from gameState.potions
+        const hasNoMoomooMilk = (gameState.items.moomoomilk || 0) === 0; 
+        const hasNoHyperPotion = (gameState.items.hyperpotion || 0) === 0; 
         const canShowFreeHeal = gameState.money < 800 &&
             (hasNoMoomooMilk && hasNoHyperPotion) &&
             !gameState.battleInProgress &&
