@@ -488,9 +488,15 @@
     <div id="pokemon-image-modal" class="modal-overlay" style="display: none;"
         onclick="if (event.target === this) { window.closePokemonImageModal(); }">
         <div class="modal-content">
-            <h2 id="pokemon-image-modal-title" style="margin-bottom: 15px;">Pokémon Name</h2>
+            <h2 id="pokemon-image-modal-title" style="margin-bottom: 10px;">Pokémon Name</h2>
             <img id="pokemon-image-modal-sprite" src="sprites/pokemon/front/0.png" alt="Enlarged Pokémon"
                 style="max-width: 384px; max-height: 384px; width: auto; height: 300px; image-rendering: pixelated; margin-bottom: 20px; display: block; margin-left: auto; margin-right: auto; background-color: rgba(255,255,255,0.05); border-radius: 8px; padding:10px;">
+            
+            <div id="modal-nickname-container" style="display: none; margin-bottom: 15px; text-align: center;">
+                <input type="text" id="modal-nickname-input" placeholder="Enter nickname (max 12)" maxlength="12" style="padding: 8px; width: 60%; margin-right: 5px; border-radius: 4px; border: 1px solid #555; background-color: #333; color: white;">
+                <button id="modal-set-nickname-btn" class="btn small primary">Set</button>
+            </div>
+
             <div class="modal-actions">
                 <button class="btn secondary" onclick="window.closePokemonImageModal()">Close</button>
             </div>
@@ -522,7 +528,7 @@
 </body>
 <footer>
     <div id="game-version">
-        v1.2.a
+        v1.3.n
     </div>
 </footer>
 </html>

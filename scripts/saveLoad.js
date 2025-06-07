@@ -7,6 +7,7 @@ import { updateDisplay, populateRouteSelector, showExportModal, showImportModal,
 export function serializePokemon(p) {
     if (!p) return null;
     return {
+        nickname: p.nickname,
         name: p.name,
         id: p.id,
         level: p.level,
@@ -22,7 +23,14 @@ export function serializePokemon(p) {
 
 export function deserializePokemon(savedPkmnData) {
     if (!savedPkmnData) return null;
-    const pokemon = new Pokemon(savedPkmnData.name, savedPkmnData.level, savedPkmnData.isShiny, savedPkmnData.caughtWithBall || 'pokeball');
+    // Pass the saved nickname to the constructor.
+    // The Pokemon constructor will default nickname to species name if savedPkmnData.nickname is null/undefined.
+    const pokemon = new Pokemon(
+        savedPkmnData.name,
+        savedPkmnData.level,
+        savedPkmnData.isShiny,
+        savedPkmnData.caughtWithBall || 'pokeball',
+        savedPkmnData.nickname);
     pokemon.id = savedPkmnData.id || (Date.now() + Math.random());
     pokemon.currentHp = savedPkmnData.currentHp;
     pokemon.exp = savedPkmnData.exp;
@@ -31,6 +39,7 @@ export function deserializePokemon(savedPkmnData) {
     if (pokemon.level >= 100) {
         pokemon.level = 100;
         pokemon.exp = 0;
+        pokemon.expToNext = pokemon.getExpToNext(); // Ensure expToNext is also correct
     }
     return pokemon;
 }

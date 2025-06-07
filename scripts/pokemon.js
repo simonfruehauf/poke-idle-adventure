@@ -2,11 +2,11 @@
 import { pokemonBaseStatsData } from './state.js';
 import { SHINY_CHANCE, SHINY_STAT_BONUSES } from './config.js';
 import { addBattleLog } from './utils.js';
-
 export class Pokemon {
-    constructor(name, level = 1, isShinyOverride = null, caughtWithBall = 'pokeball') {
+    constructor(name, level = 1, isShinyOverride = null, caughtWithBall = 'pokeball', nickname = null) {
         this.name = name;
         this.id = Date.now() + Math.random();
+        this.nickname = nickname || name; // Initialize nickname, default to species name
         this.level = level;
         this.caughtWithBall = caughtWithBall;
         this.isShiny = isShinyOverride !== null ? isShinyOverride : (Math.random() < SHINY_CHANCE);
@@ -157,18 +157,53 @@ export class Pokemon {
         }
     }
 
+    setNickname(newName) {
+        const trimmedName = newName ? newName.trim() : "";
+        let finalNickname;
+
+        if (trimmedName.length === 0) {
+            finalNickname = this.name; // Reset to species name
+        } else if (trimmedName.length > 12) {
+            finalNickname = trimmedName.substring(0, 12); // Truncate
+        } else {
+            finalNickname = trimmedName; // Valid nickname
+        }
+        this.nickname = finalNickname;
+        return finalNickname; // Return the actual nickname that was set
+    }
+
     evolve() {
-        if (!this.evolutionTargetName || !pokemonBaseStatsData[this.evolutionTargetName] || this.level < this.evolveLevel) {
-            if (this.evolutionTargetName && pokemonBaseStatsData[this.evolutionTargetName] && this.level < this.evolveLevel) {
-                addBattleLog(`${this.name} needs to be Lvl. ${this.evolveLevel} to evolve.`);
+        if (!this.evolutionTargetName || !pokemonBaseStatsData[this.evolutionTargetName] || (this.evolveLevel && this.level < this.evolveLevel)) {
+            if (this.evolutionTargetName && pokemonBaseStatsData[this.evolutionTargetName] && this.evolveLevel && this.level < this.evolveLevel) {
+                addBattleLog(`${this.nickname} needs to be Lvl. ${this.evolveLevel} to evolve into ${this.evolutionTargetName}.`);
             }
             return false;
         }
-        this.name = this.evolutionTargetName;
-        Object.assign(this, new this.constructor(this.name, this.level, this.isShiny, this.caughtWithBall));
+
+        const originalName = this.name; // Species name before evolution
+        const originalNickname = this.nickname; // Nickname before evolution
+        const newSpeciesName = this.evolutionTargetName;
+
+        let newNicknameForEvolved = originalNickname;
+        // If the Pokemon's nickname was its species name, update nickname to the new species name.
+        if (originalNickname === originalName) {
+            newNicknameForEvolved = newSpeciesName;
+        }
+
+        // Store properties to pass to the new constructor call within Object.assign
+        const currentLevel = this.level;
+        const currentShinyStatus = this.isShiny;
+        const currentCaughtBall = this.caughtWithBall;
+
+        // Re-initialize the Pokemon object with the new species data
+        Object.assign(this, new this.constructor(newSpeciesName, currentLevel, currentShinyStatus, currentCaughtBall, newNicknameForEvolved));
+        
+        // After re-initialization, some things need to be set/reset
         this.heal();
-        this.exp = 0;
-        addBattleLog(`Congratulations! Your ${this.name} evolved!`); // Name is already updated
+        this.exp = 0; // Reset EXP for the current level
+        this.expToNext = this.getExpToNext(); // Recalculate expToNext for the current level
+
+        addBattleLog(`Congratulations! Your ${originalNickname} (${originalName}) evolved into ${this.nickname} (${this.name})!`);
         return true;
     }
 }

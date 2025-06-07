@@ -781,3 +781,45 @@ export async function resolvePostBattleEvent() {
     closeEventModal(); // UI function
     updateDisplay();
 }
+
+export function changePokemonNickname(index, locationType, newNicknameStr) {
+    let pokemonToNickname;
+    if (locationType === 'party') {
+        pokemonToNickname = gameState.party[index];
+    } else if (locationType === 'storage') {
+        pokemonToNickname = gameState.allPokemon[index];
+    }
+
+    if (!pokemonToNickname) {
+        addBattleLog("Error: Could not find Pokémon to nickname.");
+        console.error(`Pokemon not found at index ${index} in ${locationType}`);
+        return;
+    }
+
+    const oldNickname = pokemonToNickname.nickname;
+    const speciesName = pokemonToNickname.name;
+    const intendedNickname = newNicknameStr ? newNicknameStr.trim() : ""; // What the user typed, trimmed
+
+    // Call the Pokemon's setNickname method, which handles validation and truncation/reset
+    const actualNewNickname = pokemonToNickname.setNickname(newNicknameStr);
+
+    // Log the outcome
+    if (oldNickname === actualNewNickname) {
+        if (intendedNickname.length > 12 && oldNickname.length === 12 && intendedNickname.substring(0,12) === oldNickname) {
+            addBattleLog(`Nickname for ${oldNickname} was too long. It remains ${actualNewNickname} as it was already the truncated version.`);
+        } else if (intendedNickname === "" && oldNickname === speciesName) {
+             addBattleLog(`${oldNickname}'s nickname is already its species name.`);
+        } else {
+            addBattleLog(`${oldNickname}'s nickname remains unchanged.`);
+        }
+    } else if (actualNewNickname === speciesName) { // Nickname was reset
+        addBattleLog(`${oldNickname}'s nickname was reset to ${speciesName}.`);
+    } else if (intendedNickname.length > 12) { // Nickname was truncated
+        addBattleLog(`${oldNickname}'s nickname was too long and has been set to ${actualNewNickname}.`);
+    } else { // Standard change
+        addBattleLog(`${oldNickname}'s nickname changed to ${actualNewNickname}.`);
+    }
+
+    updateDisplay();
+    // saveGame(); // Consider if explicit save is needed here or rely on auto-save
+}

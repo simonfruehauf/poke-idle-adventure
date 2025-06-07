@@ -212,6 +212,8 @@ body {
 
 #pokemon-image-modal-sprite {
     border: 1px solid var(--interactive-border);
+      filter: drop-shadow(5px 5px 5px #222);
+
 }
 
 #pokemon-image-modal .modal-actions {
@@ -375,7 +377,7 @@ footer {
 .pokemon-sprite {
     width: 96px;
     height: 96px;
-    margin: -16px auto;
+    margin: -10px auto;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -385,9 +387,11 @@ footer {
     flex-shrink: 0;
 }
 
-.pokemon-sprite.zoomable-sprite:hover {
-    transform: scale(2.35) translateY(-10px);
-    transition: transform 0.25s ease-in-out;
+.pokemon-sprite.zoomable-sprite:hover {   
+      filter: drop-shadow(5px 5px 5px #222);
+
+    transform: scale(1.35) translateY(-12px);
+    transition: all 0.25s ease-in-out;
     z-index: 1000;
     position: relative;
 }

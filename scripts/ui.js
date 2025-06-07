@@ -74,7 +74,13 @@ export function getPokemonNameHTML(pokemon, shinyIndicatorClass = 'shiny-indicat
             if (isCaught) caughtIndicatorHTML = `<span class="caught-indicator-text" title="Caught">(C)</span> `;
         }
     }
-    return `${caughtIndicatorHTML}${ballIconHTML}${pokemon.name}${shinySpan}`;
+
+    // Nickname display logic
+    // Display nickname if it exists and is different from the species name. Otherwise, display species name.
+    // The Pokemon class constructor already ensures nickname is at least the species name.
+    const displayName = pokemon.nickname; 
+
+    return `${caughtIndicatorHTML}${ballIconHTML}${displayName}${shinySpan}`;
 }
 
 export function getPokemonSpritePath(pokemon, spriteType = 'front', baseSpriteUrl = POKEMON_SPRITE_BASE_URL) {
@@ -515,7 +521,7 @@ export function generatePokemonListItemHTML(pokemon, index, locationType) {
                 <button class="btn small" onclick="window.removeFromParty(${index})" style="background: #f44336;"> 
                     Remove
                 </button>
-                ${evolveButtonHtml} 
+                ${evolveButtonHtml}
             </div>`;
     } else { // storage
         controlsHtml = `
@@ -526,7 +532,7 @@ export function generatePokemonListItemHTML(pokemon, index, locationType) {
                 <button class="btn small" onclick="event.stopPropagation(); window.confirmReleasePokemon(${index})" style="background: #dc3545;"> 
                     Release
                 </button>
-                ${evolveButtonHtml} 
+                ${evolveButtonHtml}
             </div>`;
     }
 
@@ -718,18 +724,43 @@ export function processImportDataFromModal() {
 }
 
 
-function _showPokemonImageModal(pokemon) { // Internal helper
+function _showPokemonImageModal(pokemon, index, locationType) { // Internal helper, now accepts index and locationType
     const modal = document.getElementById('pokemon-image-modal');
     const titleEl = document.getElementById('pokemon-image-modal-title');
     const spriteEl = document.getElementById('pokemon-image-modal-sprite');
+    const nicknameContainer = document.getElementById('modal-nickname-container');
+    const nicknameInput = document.getElementById('modal-nickname-input');
+    const setNicknameBtn = document.getElementById('modal-set-nickname-btn');
 
-    if (modal && titleEl && spriteEl && pokemon) {
+    if (modal && titleEl && spriteEl && nicknameContainer && nicknameInput && setNicknameBtn && pokemon) {
         titleEl.innerHTML = getPokemonNameHTML(pokemon, 'shiny-indicator'); // Re-use to get name + shiny
         spriteEl.src = getPokemonSpritePath(pokemon, 'front');
-        spriteEl.alt = pokemon.name;
+        spriteEl.alt = pokemon.nickname || pokemon.name; // Use nickname for alt text
+
+        // Configure nickname input and button
+        if ((locationType === 'party' || locationType === 'storage') && index !== -1) {
+            nicknameContainer.style.display = 'flex'; // Show the container
+            nicknameInput.value = pokemon.nickname || pokemon.name; // Pre-fill with current nickname
+            nicknameInput.maxLength = 12; // Enforce max length in input
+
+            setNicknameBtn.onclick = () => {
+                const newNickname = nicknameInput.value;
+                // The alert for "too long" was in promptToNicknamePokemon, which is removed.
+                // Pokemon.setNickname handles truncation, and gameLogic.changePokemonNickname logs it.
+                // If newNickname.length > 12, it will be truncated by Pokemon.setNickname.
+                // We could add an alert here if desired, but for now, rely on maxlength and backend truncation.
+                window.changePokemonNickname(index, locationType, newNickname);
+                closePokemonImageModal(); // Close this modal after initiating the nickname prompt
+            };
+        } else {
+            nicknameContainer.style.display = 'none'; // Hide for wild/active player Pokemon or if no valid index/location
+            setNicknameBtn.onclick = null;
+        }
+
         modal.style.display = 'flex';
     } else {
         console.error("Pokemon image modal elements not found or no Pokemon data provided.");
+        if (!nicknameContainer || !nicknameInput || !setNicknameBtn) console.error("Nickname input elements in modal not found.");
     }
 }
 
@@ -746,7 +777,7 @@ export function handlePokemonSpriteClick(index, locationType) {
     }
 
     if (pokemonToDisplay) {
-        _showPokemonImageModal(pokemonToDisplay);
+        _showPokemonImageModal(pokemonToDisplay, index, locationType);
     }
 }
 
