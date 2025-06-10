@@ -5,6 +5,7 @@ import { loadGame, saveGame, manualSaveGame, confirmClearSave, exportSaveData, i
 import { showStarterSelectionModal, updateDisplay, populateRouteSelector, addToPartyDialog, confirmReleasePokemon as confirmReleasePokemonUI, showExportModal, closeExportModal, copyExportDataToClipboard, showImportModal, closeImportModal, processImportDataFromModal, handlePokemonSpriteClick, closePokemonImageModal, togglePcDrawer, showEventModal, closeEventModal, showSettingsModal, closeSettingsModal } from './ui.js'; // Removed promptToNicknamePokemon
 import { manualBattle, attemptCatch, toggleAutoFight, buyBall, buyXpShareUpgrade, buyItem, useItem, handleRouteChange, leaveCurrentRoute, setActivePokemon, removeFromParty, attemptEvolution, freeFullHeal, cheatAddPokemon, cheatAddMoney, cheatAddItem, resolvePostBattleEvent, changePokemonNickname } from './gameLogic.js';
 import { addBattleLog } from './utils.js';
+import * as eggFeatures from './eggFeatures.js';
 
 async function initGame() {
     try {
@@ -115,6 +116,9 @@ window.resolvePostBattleEvent = resolvePostBattleEvent; // For the event modal
 window.changePokemonNickname = changePokemonNickname; // For nicknaming logic
 window.showSettingsModal = showSettingsModal;
 window.closeSettingsModal = closeSettingsModal;
+window.eggFeatures = eggFeatures; // Expose eggFeatures module
+eggFeatures.initializeEggFeatures(); // Initialize egg and incubator logic and UI
+
 // Specific UI handlers that might not be in gameLogic
 // window.showStarterSelectionModal = showStarterSelectionModal; // Already handled by initGame
 

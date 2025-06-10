@@ -3,7 +3,7 @@ import { gameState, routes } from './state.js';
 import { Pokemon } from './pokemon.js';
 import { addBattleLog } from './utils.js';
 import { updateDisplay, populateRouteSelector, showExportModal, showImportModal, closeImportModal } from './ui.js'; // populateRouteSelector might be needed if load changes avg level
-
+import { gameState as importedGameState } from './state.js'; // Use an alias to avoid conflict if needed, or ensure gameState is consistently used.
 export function serializePokemon(p) {
     if (!p) return null;
     return {
@@ -57,7 +57,13 @@ export function saveGame() {
         autoBattleActive: gameState.autoBattleActive, // Will be reset on load, but saved for consistency
         autoFightUnlocked: gameState.autoFightUnlocked,
         xpShareLevel: gameState.xpShareLevel,
-        konamiCodeActivated: gameState.konamiCodeActivated
+        konamiCodeActivated: gameState.konamiCodeActivated,
+        // Egg Features
+        mysteryEggNextAvailableTimestamp: gameState.mysteryEggNextAvailableTimestamp,
+        mysteryEggIsClaimable: gameState.mysteryEggIsClaimable,
+        playerHasUnincubatedEgg: gameState.playerHasUnincubatedEgg,
+        incubator: gameState.incubator,
+
     };
     localStorage.setItem('pokemonIdleGameV2', JSON.stringify(saveData));
 }
@@ -111,9 +117,22 @@ export function loadGame() {
         if (data.allPokemon) gameState.allPokemon = data.allPokemon.map(pData => pData ? deserializePokemon(pData) : null).filter(p => p); // Filter out any nulls from bad saves
         gameState.currentWildPokemon = data.currentWildPokemon ? deserializePokemon(data.currentWildPokemon) : null;
 
+        // Load Egg Features
+        gameState.mysteryEggNextAvailableTimestamp = data.mysteryEggNextAvailableTimestamp || null;
+        gameState.mysteryEggIsClaimable = data.mysteryEggIsClaimable || false;
+        gameState.playerHasUnincubatedEgg = data.playerHasUnincubatedEgg || false;
+        gameState.incubator = data.incubator || {
+            eggDetails: null,
+            incubationEndTime: null,
+            isHatchingReady: false
+        };
+
         // Route info will be updated by updateDisplay or changeRoute if called by initGame
         // populateRouteSelector(); // Called in initGame after load
         // updateDisplay(); // Called in initGame after load
+    }
+    else{
+        console.log("Failed to load. No save data found.")
     }
 }
 
@@ -125,8 +144,9 @@ export function confirmClearSave() {
 
 export function clearSaveData() {
     localStorage.removeItem('pokemonIdleGameV2');
+    const saveDataString = localStorage.getItem('pokemonIdleGameV2');
     addBattleLog("Save data cleared. Reloading game...");
-    setTimeout(() => { location.reload(); }, 1500);
+    setTimeout(() => { location.reload(); }, 1000);
 }
 
 export function exportSaveData() {

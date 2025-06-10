@@ -91,9 +91,19 @@ body {
     display: grid;
     grid-template-areas:
         "items-bar battle-area party-area"
+        "items-bar egg-area egg-area"
         "items-bar shop-area shop-area";
+
+
     grid-template-columns: 120px 1fr 1fr;
     gap: 20px;
+}
+
+.egg-area {
+    display: flex;
+    grid-area: egg-area;
+    gap: 20px;
+    align-content: start; /* Align items to the start if they wrap */
 }
 
 .party-area {
@@ -859,4 +869,113 @@ footer {
     right: 10px; 
     font-size: 14px; 
     font-weight: bold;
+}
+
+/* Egg Area Progress Bars */
+.egg-feature {
+    background: var(--panel-bg-light);
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--interactive-border);
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Space between title, progress bar, and status text */
+}
+
+.egg-feature h4 {
+    margin: 0 0 5px 0;
+    text-align: center;
+    color: var(--accent-color);
+    font-size: 1.1em;
+}
+
+.progress-bar-wrapper {
+    cursor: pointer;
+    display: block;
+    padding: 5px; /* Small padding around the bar itself */
+    border-radius: 6px;
+    background-color: var(--interactive-starter-bg); /* Slightly different bg for the clickable area */
+    transition: background-color 0.2s ease;
+}
+
+.progress-bar-wrapper:hover:not(.disabled) {
+    background-color: var(--interactive-starter-bg-hover);
+}
+
+.progress-bar-wrapper.disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.progress-bar-underlay {
+    width: 100%;
+    height: 28px; /* Slightly taller for better clickability and text visibility */
+    background-color: var(--hp-bar-bg);
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(0,0,0,0.3);
+}
+
+.progress-bar-overlay {
+    height: 100%;
+    background: var(--exp-fill-gradient); /* Default fill, can be changed by JS */
+    border-radius: 4px; /* Slightly smaller to appear inset */
+    transition: width 0.5s ease-in-out, background 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress-bar-label {
+    position:absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    line-height: 28px; /* Match height of underlay */
+    color: var(--text-color);
+    font-size: 0.9em;
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
+    pointer-events: none;
+}
+#mystery-egg-feature { 
+    display: flex;
+    flex-grow: 2;
+    text-align: center; 
+    position: relative; 
+}
+ #incubator-feature { 
+    display: flex;
+    flex-grow: 1;
+    text-align: center; 
+    position: relative; 
+}
+#incubator-egg-sprite{
+      margin: auto;
+
+}
+
+.egg-status-text {
+    font-size: 0.9em;
+    color: var(--text-secondary);
+    margin-top: 5px;
+}
+
+.incubator-egg {
+    display: none; /* Hidden by default, shown by JS */
+    width: 48px;   /* Adjust size as needed */
+    height: 48px;  /* Adjust size as needed */
+    margin: 5px auto; /* Center the egg */
+    image-rendering: pixelated; /* Keep pixel art crisp */
+}
+
+@keyframes wiggle {
+    0%, 100% { transform: rotate(-3deg); }
+    50% { transform: rotate(3deg); }
+}
+
+.wiggle {
+    animation: wiggle 0.5s ease-in-out infinite;
 }

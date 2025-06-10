@@ -48,7 +48,15 @@ export let gameState = {
     konamiCodeActivated: false,
     eventModalActive: false,      // True if the post-battle event modal is shown
     currentPostBattleEvent: null, // Stores the data of the currently active post-battle event
-    eventModalTimerId: null       // Timer ID for auto-closing event modal during auto-battle
+    eventModalTimerId: null,       // Timer ID for auto-closing event modal during auto-battle
+    mysteryEggNextAvailableTimestamp: null, // Timestamp for when the next mystery egg generation completes
+    mysteryEggIsClaimable: false,           // True if a generated mystery egg is ready to be claimed
+    playerHasUnincubatedEgg: false,         // True if the player has claimed an egg and it's waiting for incubation
+    incubator: {
+        eggDetails: null,                   // { type: 'mystery', ... }
+        incubationEndTime: null,            // Timestamp for when current incubation finishes
+        isHatchingReady: false              // True if an incubated egg is ready to be hatched
+    },
 };
 
 export let routes = {};

@@ -4,7 +4,7 @@ import { getActivePokemon, formatNumberWithDots, addBattleLog } from './utils.js
 import { POKEMON_SPRITE_BASE_URL, AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, STARTER_POKEMON_NAMES, SHINY_CHANCE, TYPE_ICON_BASE_URL, TYPE_NAMES } from './config.js'; // SHINY_CHANCE might not be directly used here but good to keep track of config imports
 import { Pokemon } from './pokemon.js'; // Import logic functions
 import { calculateMaxPartyLevel, calculateMinPartyLevel, attemptEvolution, setActivePokemon, removeFromParty, confirmReleasePokemon as confirmReleasePokemonLogic, addToParty as addToPartyLogic } from './gameLogic.js'; // Changed import
-
+import {updateIncubatorUI, updateMysteryEggUI} from './eggFeatures.js'; // Import'
 const useAPI = true;
 
 // --- Utility functions for Pokémon data presentation ---
@@ -404,6 +404,8 @@ export function updateDisplay() {
     _updateMainActionButtonsState();
     _updateShopInterface();
     _updateItemBarTooltips();
+    updateIncubatorUI();
+    updateMysteryEggUI();
     // _updateItemUseButtons(); // This function is now removed
 
     const playerElements = {
