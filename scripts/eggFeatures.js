@@ -266,3 +266,30 @@ export function updateIncubatorUI() {
         }
     }
 }
+
+// --- CHEAT FUNCTIONS ---
+export function clearIncubatorCheat() {
+    if (incubatorInterval) clearInterval(incubatorInterval);
+    gameState.incubator = { eggDetails: null, incubationEndTime: null, isHatchingReady: false };
+    addBattleLog("CHEAT: Incubator cleared.");
+    updateIncubatorUI();
+    updateEggUI(); // Egg UI might need update if it was disabled due to incubator
+    console.log("Incubator cleared via cheat.");
+}
+
+export function clearEggCheat() {
+    if (eggInterval) clearInterval(eggInterval);
+    gameState.EggIsClaimable = false;
+    gameState.playerHasUnincubatedEgg = false;
+    gameState.eggNextAvailableTimestamp = null; // This will trigger a new generation cycle on next UI update
+    addBattleLog("CHEAT: Egg claim status reset. Egg will start generating anew.");
+    updateEggUI();
+    updateIncubatorUI(); // Incubator UI might need update if it was waiting for an egg
+    console.log("Egg claim status reset via cheat. A new egg will start generating.");
+}
+
+// Make cheats available in the console for development/testing
+if (window) {
+    window.clearIncubator = clearIncubatorCheat;
+    window.clearEgg = clearEggCheat;
+}
