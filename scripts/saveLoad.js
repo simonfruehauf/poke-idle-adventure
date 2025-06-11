@@ -21,14 +21,14 @@ export function serializePokemon(p) {
     };
 }
 
-export function deserializePokemon(savedPkmnData) {
+export async function deserializePokemon(savedPkmnData) { // Now async
     if (!savedPkmnData) return null;
     // Pass the saved nickname to the constructor.
     // The Pokemon constructor will default nickname to species name if savedPkmnData.nickname is null/undefined.
-    const pokemon = new Pokemon(
+    const pokemon = await Pokemon.create( // Use Pokemon.create
         savedPkmnData.name,
         savedPkmnData.level,
-        savedPkmnData.isShiny,
+        savedPkmnData.isShiny, // isShinyOverride
         savedPkmnData.caughtWithBall || 'pokeball',
         savedPkmnData.nickname);
     pokemon.id = savedPkmnData.id || (Date.now() + Math.random());
@@ -73,7 +73,7 @@ export function manualSaveGame() {
     addBattleLog("Game Saved!");
 }
 
-export function loadGame() {
+export async function loadGame() { // Now async
     const saveDataString = localStorage.getItem('pokemonIdleGameV2');
     if (saveDataString) {
         const data = JSON.parse(saveDataString);
@@ -110,12 +110,20 @@ export function loadGame() {
         gameState.xpShareLevel = data.xpShareLevel || 0;
         gameState.konamiCodeActivated = data.konamiCodeActivated || false;
 
-        if (data.party) gameState.party = data.party.map(pData => pData ? deserializePokemon(pData) : null);
+        if (data.party) {
+            const partyPromises = data.party.map(pData => pData ? deserializePokemon(pData) : Promise.resolve(null));
+            gameState.party = await Promise.all(partyPromises);
+        }
         const firstHealthyInParty = gameState.party.findIndex(p => p && p.currentHp > 0);
         gameState.activePokemonIndex = firstHealthyInParty !== -1 ? firstHealthyInParty : 0;
 
-        if (data.allPokemon) gameState.allPokemon = data.allPokemon.map(pData => pData ? deserializePokemon(pData) : null).filter(p => p); // Filter out any nulls from bad saves
-        gameState.currentWildPokemon = data.currentWildPokemon ? deserializePokemon(data.currentWildPokemon) : null;
+        if (data.allPokemon) {
+            const allPokemonPromises = data.allPokemon.map(pData => pData ? deserializePokemon(pData) : Promise.resolve(null));
+            const resolvedAllPokemon = await Promise.all(allPokemonPromises);
+            gameState.allPokemon = resolvedAllPokemon.filter(p => p); // Filter out any nulls
+        }
+        
+        gameState.currentWildPokemon = data.currentWildPokemon ? await deserializePokemon(data.currentWildPokemon) : null;
 
         // Load Egg Features
         gameState.eggNextAvailableTimestamp = data.mysteryEggNextAvailableTimestamp || null;

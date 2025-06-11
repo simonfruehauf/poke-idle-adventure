@@ -2,15 +2,23 @@
 import { pokemonBaseStatsData } from './state.js';
 import { SHINY_CHANCE, SHINY_STAT_BONUSES } from './config.js';
 import { addBattleLog } from './utils.js';
+
 export class Pokemon {
     constructor(name, level = 1, isShinyOverride = null, caughtWithBall = 'pokeball', nickname = null) {
+        // Basic synchronous setup
         this.name = name;
         this.id = Date.now() + Math.random();
-        this.nickname = nickname || name; // Initialize nickname, default to species name
+        this.nickname = nickname || name;
         this.level = level;
         this.caughtWithBall = caughtWithBall;
-        this.isShiny = isShinyOverride !== null ? isShinyOverride : (Math.random() < SHINY_CHANCE);
-        const statsData = this.getStatsData(name);
+        this.isShinyOverride = isShinyOverride; // Store for async initialization
+        // Defer stat-dependent initialization to _initialize()
+    }
+
+    async _initialize() {
+        this.isShiny = this.isShinyOverride !== null ? this.isShinyOverride : (Math.random() < SHINY_CHANCE);
+        const statsData = await this.getStatsData(this.name); // Now async
+
         this.pokedexId = statsData.pokedexId;
         this.types = statsData.types;
         this.evolutionTargetName = statsData.evolution;
@@ -18,7 +26,6 @@ export class Pokemon {
         this.baseStats = { ...statsData.base };
         this.growthRates = { ...statsData.growth };
 
-        // Apply shiny bonuses directly to baseStats and growthRates if the Pokémon is shiny
         if (this.isShiny) {
             for (const statName in this.baseStats) {
                 if (Object.hasOwnProperty.call(this.baseStats, statName)) {
@@ -32,41 +39,107 @@ export class Pokemon {
             }
         }
 
-        this.currentHp = this.maxHp;
-        this.exp = 0; // Initialize exp to 0
+        // Ensure currentHp is initialized after maxHp is calculated
+        this.currentHp = this.maxHp; // This must come after baseStats and growthRates are set
+        this.exp = 0;
         this.expToNext = this.getExpToNext();
 
-        // If Pokémon is created at or above level 100, cap level and set EXP to 0.
         if (this.level >= 100) {
             this.level = 100;
             this.exp = 0;
-            this.expToNext = this.getExpToNext(); // Recalculate for Lvl 100
+            this.expToNext = this.getExpToNext();
         }
     }
 
-    getStatsData(name) {
-        const speciesData = pokemonBaseStatsData[name] || {};
+    static async create(name, level = 1, isShinyOverride = null, caughtWithBall = 'pokeball', nickname = null) {
+        const pokemon = new Pokemon(name, level, isShinyOverride, caughtWithBall, nickname);
+        await pokemon._initialize();
+        return pokemon;
+    }
 
-        if (typeof speciesData.base === 'object' && typeof speciesData.growth === 'object' && typeof speciesData.pokedexId === 'number') {
+    async fetchAndProcessPokemonDataAPI(pokemonNameKey) {
+        addBattleLog(`Data for "${pokemonNameKey}" not in local files. Attempting to fetch from API...`);
+        try {
+            const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonNameKey.toLowerCase()}`);
+            if (!pokemonResponse.ok) throw new Error(`API error for ${pokemonNameKey}: ${pokemonResponse.status} ${await pokemonResponse.text()}`);
+            const pkmnData = await pokemonResponse.json();
+
+            const speciesResponse = await fetch(pkmnData.species.url);
+            if (!speciesResponse.ok) throw new Error(`API error for species data of ${pokemonNameKey}: ${speciesResponse.status} ${await speciesResponse.text()}`);
+            const speciesData = await speciesResponse.json();
+
+            const evolutionChainResponse = await fetch(speciesData.evolution_chain.url);
+            if (!evolutionChainResponse.ok) throw new Error(`API error for evolution chain of ${pokemonNameKey}: ${evolutionChainResponse.status} ${await evolutionChainResponse.text()}`);
+            const evolutionChainData = await evolutionChainResponse.json();
+
+            const newPokedexId = pkmnData.id;
+            const newTypes = pkmnData.types.map(t => t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1));
+            const newBaseStats = {
+                hp: pkmnData.stats.find(s => s.stat.name === 'hp').base_stat,
+                attack: pkmnData.stats.find(s => s.stat.name === 'attack').base_stat,
+                defense: pkmnData.stats.find(s => s.stat.name === 'defense').base_stat,
+                speed: pkmnData.stats.find(s => s.stat.name === 'speed').base_stat,
+            };
+            let newEvolutionTargetName = null;
+            let newEvolveLevel = null;
+
+            function findEvolutionInChain(chainNode, currentSpeciesName) { // Renamed for clarity
+                if (chainNode.species.name === currentSpeciesName.toLowerCase()) {
+                    if (chainNode.evolves_to && chainNode.evolves_to.length > 0) {
+                        const evolution = chainNode.evolves_to[0];
+                        newEvolutionTargetName = evolution.species.name.charAt(0).toUpperCase() + evolution.species.name.slice(1);
+                        if (evolution.evolution_details && evolution.evolution_details.length > 0 && evolution.evolution_details[0].trigger.name === 'level-up' && evolution.evolution_details[0].min_level) {
+                            newEvolveLevel = evolution.evolution_details[0].min_level;
+                        }
+                    } return true;
+                }
+                for (const nextNode of chainNode.evolves_to) if (findEvolutionInChain(nextNode, currentSpeciesName)) return true;
+                return false;
+            }
+            findEvolutionInChain(evolutionChainData.chain, pokemonNameKey);
+
+            const fetchedData = { pokedexId: newPokedexId, type: newTypes, evolution: newEvolutionTargetName, evolveLevel: newEvolveLevel, base: newBaseStats, growth: { hp: 1.5, attack: 1.0, defense: 1.0, speed: 1.0 } };
+            pokemonBaseStatsData[pokemonNameKey] = fetchedData; // Add to global store
+            addBattleLog(`Successfully fetched and added data for ${pokemonNameKey} to game data.`);
+            console.log(`Added ${pokemonNameKey} to pokemonBaseStatsData via Pokemon class:`, pokemonBaseStatsData[pokemonNameKey]);
+            return fetchedData;
+        } catch (error) {
+            const errorMessage = `Pokemon Class: Failed to fetch data for "${pokemonNameKey}" from API. ${error.message}`;
+            console.error(errorMessage, error);
+            addBattleLog(errorMessage);
+            return null;
+        }
+    }
+
+    async getStatsData(name) {
+        let speciesDefinition = pokemonBaseStatsData[name];
+
+        if (!speciesDefinition) {
+            await this.fetchAndProcessPokemonDataAPI(name);
+            speciesDefinition = pokemonBaseStatsData[name]; // Try to get it again
+        }
+
+        if (speciesDefinition && typeof speciesDefinition.base === 'object' && typeof speciesDefinition.growth === 'object' && typeof speciesDefinition.pokedexId === 'number') {
             const requiredBaseStats = ['hp', 'attack', 'defense', 'speed'];
             const requiredGrowthStats = ['hp', 'attack', 'defense', 'speed'];
 
-            const hasAllBase = requiredBaseStats.every(stat => typeof speciesData.base[stat] === 'number');
-            const hasAllGrowth = requiredGrowthStats.every(stat => typeof speciesData.growth[stat] === 'number');
+            const hasAllBase = requiredBaseStats.every(stat => typeof speciesDefinition.base[stat] === 'number');
+            const hasAllGrowth = requiredGrowthStats.every(stat => typeof speciesDefinition.growth[stat] === 'number');
 
             if (hasAllBase && hasAllGrowth) {
                 return {
-                    pokedexId: speciesData.pokedexId,
-                    types: Array.isArray(speciesData.type) && speciesData.type.length > 0 ? speciesData.type : ["Normal"], // Default to Normal if no type                     
-                    evolution: speciesData.evolution,
-                    evolveLevel: speciesData.evolveLevel,
-                    base: { ...speciesData.base },
-                    growth: { ...speciesData.growth }
+                    pokedexId: speciesDefinition.pokedexId,
+                    types: Array.isArray(speciesDefinition.type) && speciesDefinition.type.length > 0 ? speciesDefinition.type : ["Normal"],
+                    evolution: speciesDefinition.evolution,
+                    evolveLevel: speciesDefinition.evolveLevel,
+                    base: { ...speciesDefinition.base }, // Return copies
+                    growth: { ...speciesDefinition.growth } // Return copies
                 };
             }
         }
 
-        console.warn(`Stat data (pokedexId, type, base, or growth) for ${name} is missing or incomplete in pokemon.json. Using default values.`);
+        console.warn(`Stat data for ${name} is missing or incomplete even after API attempt. Using default values.`);
+        addBattleLog(`Warning: Data for ${name} is incomplete. Using default stats.`);
         return {
             pokedexId: 0, 
             types: ["Normal"], 
@@ -172,11 +245,18 @@ export class Pokemon {
         return finalNickname; // Return the actual nickname that was set
     }
 
-    evolve() {
-        if (!this.evolutionTargetName || !pokemonBaseStatsData[this.evolutionTargetName] || (this.evolveLevel && this.level < this.evolveLevel)) {
-            if (this.evolutionTargetName && pokemonBaseStatsData[this.evolutionTargetName] && this.evolveLevel && this.level < this.evolveLevel) {
+    async evolve() { // Now async
+        if (!this.evolutionTargetName || (this.evolveLevel && this.level < this.evolveLevel)) {
+            if (this.evolutionTargetName && this.evolveLevel && this.level < this.evolveLevel) {
                 addBattleLog(`${this.nickname} needs to be Lvl. ${this.evolveLevel} to evolve into ${this.evolutionTargetName}.`);
             }
+            return false;
+        }
+
+        // Ensure the target evolution's data is loaded (will fetch from API if not present)
+        const targetStatsCheck = await this.getStatsData(this.evolutionTargetName); // This also validates structure
+        if (targetStatsCheck.pokedexId === 0 && this.evolutionTargetName !== "PlaceholderForNoEvolution") { // Check if it fell back to defaults
+            addBattleLog(`Could not load data for ${this.evolutionTargetName}. Evolution cannot proceed.`);
             return false;
         }
 
@@ -190,14 +270,30 @@ export class Pokemon {
             newNicknameForEvolved = newSpeciesName;
         }
 
-        // Store properties to pass to the new constructor call within Object.assign
-        const currentLevel = this.level;
-        const currentShinyStatus = this.isShiny;
-        const currentCaughtBall = this.caughtWithBall;
+        // Get the raw stats for the new species (getStatsData handles API fetching if needed)
+        const newSpeciesRawStats = await this.getStatsData(newSpeciesName);
 
-        // Re-initialize the Pokemon object with the new species data
-        Object.assign(this, new this.constructor(newSpeciesName, currentLevel, currentShinyStatus, currentCaughtBall, newNicknameForEvolved));
-        
+        // Update core properties
+        this.name = newSpeciesName;
+        this.nickname = newNicknameForEvolved;
+
+        this.pokedexId = newSpeciesRawStats.pokedexId;
+        this.types = newSpeciesRawStats.types;
+        this.evolutionTargetName = newSpeciesRawStats.evolution; // Update to the next link in the chain
+        this.evolveLevel = newSpeciesRawStats.evolveLevel;       // Update to the next evolution level
+        this.baseStats = { ...newSpeciesRawStats.base };      // Set new base stats
+        this.growthRates = { ...newSpeciesRawStats.growth };  // Set new growth rates
+
+        // Re-apply shiny bonuses to the new baseStats and growthRates if shiny
+        if (this.isShiny) {
+            for (const statName in this.baseStats) {
+                this.baseStats[statName] = Math.floor(this.baseStats[statName] * (1 + SHINY_STAT_BONUSES.base));
+            }
+            for (const statName in this.growthRates) {
+                this.growthRates[statName] = this.growthRates[statName] * (1 + SHINY_STAT_BONUSES.growth);
+            }
+        }
+
         // After re-initialization, some things need to be set/reset
         this.heal();
         this.exp = 0; // Reset EXP for the current level

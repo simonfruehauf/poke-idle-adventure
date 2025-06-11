@@ -44,7 +44,7 @@ function getElementByIdSafe(id) {
     return el;
 }
 
-function getRandomHatchablePokemon(type) {
+async function getRandomHatchablePokemon(type) { // Now async
     let chosenPokemonData;
     let hatchablePokemon = [];
 
@@ -78,16 +78,16 @@ function getRandomHatchablePokemon(type) {
             }
         randomRoll -= pkmn.chance;
         }
-        return new Pokemon(selectedPokemonData.name, 1);
+        return await Pokemon.create(selectedPokemonData.name, 1); // Use Pokemon.create
     }
     const randomIndex = Math.floor(Math.random() * hatchablePokemon.length);
 
     chosenPokemonData = hatchablePokemon[randomIndex];
     if (hatchablePokemon.length === 0) {
         console.error("No hatchable Pokémon found!");
-        return new Pokemon('Magikarp', 1); // Fallback
+        return await Pokemon.create('Magikarp', 1); // Fallback, use Pokemon.create
     }
-    return new Pokemon(chosenPokemonData, 1); 
+    return await Pokemon.create(chosenPokemonData, 1); // Use Pokemon.create
 }
 
 export function handleEggClick(override = false) {
@@ -103,10 +103,10 @@ export function handleEggClick(override = false) {
     } 
 }
 
-export function handleIncubatorClick(type = 'mystery', override = false) {
+export async function handleIncubatorClick(type = 'mystery', override = false) { // Now async
     if (gameState.incubator.isHatchingReady || override) {
-        if (override) createEgg(type, override); // Hatch
-        const hatchedPokemon = getRandomHatchablePokemon(gameState.incubator.eggDetails.type);
+        if (override) await createEgg(type, override); // Hatch, await if createEgg becomes async (it does)
+        const hatchedPokemon = await getRandomHatchablePokemon(gameState.incubator.eggDetails.type); // Await async call
         const emptyPartySlot = gameState.party.findIndex(slot => slot === null);
         console.log(`Your egg hatched into a ${hatchedPokemon.isShiny ? 'Shiny ' : ''}${hatchedPokemon.name}!`);
         if (emptyPartySlot !== -1) {
@@ -133,11 +133,11 @@ export function handleIncubatorClick(type = 'mystery', override = false) {
             }
             eggRandomRoll -= eggData[eggType].chance;
         }
-        createEgg(selectedEggType);
+        await createEgg(selectedEggType); // Await async call
     }
 }
 
-function createEgg(type = 'mystery', hatchNow = false) {
+async function createEgg(type = 'mystery', hatchNow = false) { // Now async
         gameState.incubator.eggDetails = { type: type }; 
         gameState.incubator.incubationEndTime = Date.now() + (0 ? hatchNow : eggData[type].incubationTime * INCUBATION_TIME);
         gameState.incubator.isHatchingReady = hatchNow;

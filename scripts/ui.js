@@ -622,8 +622,8 @@ export async function showStarterSelectionModal() {
                 <img src="${spriteUrl}" alt="${name}">
                 <div class="pokemon-name">${name}</div>
             `;
-            optionDiv.onclick = () => {
-                const starterPokemon = new Pokemon(name, 5);
+            optionDiv.onclick = async () => { // onclick handler is now async
+                const starterPokemon = await Pokemon.create(name, 5); // Use Pokemon.create
                 gameState.party[0] = starterPokemon;
                 gameState.activePokemonIndex = 0;
                 addBattleLog(`You chose ${name} as your starter Pokémon!`);

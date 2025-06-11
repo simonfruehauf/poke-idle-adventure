@@ -118,7 +118,7 @@ export function calculateMinPartyLevel() {
     return minLevel;
 }
     
-export function spawnWildPokemon() {
+export async function spawnWildPokemon() { // Now async
     const route = routes[gameState.currentRoute];
     if (!route) {
         addBattleLog(`No route data for Route ${gameState.currentRoute}. Cannot find Pokémon.`);
@@ -145,7 +145,7 @@ export function spawnWildPokemon() {
     if (!selectedPokemonData) selectedPokemonData = availablePokemon[0];
 
     const level = Math.floor(Math.random() * (selectedPokemonData.levelRange[1] - selectedPokemonData.levelRange[0] + 1)) + selectedPokemonData.levelRange[0];
-    gameState.currentWildPokemon = new Pokemon(selectedPokemonData.name, level);
+    gameState.currentWildPokemon = await Pokemon.create(selectedPokemonData.name, level); // Use Pokemon.create
     updateWildPokemonDisplay();
 }
 
@@ -342,14 +342,14 @@ export async function handleFaint(faintedPokemon, victorPokemon, faintedWasPlaye
     }
 }
 
-export function attemptCatch(ballId = 'pokeball') {
+export async function attemptCatch(ballId = 'pokeball') { // Now async
     if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event first!"); return; }
     if (!gameState.currentWildPokemon) { addBattleLog("No wild Pokémon to catch!"); return; }
 
     gameState.battleInProgress = true; updateDisplay();
     gameState.pokeballs[ballId]--;
     const ballUsed = pokeballData[ballId] || pokeballData.pokeball;
-    addBattleLog(`Used 1 ${ballUsed.name} on ${gameState.currentWildPokemon.name}...`);
+    addBattleLog(`Used 1 ${ballUsed.name} on ${gameState.currentWildPokemon.nickname || gameState.currentWildPokemon.name}...`);
     
     const wildPokemon = gameState.currentWildPokemon;
     let catchChance;
@@ -365,14 +365,14 @@ export function attemptCatch(ballId = 'pokeball') {
     console.log("Catch chance: ", catchChance * 100, "%");
     setTimeout(async () => {
         if (Math.random() < catchChance) {
-            const caughtPokemon = new Pokemon(wildPokemon.name, wildPokemon.level, wildPokemon.isShiny, ballId);
+            const caughtPokemon = await Pokemon.create(wildPokemon.name, wildPokemon.level, wildPokemon.isShiny, ballId); // Use Pokemon.create
             caughtPokemon.currentHp = wildPokemon.currentHp;
             if (ballId === 'healball') caughtPokemon.heal();
             const emptySlot = gameState.party.findIndex(slot => slot === null);
             if (emptySlot !== -1) {
-                gameState.party[emptySlot] = caughtPokemon; addBattleLog(`${wildPokemon.name} was added to your party!`);
+                gameState.party[emptySlot] = caughtPokemon; addBattleLog(`${caughtPokemon.nickname || caughtPokemon.name} was added to your party!`);
             } else {
-                gameState.allPokemon.push(caughtPokemon); addBattleLog(`${wildPokemon.name} was sent to your PC.`);
+                gameState.allPokemon.push(caughtPokemon); addBattleLog(`${caughtPokemon.nickname || caughtPokemon.name} was sent to your PC.`);
             }
             gameState.currentWildPokemon = null;
             populateRouteSelector(); // New Pokemon might change avg level
@@ -381,12 +381,12 @@ export function attemptCatch(ballId = 'pokeball') {
             addBattleLog(`${wildPokemon.name} broke free!`);
             const playerPokemon = getActivePokemon();
             if (playerPokemon && playerPokemon.currentHp > 0 && wildPokemon.currentHp > 0) {
-                addBattleLog(`${wildPokemon.name} attacks!`);
+                addBattleLog(`${wildPokemon.nickname || wildPokemon.name} attacks!`);
                 const wildDamage = calculateDamage(wildPokemon, playerPokemon);
                 let effectivenessMessageFirst = getEffectivenessMessage(wildPokemon, playerPokemon.primaryType, wildDamage.usedType);
 
                 const playerDefeated = playerPokemon.takeDamage(wildDamage.damage);
-                if (wildDamage.danage == 0) {addBattleLog(`${wildPokemon.name} deals no damage to ${playerPokemon.name}!`);}
+                if (wildDamage.damage == 0) {addBattleLog(`${wildPokemon.nickname || wildPokemon.name} deals no damage to ${playerPokemon.nickname || playerPokemon.name}!`);}
                 else {addBattleLog(`${wildPokemon.name} deals ${wildDamage.damage} ${wildDamage.usedType} damage to ${playerPokemon.name}! ${effectivenessMessageFirst}`);}
                 if (playerDefeated) {
                     // Call handleFaint to manage the player's Pokemon fainting.
@@ -448,7 +448,7 @@ export async function autoBattleTick() {
         }
     }
     if (!gameState.currentWildPokemon) {
-        spawnWildPokemon();
+        await spawnWildPokemon(); // Await the async spawn
         if (gameState.currentWildPokemon) { addBattleLog(`Auto-Fight: A wild ${gameState.currentWildPokemon.name} appeared!`); updateDisplay(); }
         else { updateDisplay(); return; }
     }
@@ -487,10 +487,10 @@ export function setActivePokemon(partyIndex) {
     }
 }
 
-export function attemptEvolution(index, locationType) {
+export async function attemptEvolution(index, locationType) { // Now async
     let pokemonToEvolve = locationType === 'party' ? gameState.party[index] : gameState.allPokemon[index];
-    if (pokemonToEvolve && pokemonToEvolve.evolve()) {
-        updateDisplay();
+    if (pokemonToEvolve && await pokemonToEvolve.evolve()) { // Await the async evolve
+        updateDisplay(); // updateDisplay might need to be called after all async operations complete if evolve itself has UI implications
         populateRouteSelector(); // Evolution might change average level if it was a party member
     }
 }
@@ -536,7 +536,7 @@ export function buyXpShareUpgrade() {
     } else { addBattleLog(`Not enough money. Needs ${formatNumberWithDots(nextLevelConfig.cost)}₽.`); }
 }
 
-export function buyItem(itemId, quantity = 1) { // Renamed from buyPotion, potionId to itemId
+export async function buyItem(itemId, quantity = 1) { // Renamed from buyPotion, potionId to itemId // Potentially async if useItem becomes async
     if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event first!"); return; }
     const itemInfo = itemData[itemId]; // Renamed from potionData, potionInfo to itemInfo
     if (!itemInfo) { addBattleLog("Invalid item."); return; }
@@ -547,7 +547,7 @@ export function buyItem(itemId, quantity = 1) { // Renamed from buyPotion, potio
     } else { addBattleLog(`Not enough money. Needs ${formatNumberWithDots(cost)}₽.`); }
 }
 
-export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
+export async function useItem(itemId) { // Now async due to potential evolution
     if (gameState.eventModalActive) { addBattleLog("Acknowledge the current event first!"); return; }
     const itemInfo = itemData[itemId]; // Renamed from potionData, potionInfo to itemInfo
     if (!itemInfo || !gameState.items[itemId] || gameState.items[itemId] <= 0) { // Renamed from gameState.potions
@@ -574,16 +574,10 @@ export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
             const originalPokemonNameForLog = activePokemon.name;
             const targetEvolutionName = evolutionDefinition.evolvesTo;
             const preservedLevel = activePokemon.level;
-            const preservedShiny = activePokemon.isShiny;
-            const preservedBall = activePokemon.caughtWithBall;
 
-            // Update the active Pokemon instance in place
-            activePokemon.name = targetEvolutionName; // Set name first, so constructor uses it for stats
-            Object.assign(activePokemon, new Pokemon(activePokemon.name, preservedLevel, preservedShiny, preservedBall));
-            // The ID will change due to `new Pokemon`, which is consistent with existing level-up evolution.
-            activePokemon.heal(); // Fully heal on evolution
-            activePokemon.exp = 0;  // Reset EXP
-
+            // Attempt to evolve using the item. The evolve method handles stat updates and API fetching.
+            // We might need a way to pass the target evolution name if it's not the default one.
+            if (await activePokemon.evolve(targetEvolutionName)) { // Assuming evolve can take a target
             addBattleLog(`Your ${originalPokemonNameForLog} used the ${itemInfo.name} and evolved into ${activePokemon.name}!`);
             healedSomething = true; // To consume the item
             populateRouteSelector(); // Evolution might change average level if it was a party member
@@ -591,6 +585,9 @@ export function useItem(itemId) { // Renamed from usePotion, potionId to itemId
         else {
             addBattleLog(`${itemInfo.name} had no effect on ${activePokemon.name}.`);
             logged = true
+            }
+        } else if (evolutionDefinition) {
+            addBattleLog(`Cannot evolve ${activePokemon.name} into ${evolutionDefinition.evolvesTo} with ${itemInfo.name} right now.`);
         }
     }
     // Handle Rare Candy
@@ -641,15 +638,103 @@ export function cheatCreateEgg(override = false) {
 }
 
 
-export function cheatAddPokemon(pokemonName, level = 5, isShiny = false) {
-    if (!pokemonBaseStatsData[pokemonName]) {
-        const errorMessage = `Cheat Error: Pokémon "${pokemonName}" not found in game data. Check spelling and capitalization.`;
+export async function cheatAddPokemon(pokemonName, level = 5, isShiny = false) {
+    // Standardize pokemonName to CapitalizedCase for consistency with pokemonBaseStatsData keys
+    const formattedPokemonName = pokemonName.charAt(0).toUpperCase() + pokemonName.slice(1).toLowerCase();
+
+    if (!pokemonBaseStatsData[formattedPokemonName]) {
+        addBattleLog(`Pokémon "${formattedPokemonName}" not in local data. Attempting to fetch from API...`);
+        try {
+            // 1. Fetch base Pokemon data
+            const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${formattedPokemonName.toLowerCase()}`);
+            if (!pokemonResponse.ok) {
+                throw new Error(`API error for ${formattedPokemonName}: ${pokemonResponse.status} ${await pokemonResponse.text()}`);
+            }
+            const pkmnData = await pokemonResponse.json();
+
+            // 2. Fetch species data (for evolution chain URL)
+            const speciesResponse = await fetch(pkmnData.species.url);
+            if (!speciesResponse.ok) {
+                throw new Error(`API error for species data of ${formattedPokemonName}: ${speciesResponse.status} ${await speciesResponse.text()}`);
+            }
+            const speciesData = await speciesResponse.json();
+
+            // 3. Fetch evolution chain data
+            const evolutionChainResponse = await fetch(speciesData.evolution_chain.url);
+            if (!evolutionChainResponse.ok) {
+                throw new Error(`API error for evolution chain of ${formattedPokemonName}: ${evolutionChainResponse.status} ${await evolutionChainResponse.text()}`);
+            }
+            const evolutionChainData = await evolutionChainResponse.json();
+
+            // --- Parse data ---
+            const newPokedexId = pkmnData.id;
+            const newTypes = pkmnData.types.map(t => t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1));
+            const newBaseStats = {
+                hp: pkmnData.stats.find(s => s.stat.name === 'hp').base_stat,
+                attack: pkmnData.stats.find(s => s.stat.name === 'attack').base_stat,
+                defense: pkmnData.stats.find(s => s.stat.name === 'defense').base_stat,
+                speed: pkmnData.stats.find(s => s.stat.name === 'speed').base_stat,
+            };
+
+            let newEvolutionTargetName = null;
+            let newEvolveLevel = null;
+
+            // Function to find evolution details in the chain
+            function findEvolution(chainNode, currentSpeciesNameKey) {
+                if (chainNode.species.name === currentSpeciesNameKey.toLowerCase()) {
+                    if (chainNode.evolves_to && chainNode.evolves_to.length > 0) {
+                        const evolution = chainNode.evolves_to[0]; // Taking the first evolution path
+                        newEvolutionTargetName = evolution.species.name.charAt(0).toUpperCase() + evolution.species.name.slice(1);
+                        if (evolution.evolution_details && evolution.evolution_details.length > 0) {
+                            const details = evolution.evolution_details[0];
+                            if (details.trigger.name === 'level-up' && details.min_level) {
+                                newEvolveLevel = details.min_level;
+                            }
+                            // Future: Could add more conditions for items, trade, etc. if needed
+                        }
+                    }
+                    return true; // Found and processed this species
+                }
+                // Recursively search in further evolutions
+                for (const nextNode of chainNode.evolves_to) {
+                    if (findEvolution(nextNode, currentSpeciesNameKey)) {
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            findEvolution(evolutionChainData.chain, formattedPokemonName);
+
+            // Add to pokemonBaseStatsData using the 'type' key for the array of types, as per existing structure
+            pokemonBaseStatsData[formattedPokemonName] = {
+                pokedexId: newPokedexId,
+                type: newTypes, // Storing as 'type' key with array of types
+                evolution: newEvolutionTargetName,
+                evolveLevel: newEvolveLevel,
+                base: newBaseStats,
+                growth: { hp: 1.5, attack: 1.0, defense: 1.0, speed: 1.0 } // Default growth rates
+            };
+            addBattleLog(`Successfully fetched and added data for ${formattedPokemonName} to game data.`);
+            console.log(`Added ${formattedPokemonName} to pokemonBaseStatsData:`, pokemonBaseStatsData[formattedPokemonName]);
+
+        } catch (error) {
+            const errorMessage = `Cheat Error: Failed to fetch data for "${formattedPokemonName}" from API. ${error.message}`;
+            console.error(errorMessage, error);
+            addBattleLog(errorMessage);
+            return; // Stop if API fetch fails
+        }
+    }
+
+    // Proceed if data exists (either initially or after successful fetch)
+    if (!pokemonBaseStatsData[formattedPokemonName]) {
+        const errorMessage = `Cheat Error: Pokémon "${formattedPokemonName}" still not found after API attempt. Check spelling.`;
         console.error(errorMessage);
         addBattleLog(errorMessage);
         return;
     }
 
-    const newPokemon = new Pokemon(pokemonName, parseInt(level, 10) || 5, !!isShiny); // Ensure level is int, shiny is bool
+    const newPokemon = await Pokemon.create(formattedPokemonName, parseInt(level, 10) || 5, !!isShiny); // Use Pokemon.create
     const emptyPartySlot = gameState.party.findIndex(slot => slot === null);
 
     if (emptyPartySlot !== -1) {

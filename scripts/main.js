@@ -17,7 +17,7 @@ async function initGame() {
     
     const savedGame = localStorage.getItem('pokemonIdleGameV2');
     if (savedGame) {
-        loadGame();
+        await loadGame(); // Await async loadGame
     } else {
         await showStarterSelectionModal();
         // Initial route setup for new game
