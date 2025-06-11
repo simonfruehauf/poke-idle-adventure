@@ -59,8 +59,8 @@ export function saveGame() {
         xpShareLevel: gameState.xpShareLevel,
         konamiCodeActivated: gameState.konamiCodeActivated,
         // Egg Features
-        mysteryEggNextAvailableTimestamp: gameState.mysteryEggNextAvailableTimestamp,
-        mysteryEggIsClaimable: gameState.mysteryEggIsClaimable,
+        eggNextAvailableTimestamp: gameState.eggNextAvailableTimestamp,
+        eggIsClaimable: gameState.EggIsClaimable,
         playerHasUnincubatedEgg: gameState.playerHasUnincubatedEgg,
         incubator: gameState.incubator,
 
@@ -118,8 +118,8 @@ export function loadGame() {
         gameState.currentWildPokemon = data.currentWildPokemon ? deserializePokemon(data.currentWildPokemon) : null;
 
         // Load Egg Features
-        gameState.mysteryEggNextAvailableTimestamp = data.mysteryEggNextAvailableTimestamp || null;
-        gameState.mysteryEggIsClaimable = data.mysteryEggIsClaimable || false;
+        gameState.eggNextAvailableTimestamp = data.mysteryEggNextAvailableTimestamp || null;
+        gameState.EggIsClaimable = data.mysteryEggIsClaimable || false;
         gameState.playerHasUnincubatedEgg = data.playerHasUnincubatedEgg || false;
         gameState.incubator = data.incubator || {
             eggDetails: null,

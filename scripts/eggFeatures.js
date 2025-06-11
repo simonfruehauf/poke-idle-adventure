@@ -1,14 +1,14 @@
 import { gameState } from './state.js'; 
-import { pokemonBaseStatsData } from './state.js'; 
+import { pokemonBaseStatsData, eggData } from './state.js'; 
 import { Pokemon } from './pokemon.js';
 
 import { addBattleLog, getActivePokemon} from './utils.js'; 
 import { updateDisplay} from './ui.js';
 
-const MYSTERY_EGG_GENERATION_TIME = 4 * 60 * 60 * 1000; // 4 hours in ms
-const INCUBATION_TIME = 1 * 60 * 60 * 1000; // 1 hour in ms
+const EGG_GENERATION_TIME = 4 * 60 * 60 * 1000; // 4 hours in ms
+let INCUBATION_TIME = 60 * 60 * 1000; // X hour in ms
 
-let mysteryEggInterval;
+let eggInterval;
 let incubatorInterval;
 
 // Helper to format duration (use from utils.js if available and more robust)
@@ -29,11 +29,11 @@ export function initializeEggFeatures() {
     if (!gameState.incubator) { // Ensure incubator state is initialized
         gameState.incubator = { eggDetails: null, incubationEndTime: null, isHatchingReady: false };
     }
-    if (gameState.mysteryEggNextAvailableTimestamp === undefined) gameState.mysteryEggNextAvailableTimestamp = null;
-    if (gameState.mysteryEggIsClaimable === undefined) gameState.mysteryEggIsClaimable = false;
+    if (gameState.eggNextAvailableTimestamp === undefined) gameState.eggNextAvailableTimestamp = null;
+    if (gameState.EggIsClaimable === undefined) gameState.EggIsClaimable = false;
     if (gameState.playerHasUnincubatedEgg === undefined) gameState.playerHasUnincubatedEgg = false;
 
-    updateMysteryEggUI();
+    updateEggUI();
     updateIncubatorUI();
 }
 
@@ -44,59 +44,71 @@ function getElementByIdSafe(id) {
     return el;
 }
 
-function getRandomHatchablePokemon() {
-    // For a "Mystery Egg", let's pick a random base-stage Pokémon from Gen 1 for simplicity.
-    // A more robust system might have specific egg groups or rarities.
-    const allEvolutionTargets = new Set();
-    for (const name in pokemonBaseStatsData) {
-        const pkmn = pokemonBaseStatsData[name];
-        if (pkmn.evolutionTargetName) {
-            allEvolutionTargets.add(pkmn.evolutionTargetName);
-        }
-    }
+function getRandomHatchablePokemon(type) {
+    let chosenPokemonData;
+    let hatchablePokemon = [];
 
-    const hatchablePokemon = [];
-    for (const name in pokemonBaseStatsData) {
-        const pkmn = name;
-        // Check if it's not an evolution target
-        if (!allEvolutionTargets.has(name)) {
-            hatchablePokemon.push(pkmn);
+    // For a "Mystery Egg", pick a random base-stage Pokémon
+    if (type === 'mystery') { 
+        const allEvolutionTargets = new Set();
+        for (const name in pokemonBaseStatsData) {
+            const pkmn = pokemonBaseStatsData[name];
+            if (pkmn.evolution) {
+                allEvolutionTargets.add(pkmn.evolution);
+            }
+        }
+        for (const name in pokemonBaseStatsData) {
+            const pkmn = name;
+            // Check if it's not an evolution target and Gen 1
+            if (!allEvolutionTargets.has(name) && pokemonBaseStatsData[name].pokedexId <= 151) {
+                hatchablePokemon.push(pkmn);
+            }
         }
     }
+    else {
+        let eggtype = eggData[type];
+        const totalChance = eggtype.hatchablePokemon.reduce((sum, pkmn) => sum + pkmn.chance, 0);
+        let randomRoll = Math.random() * totalChance;
+        let selectedPokemonData;
+        let availablePokemon = eggtype.hatchablePokemon;
+        for (const pkmn of availablePokemon) {
+            if (randomRoll < pkmn.chance) {
+                selectedPokemonData = pkmn;
+                break;
+            }
+        randomRoll -= pkmn.chance;
+        }
+        return new Pokemon(selectedPokemonData.name, 1);
+    }
+    const randomIndex = Math.floor(Math.random() * hatchablePokemon.length);
+
+    chosenPokemonData = hatchablePokemon[randomIndex];
     if (hatchablePokemon.length === 0) {
         console.error("No hatchable Pokémon found!");
         return new Pokemon('Magikarp', 1); // Fallback
     }
-    const randomIndex = Math.floor(Math.random() * hatchablePokemon.length);
-    const chosenPokemonData = hatchablePokemon[randomIndex];
     return new Pokemon(chosenPokemonData, 1); 
 }
 
-export function handleMysteryEggClick() {
-    if (gameState.mysteryEggIsClaimable) {
+export function handleEggClick(override = false) {
+    if (gameState.EggIsClaimable || override) {
         if (!gameState.playerHasUnincubatedEgg && !gameState.incubator.eggDetails && !gameState.incubator.isHatchingReady) {
             gameState.playerHasUnincubatedEgg = true;
-            gameState.mysteryEggIsClaimable = false;
-            // Start generating the next egg immediately
-            gameState.mysteryEggNextAvailableTimestamp = Date.now() + MYSTERY_EGG_GENERATION_TIME;
-            
-            addBattleLog("You claimed a Mystery Egg!");
-            
-            updateMysteryEggUI();
+            gameState.EggIsClaimable = false;
+            gameState.eggNextAvailableTimestamp = Date.now() + EGG_GENERATION_TIME;
+            addBattleLog(`You claimed an Egg! You can start incubating it now.`);
+            updateEggUI();
             updateIncubatorUI(); // Incubator might become available
         } // No specific message if incubator is busy, as the click handler on incubator will manage that
-    } else {
-        // This case should ideally be prevented by the 'disabled' class making it non-clickable
-        addBattleLog("The Mystery Egg is still generating.");
-    }
+    } 
 }
 
-export function handleIncubatorClick() {
-    if (gameState.incubator.isHatchingReady) {
-        const hatchedPokemon = getRandomHatchablePokemon();
-        
-
+export function handleIncubatorClick(type = 'mystery', override = false) {
+    if (gameState.incubator.isHatchingReady || override) {
+        if (override) createEgg(type, override); // Hatch
+        const hatchedPokemon = getRandomHatchablePokemon(gameState.incubator.eggDetails.type);
         const emptyPartySlot = gameState.party.findIndex(slot => slot === null);
+        console.log(`Your egg hatched into a ${hatchedPokemon.isShiny ? 'Shiny ' : ''}${hatchedPokemon.name}!`);
         if (emptyPartySlot !== -1) {
             gameState.party[emptyPartySlot] = hatchedPokemon;
             if (getActivePokemon() === null) { // If no active Pokemon, make this the active one
@@ -108,71 +120,81 @@ export function handleIncubatorClick() {
 
         updateDisplay();
         addBattleLog(`Your egg hatched into a ${hatchedPokemon.isShiny ? 'Shiny ' : ''}${hatchedPokemon.name}!`);
-
         gameState.incubator = { eggDetails: null, incubationEndTime: null, isHatchingReady: false };
         updateIncubatorUI();
     } else if (gameState.playerHasUnincubatedEgg && !gameState.incubator.eggDetails) {
-        gameState.incubator.eggDetails = { type: 'mystery' }; // Assuming it's the mystery egg
-        gameState.incubator.incubationEndTime = Date.now() + INCUBATION_TIME;
-        gameState.incubator.isHatchingReady = false;
-        gameState.playerHasUnincubatedEgg = false; // Egg moved to incubator
-
-        addBattleLog("Incubation started for the Mystery Egg.");
-        updateIncubatorUI();
-    } else if (gameState.incubator.eggDetails && !gameState.incubator.isHatchingReady) {
-        addBattleLog("Egg is already incubating.");
-    } else {
-        addBattleLog("You don't have an egg to incubate.");
+        const totalEggChance = Object.values(eggData).reduce((sum, egg) => sum + egg.chance, 0);
+        let eggRandomRoll = Math.random() * totalEggChance;
+        let selectedEggType = 'mystery'; // Default to mystery if something goes wrong
+        for (const eggType in eggData) {
+            if (eggRandomRoll < eggData[eggType].chance) {
+                selectedEggType = eggType;
+                break;
+            }
+            eggRandomRoll -= eggData[eggType].chance;
+        }
+        createEgg(selectedEggType);
     }
 }
 
-export function updateMysteryEggUI() {
-    if (mysteryEggInterval) clearInterval(mysteryEggInterval);
+function createEgg(type = 'mystery', hatchNow = false) {
+        gameState.incubator.eggDetails = { type: type }; 
+        gameState.incubator.incubationEndTime = Date.now() + (0 ? hatchNow : eggData[type].incubationTime * INCUBATION_TIME);
+        gameState.incubator.isHatchingReady = hatchNow;
+        gameState.playerHasUnincubatedEgg = false; // Egg moved to incubator
+        addBattleLog("Egg has started incubating.");
+        updateIncubatorUI();
+}
 
-    const progressBar = getElementByIdSafe('mystery-egg-progress-bar');
-    const timerText = getElementByIdSafe('mystery-egg-timer-text');
-    // const statusText = getElementByIdSafe('mystery-egg-status'); // This element does not exist in the HTML for mystery egg
-    const wrapper = getElementByIdSafe('mystery-egg-progress-wrapper');
+
+export function updateEggUI() {
+    if (eggInterval) clearInterval(eggInterval);
+
+    const progressBar = getElementByIdSafe('egg-progress-bar');
+    const timerText = getElementByIdSafe('egg-timer-text');
+    const wrapper = getElementByIdSafe('egg-progress-wrapper');
 
     if (!progressBar || !timerText || !wrapper) return; // Adjusted condition
 
-    wrapper.classList.remove('claimable', 'disabled');
 
-    if (gameState.mysteryEggIsClaimable) {
+    if (gameState.EggIsClaimable) {
         progressBar.style.width = '100%';
         wrapper.classList.add('claimable');
 
         if (gameState.incubator.eggDetails || gameState.incubator.isHatchingReady) {
             timerText.textContent = 'Incubator Busy!';
-            wrapper.title = "Mystery Egg ready, but incubator is in use. Hatch current egg first.";
+            wrapper.title = "Egg ready, but incubator is in use. Hatch current egg first.";
             wrapper.classList.add('disabled'); // Also make it non-clickable if incubator is busy
+
         } else {
+            wrapper.classList.remove('disabled');
             timerText.textContent = 'Ready to Claim!';
-            wrapper.title = "Click to claim your Mystery Egg!";
+            wrapper.title = "Click to claim your Egg!";
         }
     } else {
+        wrapper.classList.remove('claimable')
         wrapper.classList.add('disabled'); // Make non-clickable while generating
-        if (!gameState.mysteryEggNextAvailableTimestamp) {
+        if (!gameState.eggNextAvailableTimestamp) {
             // Start generation if it hasn't started (e.g., first load or after a claim where it wasn't set)
-            gameState.mysteryEggNextAvailableTimestamp = Date.now() + MYSTERY_EGG_GENERATION_TIME;
+            gameState.eggNextAvailableTimestamp = Date.now() + EGG_GENERATION_TIME;
         }
 
-        const timeLeft = gameState.mysteryEggNextAvailableTimestamp - Date.now();
+        const timeLeft = gameState.eggNextAvailableTimestamp - Date.now();
 
         if (timeLeft <= 0) {
-            gameState.mysteryEggIsClaimable = true;
-            gameState.mysteryEggNextAvailableTimestamp = null; // Clear timestamp once ready
-            updateMysteryEggUI(); // Re-run to show claimable state
+            gameState.EggIsClaimable = true;
+            gameState.eggNextAvailableTimestamp = null; // Clear timestamp once ready
+            updateEggUI(); // Re-run to show claimable state
             return;
         }
 
-        const progress = Math.max(0, (MYSTERY_EGG_GENERATION_TIME - timeLeft) / MYSTERY_EGG_GENERATION_TIME * 100);
+        const progress = Math.max(0, (EGG_GENERATION_TIME - timeLeft) / EGG_GENERATION_TIME * 100);
         progressBar.style.width = `${progress}%`;
         timerText.textContent = formatDuration(timeLeft);
         // statusText.textContent = 'Finding an Egg...'; // Removed as element doesn't exist
         wrapper.title = `Finding an Egg... Time remaining: ${formatDuration(timeLeft)}`;
 
-        mysteryEggInterval = setInterval(updateMysteryEggUI, 1000);
+        eggInterval = setInterval(updateEggUI, 1000);
     }
 }
 
@@ -185,7 +207,15 @@ export function updateIncubatorUI() {
     const statusText = getElement('incubator-status');
     const wrapper = getElementByIdSafe('incubator-progress-wrapper');
     const eggSprite = getElementByIdSafe('incubator-egg-sprite');
-    const eggSpriteimg = 'sprites/pokemon/mystery-egg.png';
+    let eggSpriteimg;
+    if (gameState.incubator.eggDetails) {
+        eggSpriteimg = eggData[gameState.incubator.eggDetails.type].image;
+    }
+    else {
+        eggSpriteimg = '/sprites/pokemon/eggs/mystery-egg.png';
+    }
+    
+
     if (!progressBar || !timerText || !statusText || !wrapper || !eggSprite) return; // statusText is valid for incubator
 
     wrapper.classList.remove('incubating', 'hatchable', 'disabled');
@@ -214,9 +244,9 @@ export function updateIncubatorUI() {
             updateIncubatorUI(); // Re-run to show hatchable state
             return;
         }
+        let t = gameState.incubator.eggDetails.type;
 
-
-        const progress = Math.max(0, (INCUBATION_TIME - timeLeft) / INCUBATION_TIME * 100);
+        const progress = Math.max(0, ((eggData[t].incubationTime * INCUBATION_TIME) - timeLeft) / (eggData[t].incubationTime * INCUBATION_TIME )* 100);
         progressBar.style.width = `${progress}%`;
         timerText.textContent = formatDuration(timeLeft);
         statusText.textContent = 'Incubating...';
@@ -225,14 +255,14 @@ export function updateIncubatorUI() {
         incubatorInterval = setInterval(updateIncubatorUI, 1000);
     } else { // Incubator empty, not hatching
         progressBar.style.width = '0%';
-        timerText.textContent = formatDuration(INCUBATION_TIME); // Show full duration
+        timerText.textContent = formatDuration(0); // Show full duration
         if (gameState.playerHasUnincubatedEgg) {
             statusText.textContent = 'Egg ready to incubate.';
             wrapper.title = "You have an egg! Click to start incubation.";
         } else {
             statusText.textContent = 'No egg to incubate.';
             wrapper.classList.add('disabled');
-            wrapper.title = "Claim a Mystery Egg first to use the incubator.";
+            wrapper.title = "Claim an Egg first to use the incubator.";
         }
     }
 }

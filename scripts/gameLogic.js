@@ -4,6 +4,7 @@ import { Pokemon } from './pokemon.js';
 import { addBattleLog, getActivePokemon, findNextHealthyPokemon, formatNumberWithDots } from './utils.js'; // XP_LEVEL_DIFF_FACTOR, XP_MULTIPLIER_MIN, XP_MULTIPLIER_MAX
 import { updateDisplay, updateWildPokemonDisplay, populateRouteSelector, showEventModal, closeEventModal, displayPokemonData } from './ui.js';
 import { AUTO_FIGHT_UNLOCK_WINS, XP_SHARE_CONFIG, XP_LEVEL_DIFF_FACTOR, XP_MULTIPLIER_MIN, XP_MULTIPLIER_MAX, getTypeEffectiveness } from './config.js';
+import { handleIncubatorClick, handleEggClick} from './eggFeatures.js';
 
 
 let autoFightIntervalId = null;
@@ -631,6 +632,14 @@ export function freeFullHeal() {
         addBattleLog("Conditions for free heal not met."); // Should not happen if button is hidden
     }
 }
+
+export function cheatHatchEgg(type = 'mystery', override = false) {
+    handleIncubatorClick(type, override);
+}
+export function cheatCreateEgg(override = false) {
+    handleEggClick(override);
+}
+
 
 export function cheatAddPokemon(pokemonName, level = 5, isShiny = false) {
     if (!pokemonBaseStatsData[pokemonName]) {

@@ -940,7 +940,7 @@ footer {
     text-shadow: 1px 1px 2px rgba(0,0,0,0.6);
     pointer-events: none;
 }
-#mystery-egg-feature { 
+#egg-feature { 
     display: flex;
     flex-grow: 2;
     text-align: center; 

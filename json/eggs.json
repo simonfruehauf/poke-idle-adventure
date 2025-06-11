@@ -1,0 +1,56 @@
+{
+    "mystery": {
+        "name": "Mystery Egg",
+        "chance": 10,
+        "image": "sprites/pokemon/eggs/mystery-egg.png",
+        "incubationTime": 1,
+        "hatchablePokemon": [
+        ]
+    },
+    "common": {
+        "name": "Common Egg",
+        "chance": 50,
+        "image": "sprites/pokemon/eggs/common-egg.png",
+        "incubationTime": 0.25,
+        "hatchablePokemon": [
+        { "name": "Chikorita", "chance": 10},
+        { "name": "Cyndaquil", "chance": 10},
+        { "name": "Totodile",  "chance": 10},
+        { "name": "Pichu",   "chance": 10},
+        { "name": "Cleffa",  "chance": 10},
+        { "name": "Igglybuff",  "chance": 10},
+        { "name": "Togepi",  "chance": 10},
+        { "name": "Tyrogue",  "chance": 10},
+        { "name": "Smoochum",  "chance": 10},
+        { "name": "Elekid",  "chance": 10},
+        { "name": "Magby",  "chance": 10}
+        ]
+    },
+    "rare": {
+        "name": "Rare Egg",
+        "chance": 35,
+        "image": "sprites/pokemon/eggs/rare-egg.png",
+        "incubationTime": 2,
+        "hatchablePokemon": [        
+        { "name": "Larvitar", "chance": 10}
+        ]
+    },
+    "legendary": {
+        "name": "Legendary Egg",
+        "chance": 5,
+        "image": "sprites/pokemon/eggs/legendary-egg.png",
+        "incubationTime": 4,
+        "hatchablePokemon": [
+        { "name": "Mew",  "chance": 10},        
+        { "name": "Mewtwo", "chance": 5},
+        { "name": "Entei", "chance": 10},
+        { "name": "Raikou",   "chance": 10},
+        { "name": "Suicune",  "chance": 10},
+        { "name": "Lugia",  "chance": 10},
+        { "name": "Ho-Oh",  "chance": 10},
+        { "name": "Celebi",  "chance": 15},
+        { "name": "Latias",  "chance": 10},
+        { "name": "Latios",  "chance": 10}
+        ]
+    }
+}

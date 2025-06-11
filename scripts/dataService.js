@@ -1,5 +1,5 @@
 // dataService.js
-import { routes, pokemonBaseStatsData, pokeballData, itemData, eventDefinitions } from './state.js';
+import { routes, pokemonBaseStatsData, pokeballData, itemData, eventDefinitions, eggData } from './state.js';
 
 export async function loadGameData() {
     try {
@@ -22,6 +22,9 @@ export async function loadGameData() {
 
         const eventsResponse = await fetch('json/events.json');
         Object.assign(eventDefinitions, await eventsResponse.json());
+
+        const eggResponse = await fetch('json/eggs.json');
+        Object.assign(eggData, await eggResponse.json());
 
         console.log("Game data loaded successfully.");
     } catch (error) {

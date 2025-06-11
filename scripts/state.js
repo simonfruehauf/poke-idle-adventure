@@ -49,8 +49,8 @@ export let gameState = {
     eventModalActive: false,      // True if the post-battle event modal is shown
     currentPostBattleEvent: null, // Stores the data of the currently active post-battle event
     eventModalTimerId: null,       // Timer ID for auto-closing event modal during auto-battle
-    mysteryEggNextAvailableTimestamp: null, // Timestamp for when the next mystery egg generation completes
-    mysteryEggIsClaimable: false,           // True if a generated mystery egg is ready to be claimed
+    eggNextAvailableTimestamp: null, // Timestamp for when the next egg generation completes
+    EggIsClaimable: false,           // True if a generated mystery egg is ready to be claimed
     playerHasUnincubatedEgg: false,         // True if the player has claimed an egg and it's waiting for incubation
     incubator: {
         eggDetails: null,                   // { type: 'mystery', ... }
@@ -68,3 +68,5 @@ export let pokeballData = {}; // Data for different types of Pokeballs
 export let itemData = {}; // Holds data for usable items like potions
 
 export let eventDefinitions = { globalEventChance: 0, events: [] }; // To store loaded events.json
+
+export let eggData = {};

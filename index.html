@@ -33,15 +33,15 @@
 
         <div class="game-area">
             <div class="panel egg-area" id="egg-features-container">
-                <div class="egg-feature" id="mystery-egg-feature">
-                    <h4>Mystery Egg</h4>
+                <div class="egg-feature" id="egg-feature">
+                    <h4>Egg</h4>
                     <div class="progress-bar-wrapper" 
-                         id="mystery-egg-progress-wrapper" 
-                         title="Generates a new Mystery Egg over 8 hours. Click to claim when ready."
-                         onclick="window.eggFeatures.handleMysteryEggClick()">
+                         id="egg-progress-wrapper" 
+                         title="Generates a new Egg over X hours. Click to claim when ready."
+                         onclick="window.eggFeatures.handleEggClick()">
                         <div class="progress-bar-underlay">
-                            <span class="progress-bar-label" id="mystery-egg-timer-text">8h 0m 0s</span>
-                            <div class="progress-bar-overlay" id="mystery-egg-progress-bar" style="width: 0%;"></div>
+                            <span class="progress-bar-label" id="egg-timer-text">8h 0m 0s</span>
+                            <div class="progress-bar-overlay" id="egg-progress-bar" style="width: 0%;"></div>
                         </div>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
 
                     <div class="progress-bar-wrapper" 
                          id="incubator-progress-wrapper" 
-                         title="Incubate an egg over 2 hours. Requires an egg. Click to start if you have an egg."
+                         title="Incubate an egg over X hours. Requires an egg. Click to start if you have an egg."
                          onclick="window.eggFeatures.handleIncubatorClick()">
                         <div class="progress-bar-underlay">
                             <span class="progress-bar-label" id="incubator-timer-text">2h 0m 0s</span>
