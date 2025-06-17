@@ -71,7 +71,7 @@ body {
     display: flex;
     justify-content: space-around;
     background: var(--panel-bg-light);
-    padding: 15px;
+    padding: 12px;
     border-radius: 10px;
     border: 1px solid var(--interactive-border);
     margin-bottom: 20px;
@@ -93,8 +93,6 @@ body {
         "items-bar battle-area party-area"
         "items-bar egg-area egg-area"
         "items-bar shop-area shop-area";
-
-
     grid-template-columns: 120px 1fr 1fr;
     gap: 20px;
 }
@@ -111,7 +109,6 @@ body {
     grid-area: party-area;
     gap: 20px;
 }
-
 .party-slots {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -356,7 +353,7 @@ footer {
     justify-content: space-around;
     background: var(--panel-bg-lightest);
     border-radius: 10px;
-    padding: 10px;
+    padding: 5px;
     margin-bottom: 15px;
 }
 
@@ -365,7 +362,7 @@ footer {
     margin: 10px;
     align-items: center;
     padding: 10px;
-    height: 35%;
+    height: 40%;
     background: var(--interactive-starter-bg);
     border-radius: 8px;
     width: fit-content;
@@ -590,7 +587,6 @@ footer {
     font-size: 15px;
 }
 
-
 .shop {
     background: var(--panel-bg-light);
     border-radius: 10px;
@@ -605,7 +601,8 @@ footer {
 }
 
 .shop-sections-container {
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 20px;
     flex-wrap: wrap;
 }
@@ -709,7 +706,7 @@ footer {
     border-radius: 8px;
     border: 1px solid var(--interactive-border);
     margin-bottom: 15px;
-    font-size: 12px;
+    font-size: 14px;
 }
 
 .modal-overlay {

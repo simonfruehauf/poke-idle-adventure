@@ -291,15 +291,9 @@ function _updateMainActionButtonsState() {
         autoFightBtn.style.backgroundColor = "#aaa";
     } else {
         if (gameState.autoBattleActive) {
-            // If auto-fight is ON, button says "Stop Auto-Fight" and should ALWAYS be enabled.
             autoFightBtn.textContent = 'Stop Auto-Fight';
             autoFightBtn.disabled = false;
         } else {
-            // If auto-fight is OFF, button says "Start Auto-Fight".
-            // Disable "Start Auto-Fight" if:
-            // 1. Auto-fight is not unlocked OR
-            // 2. No route is selected OR
-            // 3. A battle is currently in progress (can't start a new auto-fight then).
             autoFightBtn.textContent = 'Start Auto-Fight';
             autoFightBtn.disabled = !gameState.autoFightUnlocked ||
                 gameState.currentRoute === null ||
