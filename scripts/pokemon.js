@@ -2,6 +2,7 @@
 import { pokemonBaseStatsData } from './state.js';
 import { SHINY_CHANCE, SHINY_STAT_BONUSES } from './config.js';
 import { addBattleLog } from './utils.js';
+import { fetchPokemonDataFromAPI } from './apiService.js';
 
 export class Pokemon {
     constructor(name, level = 1, isShinyOverride = null, caughtWithBall = 'pokeball', nickname = null) {
@@ -20,7 +21,8 @@ export class Pokemon {
         const statsData = await this.getStatsData(this.name); // Now async
 
         this.pokedexId = statsData.pokedexId;
-        this.types = statsData.types;
+        // Ensure types is always an array, defaulting to ["Normal"] if undefined or empty
+        this.types = (statsData.types && statsData.types.length > 0) ? statsData.types : ["Normal"];
         this.evolutionTargetName = statsData.evolution;
         this.evolveLevel = statsData.evolveLevel;
         this.baseStats = { ...statsData.base };
@@ -57,69 +59,24 @@ export class Pokemon {
         return pokemon;
     }
 
-    async fetchAndProcessPokemonDataAPI(pokemonNameKey) {
-        addBattleLog(`Data for "${pokemonNameKey}" not in local files. Attempting to fetch from API...`);
-        try {
-            const pokemonResponse = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonNameKey.toLowerCase()}`);
-            if (!pokemonResponse.ok) throw new Error(`API error for ${pokemonNameKey}: ${pokemonResponse.status} ${await pokemonResponse.text()}`);
-            const pkmnData = await pokemonResponse.json();
-
-            const speciesResponse = await fetch(pkmnData.species.url);
-            if (!speciesResponse.ok) throw new Error(`API error for species data of ${pokemonNameKey}: ${speciesResponse.status} ${await speciesResponse.text()}`);
-            const speciesData = await speciesResponse.json();
-
-            const evolutionChainResponse = await fetch(speciesData.evolution_chain.url);
-            if (!evolutionChainResponse.ok) throw new Error(`API error for evolution chain of ${pokemonNameKey}: ${evolutionChainResponse.status} ${await evolutionChainResponse.text()}`);
-            const evolutionChainData = await evolutionChainResponse.json();
-
-            const newPokedexId = pkmnData.id;
-            const newTypes = pkmnData.types.map(t => t.type.name.charAt(0).toUpperCase() + t.type.name.slice(1));
-            const newBaseStats = {
-                hp: pkmnData.stats.find(s => s.stat.name === 'hp').base_stat,
-                attack: pkmnData.stats.find(s => s.stat.name === 'attack').base_stat,
-                defense: pkmnData.stats.find(s => s.stat.name === 'defense').base_stat,
-                speed: pkmnData.stats.find(s => s.stat.name === 'speed').base_stat,
-            };
-            let newEvolutionTargetName = null;
-            let newEvolveLevel = null;
-
-            function findEvolutionInChain(chainNode, currentSpeciesName) { // Renamed for clarity
-                if (chainNode.species.name === currentSpeciesName.toLowerCase()) {
-                    if (chainNode.evolves_to && chainNode.evolves_to.length > 0) {
-                        const evolution = chainNode.evolves_to[0];
-                        newEvolutionTargetName = evolution.species.name.charAt(0).toUpperCase() + evolution.species.name.slice(1);
-                        if (evolution.evolution_details && evolution.evolution_details.length > 0 && evolution.evolution_details[0].trigger.name === 'level-up' && evolution.evolution_details[0].min_level) {
-                            newEvolveLevel = evolution.evolution_details[0].min_level;
-                        }
-                    } return true;
-                }
-                for (const nextNode of chainNode.evolves_to) if (findEvolutionInChain(nextNode, currentSpeciesName)) return true;
-                return false;
-            }
-            findEvolutionInChain(evolutionChainData.chain, pokemonNameKey);
-
-            const fetchedData = { pokedexId: newPokedexId, type: newTypes, evolution: newEvolutionTargetName, evolveLevel: newEvolveLevel, base: newBaseStats, growth: { hp: 1.5, attack: 1.0, defense: 1.0, speed: 1.0 } };
-            pokemonBaseStatsData[pokemonNameKey] = fetchedData; // Add to global store
-            addBattleLog(`Successfully fetched and added data for ${pokemonNameKey} to game data.`);
-            console.log(`Added ${pokemonNameKey} to pokemonBaseStatsData via Pokemon class:`, pokemonBaseStatsData[pokemonNameKey]);
-            return fetchedData;
-        } catch (error) {
-            const errorMessage = `Pokemon Class: Failed to fetch data for "${pokemonNameKey}" from API. ${error.message}`;
-            console.error(errorMessage, error);
-            addBattleLog(errorMessage);
-            return null;
-        }
-    }
-
     async getStatsData(name) {
         let speciesDefinition = pokemonBaseStatsData[name];
 
         if (!speciesDefinition) {
-            await this.fetchAndProcessPokemonDataAPI(name);
-            speciesDefinition = pokemonBaseStatsData[name]; // Try to get it again
+            // Use the centralized API service to fetch data
+            speciesDefinition = await fetchPokemonDataFromAPI(name);
+            // fetchPokemonDataFromAPI already caches it in pokemonBaseStatsData
         }
 
-        if (speciesDefinition && typeof speciesDefinition.base === 'object' && typeof speciesDefinition.growth === 'object' && typeof speciesDefinition.pokedexId === 'number') {
+        // Validate the structure of speciesDefinition (whether from cache or API)
+        if (speciesDefinition &&
+            typeof speciesDefinition.base === 'object' &&
+            typeof speciesDefinition.growth === 'object' &&
+            typeof speciesDefinition.pokedexId === 'number' &&
+            Array.isArray(speciesDefinition.type) && // Ensure 'type' is an array (as per JSON structure)
+            Object.keys(speciesDefinition.base).length > 0 && // Basic check if base stats object is not empty
+            Object.keys(speciesDefinition.growth).length > 0) { // Basic check if growth stats object is not empty
+
             const requiredBaseStats = ['hp', 'attack', 'defense', 'speed'];
             const requiredGrowthStats = ['hp', 'attack', 'defense', 'speed'];
 
@@ -129,21 +86,23 @@ export class Pokemon {
             if (hasAllBase && hasAllGrowth) {
                 return {
                     pokedexId: speciesDefinition.pokedexId,
-                    types: Array.isArray(speciesDefinition.type) && speciesDefinition.type.length > 0 ? speciesDefinition.type : ["Normal"],
+                    types: speciesDefinition.type.length > 0 ? [...speciesDefinition.type] : ["Normal"], // Ensure types is not empty
                     evolution: speciesDefinition.evolution,
                     evolveLevel: speciesDefinition.evolveLevel,
-                    base: { ...speciesDefinition.base }, // Return copies
-                    growth: { ...speciesDefinition.growth } // Return copies
+                    base: { ...speciesDefinition.base },
+                    growth: { ...speciesDefinition.growth }
                 };
             }
         }
 
-        console.warn(`Stat data for ${name} is missing or incomplete even after API attempt. Using default values.`);
-        addBattleLog(`Warning: Data for ${name} is incomplete. Using default stats.`);
+        // Fallback if data is still missing, incomplete, or API fetch failed
+        console.warn(`Stat data for ${name} is missing, incomplete, or API fetch failed. Using default values.`);
+        addBattleLog(`Warning: Data for ${name} is incomplete or unavailable. Using default stats.`);
         return {
-            pokedexId: 0, 
-            types: ["Normal"], 
-            evolution: null, evolveLevel: null,
+            pokedexId: 0,
+            types: ["Normal"],
+            evolution: null,
+            evolveLevel: null,
             base: { hp: 50, attack: 50, defense: 50, speed: 50 },
             growth: { hp: 1.5, attack: 1.0, defense: 1.0, speed: 1.0 }
         };

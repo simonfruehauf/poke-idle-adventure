@@ -11,8 +11,8 @@ export async function loadGameData() {
         Object.assign(pokemonBaseStatsData, await statsGen1Response.json());
         const statsGen2Response = await fetch('json/pokemon_2.json');
         Object.assign(pokemonBaseStatsData, await statsGen2Response.json());
-        // const statsResponse = await fetch('json/pokemon_3.json');
-        // Object.assign(pokemonBaseStatsData, await statsResponse.json());
+        const statsGen3Response = await fetch('json/pokemon_3.json'); // Uncommented and renamed for clarity
+        Object.assign(pokemonBaseStatsData, await statsGen3Response.json()); // Uncommented
 
         const pokeballsResponse = await fetch('json/pokeballs.json');
         Object.assign(pokeballData, await pokeballsResponse.json());

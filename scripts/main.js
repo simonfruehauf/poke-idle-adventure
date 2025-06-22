@@ -35,6 +35,7 @@ async function initGame() {
     
     // Auto-save interval
     setInterval(saveGame, 15000);
+    eggFeatures.initializeEggFeatures(); // Initialize egg and incubator logic and UI
 }
 
 // Konami Code Easter Egg
@@ -78,69 +79,191 @@ function startAutoUpdateLoop() {
     }, 10000); // Update display every 10 seconds
 }
 
-// Expose functions to global scope for inline HTML onclick handlers
-window.manualBattle = manualBattle;
-window.attemptCatch = attemptCatch;
-window.toggleAutoFight = toggleAutoFight;
-window.buyBall = buyBall;
-window.buyXpShareUpgrade = buyXpShareUpgrade;
-window.buyItem = buyItem; // Renamed from buyPotion
-window.useItem = useItem; // Renamed from usePotion
-window.handleRouteChange = handleRouteChange;
-window.leaveCurrentRoute = leaveCurrentRoute;
-window.setActivePokemon = setActivePokemon;
-window.removeFromParty = removeFromParty;
-window.addToPartyDialog = addToPartyDialog; // From ui.js
-window.attemptEvolution = attemptEvolution;
-window.confirmReleasePokemon = confirmReleasePokemonUI; // From ui.js, which calls logic
-window.manualSaveGame = manualSaveGame;
-window.confirmClearSave = confirmClearSave;
-window.exportSaveData = exportSaveData;
-window.importSaveData = importSaveData;
-window.handlePastedImportData = handlePastedImportData; // From saveLoad.js
+// Attaching event listeners
+function attachEventListeners() {
+    // Settings Modal
+    document.getElementById('settings-btn')?.addEventListener('click', showSettingsModal);
+    document.getElementById('close-settings-modal-btn')?.addEventListener('click', closeSettingsModal);
+    document.getElementById('settings-modal')?.addEventListener('click', (event) => {
+        if (event.target === event.currentTarget) closeSettingsModal();
+    });
 
-window.showExportModal = showExportModal; // Though likely called internally by exportSaveData
-window.closeExportModal = closeExportModal;
-window.copyExportDataToClipboard = copyExportDataToClipboard;
-window.showImportModal = showImportModal; // Though likely called internally by importSaveData
-window.closeImportModal = closeImportModal;
-window.processImportDataFromModal = processImportDataFromModal; // From ui.js
-window.handlePokemonSpriteClick = handlePokemonSpriteClick; // For sprite clicks
-window.closePokemonImageModal = closePokemonImageModal; // To close the image modal
-window.freeFullHeal = freeFullHeal;
-window.togglePcDrawer = togglePcDrawer; // For the new PC Drawer
-window.cheatAddPokemon = cheatAddPokemon; // Expose cheat function
-window.cheatAddMoney = cheatAddMoney; // Expose money cheat function
-window.cheatAddItem = cheatAddItem; // Expose item cheat function
-window.cheatHatchEgg = cheatHatchEgg; // Expose egg cheat
-window.cheatCreateEgg = cheatCreateEgg; // Expose egg cheat
-window.resolvePostBattleEvent = resolvePostBattleEvent; // For the event modal
-window.changePokemonNickname = changePokemonNickname; // For nicknaming logic
-window.showSettingsModal = showSettingsModal;
-window.closeSettingsModal = closeSettingsModal;
-window.eggFeatures = eggFeatures; // Expose eggFeatures module
-eggFeatures.initializeEggFeatures(); // Initialize egg and incubator logic and UI
+    // Game Data Management (inside Settings)
+    document.querySelector('#settings-modal button[onclick="window.manualSaveGame()"]')?.addEventListener('click', manualSaveGame);
+    document.querySelector('#settings-modal button[onclick="window.exportSaveData()"]')?.addEventListener('click', exportSaveData);
+    document.querySelector('#settings-modal button[onclick="window.importSaveData()"]')?.addEventListener('click', importSaveData);
+    document.querySelector('#settings-modal button[onclick="window.confirmClearSave()"]')?.addEventListener('click', confirmClearSave);
 
-// Specific UI handlers that might not be in gameLogic
-// window.showStarterSelectionModal = showStarterSelectionModal; // Already handled by initGame
+    // Export Save Modal
+    document.getElementById('export-save-modal button[onclick="window.copyExportDataToClipboard()"]')?.addEventListener('click', copyExportDataToClipboard);
+    document.getElementById('export-save-modal button[onclick="window.closeExportModal()"]')?.addEventListener('click', closeExportModal);
+    document.getElementById('export-save-modal')?.addEventListener('click', (event) => {
+        if (event.target === event.currentTarget) closeExportModal();
+    });
+
+    // Import Save Modal
+    document.getElementById('import-save-modal button[onclick="window.processImportDataFromModal()"]')?.addEventListener('click', processImportDataFromModal);
+    document.getElementById('import-save-modal button[onclick="window.closeImportModal()"]')?.addEventListener('click', closeImportModal);
+    document.getElementById('import-save-modal')?.addEventListener('click', (event) => {
+        if (event.target === event.currentTarget) closeImportModal();
+    });
+
+    // Pokemon Image Modal
+    document.getElementById('pokemon-image-modal')?.addEventListener('click', (event) => {
+        if (event.target === event.currentTarget) closePokemonImageModal();
+    });
+    // Nickname button inside this modal will be attached when the modal is shown (see ui.js _showPokemonImageModal)
+    // Close button for this modal also attached via direct ID in ui.js or here if static.
+     document.querySelector('#pokemon-image-modal button[onclick="window.closePokemonImageModal()"]')?.addEventListener('click', closePokemonImageModal);
+
+
+    // Event Modal
+    document.getElementById('event-modal-claim-btn')?.addEventListener('click', resolvePostBattleEvent);
+    document.getElementById('event-modal')?.addEventListener('click', (event) => {
+        if (event.target === event.currentTarget && !gameState.autoBattleActive) resolvePostBattleEvent();
+    });
+
+    // Main Game Area
+    document.getElementById('egg-progress-wrapper')?.addEventListener('click', eggFeatures.handleEggClick);
+    document.getElementById('incubator-progress-wrapper')?.addEventListener('click', eggFeatures.handleIncubatorClick);
+
+    document.getElementById('route-select')?.addEventListener('change', (event) => handleRouteChange(event.target.value));
+    document.getElementById('leave-route-btn')?.addEventListener('click', leaveCurrentRoute);
+    document.getElementById('fight-btn')?.addEventListener('click', manualBattle);
+    document.getElementById('auto-fight-btn')?.addEventListener('click', toggleAutoFight);
+
+    document.getElementById('free-heal-btn')?.addEventListener('click', freeFullHeal);
+    document.getElementById('floating-pc-btn')?.addEventListener('click', togglePcDrawer);
+    document.querySelector('#pc-drawer .close-drawer-btn')?.addEventListener('click', togglePcDrawer);
+
+    // Shop Buttons
+    // Poké Balls
+    document.querySelector('.shop-item button[onclick="buyBall(\'pokeball\', 1)"]')?.addEventListener('click', () => buyBall('pokeball', 1));
+    document.querySelector('.shop-item button[onclick="buyBall(\'greatball\', 1)"]')?.addEventListener('click', () => buyBall('greatball', 1));
+    document.querySelector('.shop-item button[onclick="buyBall(\'ultraball\', 1)"]')?.addEventListener('click', () => buyBall('ultraball', 1));
+    document.querySelector('.shop-item button[onclick="buyBall(\'healball\', 1)"]')?.addEventListener('click', () => buyBall('healball', 1));
+    // Healing Items
+    document.querySelector('.shop-item button[onclick="buyItem(\'potion\', 1)"]')?.addEventListener('click', () => buyItem('potion', 1));
+    document.querySelector('.shop-item button[onclick="buyItem(\'hyperpotion\', 1)"]')?.addEventListener('click', () => buyItem('hyperpotion', 1));
+    document.querySelector('.shop-item button[onclick="buyItem(\'moomoomilk\', 1)"]')?.addEventListener('click', () => buyItem('moomoomilk', 1));
+    // General Items (XP Share)
+    document.getElementById('exp-share-buy-btn')?.addEventListener('click', buyXpShareUpgrade);
+
+    // Delegated event listener for shop items (Pokeballs, Healing, Evolution stones)
+    const shopSectionsContainer = document.querySelector('.shop-sections-container');
+    if (shopSectionsContainer) {
+        shopSectionsContainer.addEventListener('click', (event) => {
+            const button = event.target.closest('button[data-action]');
+            if (!button) return;
+
+            const action = button.dataset.action;
+            const itemId = button.dataset.itemid;
+            const amount = parseInt(button.dataset.amount, 10) || 1;
+
+            if (action === 'buyBall' && itemId) {
+                buyBall(itemId, amount); // from itemLogic via gameLogic
+            } else if (action === 'buyItem' && itemId) {
+                buyItem(itemId, amount); // from itemLogic via gameLogic
+            }
+        });
+    }
+
+    // Items Bar (Catch and Use) - This already uses delegation on '.items-bar'
+    // This requires a bit more care if items are dynamically shown/hidden or created.
+    // Assuming they are static in the HTML but display:none.
+    const itemBar = document.querySelector('.items-bar');
+    if (itemBar) {
+        itemBar.addEventListener('click', (event) => {
+            const button = event.target.closest('.item-button');
+            if (!button) return;
+
+            const itemId = button.dataset.itemId;
+            if (!itemId) return;
+
+            // Determine if it's a ball or a usable item based on its presence in pokeballData vs itemData
+            if (pokeballData[itemId]) {
+                attemptCatch(itemId);
+            } else if (itemData[itemId]) {
+                useItem(itemId);
+            }
+        });
+    }
+
+    // Konami Code
+    document.addEventListener('keydown', handleKonamiCode);
+
+    // Event delegation for dynamically created elements within party and storage
+    document.getElementById('party-slots')?.addEventListener('click', handlePartyStorageInteraction);
+    document.getElementById('team-list')?.addEventListener('click', handlePartyStorageInteraction);
+
+
+    // Cheats (if you want to keep them accessible via console, they need to be on window)
+    window.cheatAddPokemon = cheatAddPokemon; // from gameLogic
+    window.cheatAddMoney = cheatAddMoney;   // from gameLogic
+    window.cheatAddItem = cheatAddItem;     // from gameLogic
+    window.cheatHatchEgg = cheatHatchEgg;   // from gameLogic
+    window.cheatCreateEgg = cheatCreateEgg; // from gameLogic
+
+    // The following window assignments are no longer needed due to event delegation
+    // or direct module imports where functions are used internally by other modules.
+    // window.handlePokemonSpriteClick = handlePokemonSpriteClick;
+    // window.setActivePokemon = setActivePokemon;
+    // window.removeFromParty = removeFromParty;
+    // window.addToPartyDialog = addToPartyDialog;
+    // window.attemptEvolution = attemptEvolution;
+    // window.confirmReleasePokemon = confirmReleasePokemonUI;
+    // window.changePokemonNickname = changePokemonNickname;
+}
+
+function handlePartyStorageInteraction(event) {
+    const button = event.target.closest('button[data-action], img.pokemon-sprite[data-action="spriteClick"]');
+    if (!button) return;
+
+    const action = button.dataset.action;
+    const index = parseInt(button.dataset.index, 10);
+    const location = button.dataset.location;
+
+    if (isNaN(index) && action !== 'spriteClick' && action !== 'addToPartyDialog' && action !== 'confirmRelease') {
+        // spriteClick for player/wild has index -1, addToPartyDialog/confirmRelease use storage index
+        // console.warn("Index is not a number for action:", action);
+        // return; // Allow specific actions that might not need a valid index from party/storage context
+    }
+
+
+    switch (action) {
+        case 'setActive':
+            if (location === 'party') setActivePokemon(index); // from partyLogic via gameLogic
+            break;
+        case 'removeFromParty':
+            if (location === 'party') removeFromParty(index); // from partyLogic via gameLogic
+            break;
+        case 'evolve':
+            attemptEvolution(index, location); // from partyLogic via gameLogic
+            break;
+        case 'addToPartyDialog': // This action comes from storage cards
+            addToPartyDialog(index); // from ui.js
+            break;
+        case 'confirmRelease': // This action comes from storage cards
+            confirmReleasePokemon(index); // from ui.js
+            break;
+        case 'spriteClick':
+            // handlePokemonSpriteClick from ui.js needs to be called.
+            // It determines the actual pokemon and then calls the modal display.
+            handlePokemonSpriteClick(index, location); // from ui.js
+            break;
+        default:
+            // console.warn("Unknown action in party/storage interaction:", action);
+            break;
+    }
+}
 
 
 // Event listener for route select dropdown
 document.addEventListener('DOMContentLoaded', () => {
-    const routeSelect = document.getElementById('route-select');
-    if (routeSelect) {
-        routeSelect.addEventListener('change', (event) => handleRouteChange(event.target.value));
-    }
-    document.addEventListener('keydown', handleKonamiCode);
-    const settingsBtn = document.getElementById('settings-btn');
-    if (settingsBtn) {
-        settingsBtn.addEventListener('click', window.showSettingsModal);
-    }
-
-    const closeSettingsModalBtn = document.getElementById('close-settings-modal-btn');
-    if (closeSettingsModalBtn) {
-        closeSettingsModalBtn.addEventListener('click', window.closeSettingsModal);
-    }
     // Initialize the game once the DOM is fully loaded
-    initGame();
+    initGame().then(() => {
+        // Attach event listeners after game initialization is complete,
+        // especially if initGame involves async operations or UI setup.
+        attachEventListeners();
+    });
 });

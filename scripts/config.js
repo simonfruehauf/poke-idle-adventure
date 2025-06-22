@@ -43,6 +43,7 @@ export const TYPE_CHART = {
     Null: {}
 };
 
+export const USE_API_FOR_SPRITES_AND_TYPES = true; // Added this line
 
 export function getTypeEffectiveness(attackingType, defendingType) {
     if (!attackingType || !defendingType) return 1;

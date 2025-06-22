@@ -38,7 +38,7 @@
                     <div class="progress-bar-wrapper" 
                          id="egg-progress-wrapper" 
                          title="Generates a new Egg over X hours. Click to claim when ready."
-                         onclick="window.eggFeatures.handleEggClick()">
+                         >
                         <div class="progress-bar-underlay">
                             <span class="progress-bar-label" id="egg-timer-text">8h 0m 0s</span>
                             <div class="progress-bar-overlay" id="egg-progress-bar" style="width: 0%;"></div>
@@ -52,7 +52,7 @@
                     <div class="progress-bar-wrapper" 
                          id="incubator-progress-wrapper" 
                          title="Incubate an egg over X hours. Requires an egg. Click to start if you have an egg."
-                         onclick="window.eggFeatures.handleIncubatorClick()">
+                         >
                         <div class="progress-bar-underlay">
                             <span class="progress-bar-label" id="incubator-timer-text">2h 0m 0s</span>
                             <div class="progress-bar-overlay" id="incubator-progress-bar" style="width: 0%;"></div>
@@ -67,10 +67,10 @@
                     <!-- Container for just the label and select dropdown -->
                     <div id="route-select-container" class="route-selector-group">
                         <label for="route-select" style="margin-bottom: 5px; font-weight: bold; display: block;"></label>
-                        <select id="route-select" onchange="handleRouteChange(this.value)"
+                        <select id="route-select"
                             style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #555; background-color: #333; color: white; box-sizing: border-box;"></select>
                     </div>
-                    <button id="leave-route-btn" class="leave-route btn medium secondary " onclick="leaveCurrentRoute()"
+                    <button id="leave-route-btn" class="leave-route btn medium secondary "
                         style="background-color: #f39c12;
                                    width: 100%; 
                                    box-sizing: border-box;">
@@ -114,10 +114,10 @@
                 </div>
 
                 <div class="controls">
-                    <button class="btn" id="fight-btn" onclick="manualBattle()">
+                    <button class="btn" id="fight-btn" >
                         Fight!
                     </button>
-                    <button class="btn auto-battle-indicator" id="auto-fight-btn" onclick="toggleAutoFight()"
+                    <button class="btn auto-battle-indicator" id="auto-fight-btn"
                         style="background-color: #4CAF50; margin-left: 5px;" disabled>
                         Auto-Fight (LOCKED)
                     </button>
@@ -130,10 +130,10 @@
             <div class="panel party-area">
                 <div class="party-header">
                     <h2>Party</h2>
-                <button class="btn heal-button" id="free-heal-btn" onclick="freeFullHeal()">
+                <button class="btn heal-button" id="free-heal-btn" >
                     Free Full Heal
                 </button>
-                <button id="floating-pc-btn" class="btn secondary medium" onclick="window.togglePcDrawer()">PC</button>
+                <button id="floating-pc-btn" class="btn secondary medium" >PC</button>
 
                 </div>
                 <div class="party-slots" id="party-slots">
@@ -167,25 +167,25 @@
                         <div class="shop-item" id="shop-item-pokeball">
                             <img src="sprites/pokeballs/poke-ball.png" alt="Pokeball" class="shop-item-icon">
                             <span>Pokeball (x1)</span>
-                            <button class="btn small" onclick="buyBall('pokeball', 1)">Buy - 200₽</button>
+                            <button class="btn small" data-action="buyBall" data-itemid="pokeball" data-amount="1">Buy - 200₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-pokeball"></div>
                         </div>
                         <div class="shop-item" id="shop-item-greatball">
                             <img src="sprites/pokeballs/great-ball.png" alt="Great Ball" class="shop-item-icon">
                             <span>Great Ball (x1)</span>
-                            <button class="btn small" onclick="buyBall('greatball', 1)">Buy - 600₽</button>
+                            <button class="btn small" data-action="buyBall" data-itemid="greatball" data-amount="1">Buy - 600₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-greatball"></div>
                         </div>
                         <div class="shop-item" id="shop-item-ultraball">
                             <img src="sprites/pokeballs/ultra-ball.png" alt="Ultra Ball" class="shop-item-icon">
                             <span>Ultra Ball (x1)</span>
-                            <button class="btn small" onclick="buyBall('ultraball', 1)">Buy - 1.200₽</button>
+                            <button class="btn small" data-action="buyBall" data-itemid="ultraball" data-amount="1">Buy - 1.200₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-ultraball"></div>
                         </div>
                         <div class="shop-item" id="shop-item-healball">
                             <img src="sprites/pokeballs/heal-ball.png" alt="Heal Ball" class="shop-item-icon">
                             <span>Heal Ball (x1)</span>
-                            <button class="btn small" onclick="buyBall('healball', 1)">Buy - 1.200₽</button>
+                            <button class="btn small" data-action="buyBall" data-itemid="healball" data-amount="1">Buy - 1.200₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-healball"></div>
                         </div>
                     </div>
@@ -194,19 +194,19 @@
                         <div class="shop-item" id="shop-item-potion">
                             <img src="sprites/items/potion.png" alt="Potion" class="shop-item-icon">
                             <span>Potion</span>
-                            <button class="btn small" onclick="buyItem('potion', 1)">Buy - 20₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="potion" data-amount="1">Buy - 20₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-potion"></div>
                         </div>
                         <div class="shop-item" id="shop-item-hyperpotion">
                             <img src="sprites/items/hyper-potion.png" alt="Hyper Potion" class="shop-item-icon">
                             <span>Hyper Potion</span>
-                            <button class="btn small" onclick="buyItem('hyperpotion', 1)">Buy - 50₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="hyperpotion" data-amount="1">Buy - 50₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-hyperpotion"></div>
                         </div>
                         <div class="shop-item" id="shop-item-moomoomilk">
                             <img src="sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="shop-item-icon">
                             <span>Moomoo Milk (x1)</span>
-                            <button class="btn small" onclick="buyItem('moomoomilk', 1)">Buy - 80₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="moomoomilk" data-amount="1">Buy - 80₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-moomoomilk"></div>
                         </div>
                     </div>
@@ -215,7 +215,7 @@
                         <div class="shop-item" id="exp-share-shop-item">
                             <img src="sprites/items/exp-share.png" alt="XP Share" class="shop-item-icon">
                             <span id="exp-share-text">XP Share</span>
-                            <button id="exp-share-buy-btn" class="btn small" onclick="window.buyXpShareUpgrade()">
+                            <button id="exp-share-buy-btn" class="btn small" >
                             </button>
                         <div class="custom-tooltip" id="tooltip-exp-share-shop-item"></div>
                         </div>
@@ -225,61 +225,61 @@
                         <div class="shop-item" id="shop-item-firestone">
                             <img src="sprites/items/fire-stone.png" alt="Fire Stone" class="shop-item-icon">
                             <span>Fire Stone (x1)</span>
-                            <button class="btn small" onclick="buyItem('firestone', 1)">Buy - 2.100₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="firestone" data-amount="1">Buy - 2.100₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-firestone"></div>
                         </div>
                         <div class="shop-item" id="shop-item-waterstone">
                             <img src="sprites/items/water-stone.png" alt="Water Stone" class="shop-item-icon">
                             <span>Water Stone (x1)</span>
-                            <button class="btn small" onclick="buyItem('waterstone', 1)">Buy - 2.100₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="waterstone" data-amount="1">Buy - 2.100₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-waterstone"></div>
                         </div>
                         <div class="shop-item" id="shop-item-thunderstone">
                             <img src="sprites/items/thunder-stone.png" alt="Thunder Stone" class="shop-item-icon">
                             <span>Thunder Stone (x1)</span>
-                            <button class="btn small" onclick="buyItem('thunderstone', 1)">Buy - 2.100₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="thunderstone" data-amount="1">Buy - 2.100₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-thunderstone"></div>
                         </div>
                         <div class="shop-item" id="shop-item-moonstone">
                             <img src="sprites/items/moon-stone.png" alt="Moon Stone" class="shop-item-icon">
                             <span>Moon Stone (x1)</span>
-                            <button class="btn small" onclick="buyItem('moonstone', 1)">Buy - 3.000₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="moonstone" data-amount="1">Buy - 3.000₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-moonstone"></div>
                         </div>
                         <div class="shop-item" id="shop-item-leafstone">
                             <img src="sprites/items/leaf-stone.png" alt="Leaf Stone" class="shop-item-icon">
                             <span>Leaf Stone (x1)</span>
-                            <button class="btn small" onclick="buyItem('leafstone', 1)">Buy - 2.100₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="leafstone" data-amount="1">Buy - 2.100₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-leafstone"></div>
                         </div>
                         <div class="shop-item" id="shop-item-sunstone">
                             <img src="sprites/items/sun-stone.png" alt="Sun Stone" class="shop-item-icon">
                             <span>Sun Stone (x1)</span>
-                            <button class="btn small" onclick="buyItem('sunstone', 1)">Buy - 3.000₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="sunstone" data-amount="1">Buy - 3.000₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-sunstone"></div>
                         </div>
                         <div class="shop-item" id="shop-item-kingsrock">
                             <img src="sprites/items/kings-rock.png" alt="King's Rock" class="shop-item-icon">
                             <span>King's Rock (x1)</span>
-                            <button class="btn small" onclick="buyItem('kingsrock', 1)">Buy - 5.000₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="kingsrock" data-amount="1">Buy - 5.000₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-kingsrock"></div>
                         </div>
                         <div class="shop-item" id="shop-item-metalcoat">
                             <img src="sprites/items/metal-coat.png" alt="Metal Coat" class="shop-item-icon">
                             <span>Metal Coat (x1)</span>
-                            <button class="btn small" onclick="buyItem('metalcoat', 1)">Buy - 5.000₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="metalcoat" data-amount="1">Buy - 5.000₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-metalcoat"></div>
                         </div>
                         <div class="shop-item" id="shop-item-dragonscale">
                             <img src="sprites/items/dragon-scale.png" alt="Dragon Scale" class="shop-item-icon">
                             <span>Dragon Scale (x1)</span>
-                            <button class="btn small" onclick="buyItem('dragonscale', 1)">Buy - 5.000₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="dragonscale" data-amount="1">Buy - 5.000₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-dragonscale"></div>
                         </div>
                         <div class="shop-item" id="shop-item-upgrade">
                             <img src="sprites/items/up-grade.png" alt="Up-Grade" class="shop-item-icon">
                             <span>Up-Grade (x1)</span>
-                            <button class="btn small" onclick="buyItem('upgrade', 1)">Buy - 5.000₽</button>
+                            <button class="btn small" data-action="buyItem" data-itemid="upgrade" data-amount="1">Buy - 5.000₽</button>
                             <div class="custom-tooltip" id="tooltip-shop-item-upgrade"></div>
                         </div>
                     </div>
@@ -288,7 +288,7 @@
             <div class="panel team-area" id="pc-drawer">
                 <div class="drawer-header">
                     <h2>PC</h2>
-                    <button class="btn small close-drawer-btn" onclick="window.togglePcDrawer()">Close</button>
+                    <button class="btn small close-drawer-btn" >Close</button>
                 </div>
                 <div id="team-list">
                     <div>
@@ -297,153 +297,153 @@
             </div>
             <div class="items-bar">
                 <!-- #region Poké Balls -->
-                <button class="item-display item-button" id="item-display-pokeball" onclick="window.attemptCatch('pokeball')" title="Poké Ball" style="display: none;" data-item-id="pokeball">
+                <button class="item-display item-button" id="item-display-pokeball"  title="Poké Ball" style="display: none;" data-item-id="pokeball">
                     <img src="sprites/pokeballs/poke-ball.png" alt="Poké Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-pokeball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-pokeball">A device for catching wild Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-greatball" onclick="window.attemptCatch('greatball')" title="Great Ball" style="display: none;" data-item-id="greatball">
+                <button class="item-display item-button" id="item-display-greatball"  title="Great Ball" style="display: none;" data-item-id="greatball">
                     <img src="sprites/pokeballs/great-ball.png" alt="Great Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-greatball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-greatball">A good, high-performance Ball that provides a higher catch rate than a Poké Ball.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-ultraball" onclick="window.attemptCatch('ultraball')" title="Ultra Ball" style="display: none;" data-item-id="ultraball">
+                <button class="item-display item-button" id="item-display-ultraball"  title="Ultra Ball" style="display: none;" data-item-id="ultraball">
                     <img src="sprites/pokeballs/ultra-ball.png" alt="Ultra Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-ultraball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-ultraball">An ultra-high-performance Ball.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-masterball" onclick="window.attemptCatch('masterball')" title="Master Ball" style="display: none;" data-item-id="masterball">
+                <button class="item-display item-button" id="item-display-masterball"  title="Master Ball" style="display: none;" data-item-id="masterball">
                     <img src="sprites/pokeballs/master-ball.png" alt="Master Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-masterball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-masterball">The best Ball with the ultimate performance. It will catch any wild Pokémon without fail.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-safariball" onclick="window.attemptCatch('safariball')" title="Safari Ball" style="display: none;" data-item-id="safariball">
+                <button class="item-display item-button" id="item-display-safariball"  title="Safari Ball" style="display: none;" data-item-id="safariball">
                     <img src="sprites/pokeballs/safari-ball.png" alt="Safari Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-safariball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-safariball">A special Poké Ball for use in the Safari Zone.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-sportball" onclick="window.attemptCatch('sportball')" title="Sport Ball" style="display: none;" data-item-id="sportball">
+                <button class="item-display item-button" id="item-display-sportball"  title="Sport Ball" style="display: none;" data-item-id="sportball">
                     <img src="sprites/pokeballs/sport-ball.png" alt="Sport Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-sportball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-sportball">A special Poké Ball for use in Catching Contests.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-fastball" onclick="window.attemptCatch('fastball')" title="Fast Ball" style="display: none;" data-item-id="fastball">
+                <button class="item-display item-button" id="item-display-fastball"  title="Fast Ball" style="display: none;" data-item-id="fastball">
                     <img src="sprites/pokeballs/fast-ball.png" alt="Fast Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-fastball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-fastball">Good for catching fast Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-friendball" onclick="window.attemptCatch('friendball')" title="Friend Ball" style="display: none;" data-item-id="friendball">
+                <button class="item-display item-button" id="item-display-friendball"  title="Friend Ball" style="display: none;" data-item-id="friendball">
                     <img src="sprites/pokeballs/friend-ball.png" alt="Friend Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-friendball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-friendball">Makes caught Pokémon more friendly.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-heavyball" onclick="window.attemptCatch('heavyball')" title="Heavy Ball" style="display: none;" data-item-id="heavyball">
+                <button class="item-display item-button" id="item-display-heavyball"  title="Heavy Ball" style="display: none;" data-item-id="heavyball">
                     <img src="sprites/pokeballs/heavy-ball.png" alt="Heavy Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-heavyball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-heavyball">Good for catching heavy Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-levelball" onclick="window.attemptCatch('levelball')" title="Level Ball" style="display: none;" data-item-id="levelball">
+                <button class="item-display item-button" id="item-display-levelball"  title="Level Ball" style="display: none;" data-item-id="levelball">
                     <img src="sprites/pokeballs/level-ball.png" alt="Level Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-levelball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-levelball">Better if your Pokémon's level is higher.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-loveball" onclick="window.attemptCatch('loveball')" title="Love Ball" style="display: none;" data-item-id="loveball">
+                <button class="item-display item-button" id="item-display-loveball"  title="Love Ball" style="display: none;" data-item-id="loveball">
                     <img src="sprites/pokeballs/love-ball.png" alt="Love Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-loveball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-loveball">Better for Pokémon of the opposite gender.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-lureball" onclick="window.attemptCatch('lureball')" title="Lure Ball" style="display: none;" data-item-id="lureball">
+                <button class="item-display item-button" id="item-display-lureball"  title="Lure Ball" style="display: none;" data-item-id="lureball">
                     <img src="sprites/pokeballs/lure-ball.png" alt="Lure Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-lureball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-lureball">Good for Pokémon hooked by a rod.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-moonball" onclick="window.attemptCatch('moonball')" title="Moon Ball" style="display: none;" data-item-id="moonball">
+                <button class="item-display item-button" id="item-display-moonball"  title="Moon Ball" style="display: none;" data-item-id="moonball">
                     <img src="sprites/pokeballs/moon-ball.png" alt="Moon Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-moonball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-moonball">Good for Pokémon that evolve with a Moon Stone.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-premierball" onclick="window.attemptCatch('premierball')" title="Premier Ball" style="display: none;" data-item-id="premierball">
+                <button class="item-display item-button" id="item-display-premierball"  title="Premier Ball" style="display: none;" data-item-id="premierball">
                     <img src="sprites/pokeballs/premier-ball.png" alt="Premier Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-premierball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-premierball">Good for Pokémon that evolve with a Moon Stone.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-healball" onclick="window.attemptCatch('healball')" title="Heal Ball" style="display: none;" data-item-id="healball">
+                <button class="item-display item-button" id="item-display-healball"  title="Heal Ball" style="display: none;" data-item-id="healball">
                     <img src="sprites/pokeballs/heal-ball.png" alt="Heal Ball" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-healball">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-healball">Good for Pokémon that evolve with a Moon Stone.</div>
                 </button>
                 <!-- #endregion Poké Balls -->
                 <!-- #region Healing Items -->
-                <button class="item-display item-button" id="item-display-potion" onclick="window.useItem('potion')" title="Potion" style="display: none;" data-item-id="potion">
+                <button class="item-display item-button" id="item-display-potion"  title="Potion" style="display: none;" data-item-id="potion">
                     <img src="./sprites/items/potion.png" alt="Potion" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-potion">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-potion">Restores 20 HP to the active Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-hyperpotion" onclick="window.useItem('hyperpotion')" title="Hyper Potion" style="display: none;" data-item-id="hyperpotion">
+                <button class="item-display item-button" id="item-display-hyperpotion"  title="Hyper Potion" style="display: none;" data-item-id="hyperpotion">
                     <img src="./sprites/items/hyper-potion.png" alt="Hyper Potion" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-hyperpotion">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-hyperpotion">Restores 150 HP to the active Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-moomoomilk" onclick="window.useItem('moomoomilk')" title="Moomoo Milk" style="display: none;" data-item-id="moomoomilk">
+                <button class="item-display item-button" id="item-display-moomoomilk"  title="Moomoo Milk" style="display: none;" data-item-id="moomoomilk">
                     <img src="./sprites/items/moomoo-milk.png" alt="Moomoo Milk" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-moomoomilk">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-moomoomilk">Fully heals all Pokémon in the party.</div>
                 </button>
                 <!-- #endregion Healing Items -->
                 <!-- #region Evolution Stones -->
-                <button class="item-display item-button" id="item-display-firestone" onclick="window.useItem('firestone')" title="Fire Stone" style="display: none;" data-item-id="firestone">
+                <button class="item-display item-button" id="item-display-firestone"  title="Fire Stone" style="display: none;" data-item-id="firestone">
                     <img src="./sprites/items/fire-stone.png" alt="Fire Stone" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-firestone">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-firestone">Evolves certain species of Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-waterstone" onclick="window.useItem('waterstone')" title="Water Stone" style="display: none;" data-item-id="waterstone">
+                <button class="item-display item-button" id="item-display-waterstone"  title="Water Stone" style="display: none;" data-item-id="waterstone">
                     <img src="./sprites/items/water-stone.png" alt="Water Stone" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-waterstone">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-waterstone">Evolves certain species of Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-thunderstone" onclick="window.useItem('thunderstone')" title="Thunder Stone" style="display: none;" data-item-id="thunderstone">
+                <button class="item-display item-button" id="item-display-thunderstone"  title="Thunder Stone" style="display: none;" data-item-id="thunderstone">
                     <img src="./sprites/items/thunder-stone.png" alt="Thunder Stone" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-thunderstone">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-thunderstone">Evolves certain species of Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-moonstone" onclick="window.useItem('moonstone')" title="Moon Stone" style="display: none;" data-item-id="moonstone">
+                <button class="item-display item-button" id="item-display-moonstone"  title="Moon Stone" style="display: none;" data-item-id="moonstone">
                     <img src="./sprites/items/moon-stone.png" alt="Moon Stone" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-moonstone">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-moonstone">Evolves certain species of Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-leafstone" onclick="window.useItem('leafstone')" title="Leaf Stone" style="display: none;" data-item-id="leafstone">
+                <button class="item-display item-button" id="item-display-leafstone"  title="Leaf Stone" style="display: none;" data-item-id="leafstone">
                     <img src="./sprites/items/leaf-stone.png" alt="Leaf Stone" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-leafstone">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-leafstone">Evolves certain species of Pokémon.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-sunstone" onclick="window.useItem('sunstone')" title="Sun Stone" style="display: none;" data-item-id="sunstone">
+                <button class="item-display item-button" id="item-display-sunstone"  title="Sun Stone" style="display: none;" data-item-id="sunstone">
                     <img src="./sprites/items/sun-stone.png" alt="Sun Stone" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-sunstone">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-sunstone">A peculiar stone that makes certain species of Pokémon evolve. It glows like the sun.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-kingsrock" onclick="window.useItem('kingsrock')" title="King's Rock" style="display: none;" data-item-id="kingsrock">
+                <button class="item-display item-button" id="item-display-kingsrock"  title="King's Rock" style="display: none;" data-item-id="kingsrock">
                     <img src="./sprites/items/kings-rock.png" alt="King's Rock" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-kingsrock">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-kingsrock">A crown-like rock that makes certain species of Pokémon evolve. It's fit for a king.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-metalcoat" onclick="window.useItem('metalcoat')" title="Metal Coat" style="display: none;" data-item-id="metalcoat">
+                <button class="item-display item-button" id="item-display-metalcoat"  title="Metal Coat" style="display: none;" data-item-id="metalcoat">
                     <img src="./sprites/items/metal-coat.png" alt="Metal Coat" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-metalcoat">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-metalcoat">A special metallic film that makes certain species of Pokémon evolve. It's very hard.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-dragonscale" onclick="window.useItem('dragonscale')" title="Dragon Scale" style="display: none;" data-item-id="dragonscale">
+                <button class="item-display item-button" id="item-display-dragonscale"  title="Dragon Scale" style="display: none;" data-item-id="dragonscale">
                     <img src="./sprites/items/dragon-scale.png" alt="Dragon Scale" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-dragonscale">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-dragonscale">A tough, beautiful scale that makes certain species of Pokémon evolve. It is imbued with dragon power.</div>
                 </button>
-                <button class="item-display item-button" id="item-display-upgrade" onclick="window.useItem('upgrade')" title="Up-Grade" style="display: none;" data-item-id="upgrade">
+                <button class="item-display item-button" id="item-display-upgrade"  title="Up-Grade" style="display: none;" data-item-id="upgrade">
                     <img src="./sprites/items/up-grade.png" alt="Up-Grade" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-upgrade">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-upgrade">A transparent device filled with all sorts of data. It makes a certain species of Pokémon evolve.</div>
                 </button>
                 <!-- #endregion Evolution Stones -->
                 <!-- #region Rare Candy -->
-                <button class="item-display item-button" id="item-display-rarecandy" onclick="window.useItem('rarecandy')" title="Rare Candy" style="display: none;" data-item-id="rarecandy">
+                <button class="item-display item-button" id="item-display-rarecandy"  title="Rare Candy" style="display: none;" data-item-id="rarecandy">
                     <img src="./sprites/items/rare-candy.png" alt="Rare Candy" class="item-bar-icon">
                     <span class="item-bar-count-text" id="item-count-rarecandy">0</span>
                     <div class="custom-tooltip" id="tooltip-itembar-rarecandy">Raises the level of the active Pokémon by one.</div>
@@ -453,7 +453,7 @@
         </div>
     </div>
     <div id="starter-modal" class="modal-overlay" style="display: none;"
-        onclick="if (event.target === this) { /* No explicit close function, starter selection is mandatory */ }">
+        >
 
         <div class="modal-content">
             <h2>Choose your Starter Pokémon!</h2>
@@ -462,16 +462,16 @@
             </div>
         </div>
     </div>
-    <div id="settings-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this) { window.closeSettingsModal(); }">
+    <div id="settings-modal" class="modal-overlay" style="display: none;" >
         <div class="modal-content">
             <span class="btn close-btn" id="close-settings-modal-btn">&times;</span>
             <h2>Settings</h2>
             <div class="settings-section">
                 <h3 style="margin-top:0; margin-bottom: 20px;">Game Data Management</h3>
-                <button class="btn" style="background: #2ecc71;" onclick="window.manualSaveGame()">Save Game</button>
-                <button class="btn secondary" onclick="window.exportSaveData()">Export Save</button>
-                <button class="btn secondary" style="margin-bottom: 5px;" onclick="window.importSaveData()">Import Save</button>
-                <button class="btn" onclick="window.confirmClearSave()">Clear Save Data</button>
+                <button class="btn" style="background: #2ecc71;" data-action="manualSaveGame">Save Game</button>
+                <button class="btn secondary" data-action="exportSaveData">Export Save</button>
+                <button class="btn secondary" style="margin-bottom: 5px;" data-action="importSaveData">Import Save</button>
+                <button class="btn" data-action="confirmClearSave">Clear Save Data</button>
             </div>
             <div class="settings-section">
                 <h3>Game Options</h3>
@@ -484,15 +484,15 @@
         </div>
     </div>
     <div id="export-save-modal" class="modal-overlay" style="display: none;"
-        onclick="if (event.target === this) { window.closeExportModal(); }">
+        >
         <div class="modal-content">
             <h2>Export Save Data</h2>
             <p>Copy the text below and save it in a safe place.</p>
             <textarea id="export-save-textarea" readonly rows="10"
                 style="width: 95%; margin-bottom: 10px; resize: none; background-color: #2c3e50; color: #ecf0f1; border: 1px solid #7f8c8d; padding: 5px;"></textarea>
             <div class="modal-actions">
-                <button class="btn" onclick="window.copyExportDataToClipboard()">Copy to Clipboard</button>
-                <button class="btn secondary" onclick="window.closeExportModal()"
+                <button class="btn" data-action="copyExportDataToClipboard">Copy to Clipboard</button>
+                <button class="btn secondary" data-action="closeExportModal"
                     style="margin-left: 10px;">Close</button>
             </div>
             <p id="copy-feedback-message" style="margin-top: 10px; color: #2ecc71; display: none;">Copied to clipboard!
@@ -501,7 +501,7 @@
     </div>
 
     <div id="import-save-modal" class="modal-overlay" style="display: none;"
-        onclick="if (event.target === this) { window.closeImportModal(); }">
+        >
         <div class="modal-content">
             <h2>Import Save Data</h2>
             <p>Paste your exported save data string below and click "Import".</p>
@@ -509,15 +509,15 @@
                 style="width: 95%; margin-bottom: 10px; resize: none; background-color: #2c3e50; color: #ecf0f1; border: 1px solid #7f8c8d; padding: 5px;"
                 placeholder="Paste your save data here..."></textarea>
             <div class="modal-actions">
-                <button class="btn" onclick="window.processImportDataFromModal()">Import Data</button>
-                <button class="btn secondary" onclick="window.closeImportModal()"
+                <button class="btn" data-action="processImportDataFromModal">Import Data</button>
+                <button class="btn secondary" data-action="closeImportModal"
                     style="margin-left: 10px;">Cancel</button>
             </div>
         </div>
     </div>
 
     <div id="pokemon-image-modal" class="modal-overlay" style="display: none;"
-        onclick="if (event.target === this) { window.closePokemonImageModal(); }">
+        >
         <div class="modal-content">
             <h2 id="pokemon-image-modal-title" style="margin-bottom: 10px;">Pokémon Name</h2>
             <img id="pokemon-image-modal-sprite" src="sprites/pokemon/front/0.png" alt="Enlarged Pokémon"
@@ -529,19 +529,19 @@
             </div>
 
             <div class="modal-actions">
-                <button class="btn secondary" onclick="window.closePokemonImageModal()">Close</button>
+                <button class="btn secondary" data-action="closePokemonImageModal">Close</button>
             </div>
         </div>
     </div>
 
-    <div id="event-modal" class="modal-overlay" style="display: none;" onclick="if (event.target === this && !window.gameState.autoBattleActive) { window.resolvePostBattleEvent(); /* Allow closing by clicking overlay if not auto-battling */ }">
+    <div id="event-modal" class="modal-overlay" style="display: none;" >
         <div class="modal-content">
             <h2 id="event-modal-title">An Event Occurred!</h2>
             <img id="event-modal-image" src="data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=" alt="Event Image"
                  style="max-width: 256px; max-height: 256px; width: auto; height: auto; image-rendering: pixelated; margin-bottom: 15px; display: block; margin-left: auto; margin-right: auto; background-color: rgba(255,255,255,0.05); border-radius: 8px; padding:10px;">
             <p id="event-modal-message" style="margin-bottom: 20px; text-align: center;">Event details will appear here.</p>
             <div class="modal-actions">
-                <button id="event-modal-claim-btn" class="btn" onclick="window.resolvePostBattleEvent()">
+                <button id="event-modal-claim-btn" class="btn" >
                     Acknowledge
                 </button>
             </div>
