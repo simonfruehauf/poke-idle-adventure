@@ -22,6 +22,7 @@ Pokemon Idle Adventure lets you embark on a journey to become a Pokémon master,
 *   HTML
 *   CSS
 *   JavaScript
+*   PokeAPI
 
 ## 🤝 Contributing
 
